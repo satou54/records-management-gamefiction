@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_035757) do
+ActiveRecord::Schema.define(version: 2021_02_06_041514) do
+
+  create_table "action_records", primary_key: "action_record_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "action_day", null: false
+    t.integer "action", null: false
+    t.integer "action_experience_point", null: false
+    t.bigint "user_id", null: false
+    t.integer "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_action_records_on_task_id"
+    t.index ["user_id"], name: "index_action_records_on_user_id"
+  end
 
   create_table "tasks", primary_key: "task_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "task", null: false
@@ -33,5 +45,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_035757) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "action_records", "tasks", primary_key: "task_id"
+  add_foreign_key "action_records", "users"
   add_foreign_key "tasks", "users"
 end
