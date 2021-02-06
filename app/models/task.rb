@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
-  self.primary_key = :task_id
   belongs_to :user
+  has_many :action_records
 
   validates :task, presence: true
   validates :goal, presence: true

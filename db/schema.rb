@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_060503) do
+ActiveRecord::Schema.define(version: 2021_02_06_094103) do
 
-  create_table "action_records", primary_key: "action_record_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "action_records", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "action_day", null: false
     t.integer "action", null: false
     t.integer "action_experience_point", null: false
@@ -24,14 +24,14 @@ ActiveRecord::Schema.define(version: 2021_02_06_060503) do
     t.index ["user_id"], name: "index_action_records_on_user_id"
   end
 
-  create_table "levels", primary_key: "level_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "levels", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "level", null: false
     t.integer "required_experience_point", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tasks", primary_key: "task_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "tasks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "task", null: false
     t.integer "goal", null: false
     t.bigint "user_id", null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_060503) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "users", primary_key: "user_id", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_060503) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "action_records", "tasks", primary_key: "task_id"
-  add_foreign_key "action_records", "users", primary_key: "user_id"
-  add_foreign_key "tasks", "users", primary_key: "user_id"
+  add_foreign_key "action_records", "tasks"
+  add_foreign_key "action_records", "users"
+  add_foreign_key "tasks", "users"
 end
