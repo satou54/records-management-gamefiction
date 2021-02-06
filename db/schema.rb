@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_055705) do
+ActiveRecord::Schema.define(version: 2021_02_06_060503) do
 
   create_table "action_records", primary_key: "action_record_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "action_day", null: false
@@ -22,6 +22,13 @@ ActiveRecord::Schema.define(version: 2021_02_06_055705) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["task_id"], name: "index_action_records_on_task_id"
     t.index ["user_id"], name: "index_action_records_on_user_id"
+  end
+
+  create_table "levels", primary_key: "level_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "level", null: false
+    t.integer "required_experience_point", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tasks", primary_key: "task_id", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
