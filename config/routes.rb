@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  root to: "home#index"
+  get "/tasks", to: "home#index"
+  get "/tasks/new", to: "home#index"
+  get "/tasks/:id/edit", to: "home#index"
+
+  namespace :api, format: "json" do
+    resources :tasks
+  end
 end
