@@ -19,7 +19,7 @@
         </tr>
       </tbody>
     </table>
-    <router-link to="/tasks/new">new</router-link>
+    <router-link to="/task/new">new</router-link>
   </div>
 </template>
 
