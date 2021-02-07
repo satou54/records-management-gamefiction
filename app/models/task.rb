@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
   belongs_to :user
-  has_many :action_records
+  has_many :action_records, dependent: :destroy
 
   validates :task, presence: true
   validates :goal, presence: true
