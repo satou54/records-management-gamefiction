@@ -15,6 +15,7 @@
           <td>{{ task.goal }}</td>
           <td>
             <router-link to="/task/edit">edit</router-link>
+            <button @click="deleteTask(task.id)">削除</button>
           </td>
         </tr>
       </tbody>
@@ -45,6 +46,15 @@
           console.log(error);
         });
       },
+      deleteTask: function (task_id) {
+        const params = { id: task_id }
+        axios.delete('/api/tasks/' + task_id, { params: params }).then((response) => {
+          console.log('削除完了')
+          location.reload();
+        }, (error) => {
+          console.log(error);
+        })
+      }
     }
   }
 </script>

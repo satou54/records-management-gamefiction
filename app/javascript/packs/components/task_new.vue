@@ -14,6 +14,7 @@
         <button v-on:click="createTask">新規作成</button>
       </div>
     </div>
+    <router-link to="/tasks">目標設定画面</router-link>
     <router-link to="/">マイページ</router-link>
   </div>
 </template>
