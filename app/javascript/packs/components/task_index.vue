@@ -14,13 +14,14 @@
           <td>{{ task.task }}</td>
           <td>{{ task.goal }}</td>
           <td>
-            <router-link to="/task/edit">edit</router-link>
+            <button @click="editLink(task.id)">修正</button>
             <button @click="deleteTask(task.id)">削除</button>
           </td>
         </tr>
       </tbody>
     </table>
     <router-link to="/task/new">new</router-link>
+    <router-link to="/">マイページ</router-link>
   </div>
 </template>
 
@@ -49,10 +50,15 @@
       deleteTask: function (task_id) {
         const params = { id: task_id }
         axios.delete('/api/tasks/' + task_id, { params: params }).then((response) => {
-          console.log('削除完了')
           location.reload();
         }, (error) => {
           console.log(error);
+        })
+      },
+      editLink: function (task_id) {
+        this.$router.push({
+          name: 'task-edit',
+          params: { id: task_id }
         })
       }
     }
