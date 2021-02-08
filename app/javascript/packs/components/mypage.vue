@@ -17,7 +17,7 @@
           <td>{{ task.task }}</td>
           <td>{{ task.goal }}</td>
           <td>
-            <router-link to="/task/edit">edit</router-link>
+            <button @click="editLink(task.id)">修正</button>
           </td>
         </tr>
       </tbody>
@@ -53,6 +53,12 @@
           console.log(error);
         });
       },
+      editLink: function (task_id) {
+        this.$router.push({
+          name: 'task-edit',
+          params: { id: task_id }
+        })
+      }
     }
   }
 </script>

@@ -24,6 +24,8 @@ export default new VueRouter ({
     },
     {
       path: '/task/:id/edit',
+      name: "task-edit",
+      props: true,
       component: TaskEdit
     }
   ]

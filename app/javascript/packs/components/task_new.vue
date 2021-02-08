@@ -31,9 +31,7 @@ export default {
   },
   methods: {
     createTask: function () {
-      console.log('createTask')
       axios.post('/api/tasks', { task: { task: this.task, goal: this.goal, user_id: 2 } }).then((response) => {
-        console.log('新規作成OK')
       }, (error) => {
         console.log(error);
       });

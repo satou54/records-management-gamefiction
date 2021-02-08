@@ -3,11 +3,30 @@ class Api::TasksController < ApplicationController
     @tasks = Task.all
   end
 
+  def show
+    @task = Task.find(params[:id])
+  end
+
   def create
     @task = Task.new(task_params)
 
     if @task.save
       render :index, status: :created
+    else
+      render json: @task.errors, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @task = Task.find(params[:id])
+  end
+
+  def update
+    @task = Task.find(params[:id])
+    puts "-------update---------"
+
+    if @task.update(task_params)
+      render :show, status: :ok
     else
       render json: @task.errors, status: :unprocessable_entity
     end
