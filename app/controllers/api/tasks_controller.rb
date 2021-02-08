@@ -23,7 +23,6 @@ class Api::TasksController < ApplicationController
 
   def update
     @task = Task.find(params[:id])
-    puts "-------update---------"
 
     if @task.update(task_params)
       render :show, status: :ok
