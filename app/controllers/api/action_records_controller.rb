@@ -1,4 +1,6 @@
 class Api::ActionRecordsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     @action_records = ActionRecord.all
   end
@@ -11,13 +13,28 @@ class Api::ActionRecordsController < ApplicationController
     @action_record = ActionRecord.new
   end
 
-  def create
-    @action_record = ActionRecord.new(action_record_params)
+  def createOrUpdate
+    # action_day,task_id,user_idと一致するデータが存在するかチェック
+    @action_record = ActionRecord.find_by(action_day: params[:action_day],
+                                          task_id: params[:task_id],
+                                          user_id: params[:user_id])
 
-    if @action_record.save
-      render :index, status: :created
+    if (@action_record.nil?)
+      # 一致するデータがない場合、createの処理を行う
+      @action_record = ActionRecord.new(action_record_params)
+
+      if @action_record.save
+        render :index, status: :created
+      else
+        render json: @action_record.errors, status: :unprocessable_entity
+      end
     else
-      render json: @action_record.errors, status: :unprocessable_entity
+      # 一致するデータがある場合、updateの処理を行う
+      if @action_record.update(action_record_params)
+        render :show, status: :ok
+      else
+        render json: @action_record.errors, status: :unprocessable_entity
+      end
     end
   end
 
