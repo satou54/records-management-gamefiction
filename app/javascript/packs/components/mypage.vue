@@ -25,8 +25,8 @@
 
     <div>
       <router-link to="/tasks">目標設定</router-link>
-      <router-link to="/action-record">行動記録</router-link>
-      <router-link to="/aciton-record/show">行動参照</router-link>
+      <router-link to="/action_records">行動記録</router-link>
+      <router-link to="/aciton_record/show">行動参照</router-link>
     </div>
   </div>
 </template>
