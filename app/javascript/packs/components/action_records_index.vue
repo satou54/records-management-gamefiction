@@ -4,7 +4,7 @@
     <div>
       <div>
         <label id="action_day">日付</label>
-        <input type="date" id="action_day" v-model="action_day">
+        <input type="date" id="action_day" @change="chengeDate" v-model="action_day">
       </div>
       <div>
         <label id="task">タスク</label>
@@ -72,6 +72,11 @@
         }, (error) => {
           console.log(error);
         })
+      },
+      chengeDate: function () {
+        if (this.selectTask) {
+          this.searchAction();
+        }
       },
       chengeTask: function () {
         for (var i = 0; i < this.tasks.length; i++) {
