@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get "/task/new", to: "home#index"
   get "/task/:id/edit", to: "home#index"
 
+  get "/action_records", to: "home#index"
+
   devise_for :users
 
   namespace :api, format: "json" do
