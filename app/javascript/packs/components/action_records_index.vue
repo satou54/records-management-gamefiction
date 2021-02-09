@@ -96,7 +96,7 @@
         }
       },
       createActionRecord: function () {
-        axios.post('/api/action_records', { action_record: { action_day: this.action_day, action: Number(this.action), 
+        axios.post('/api/action_records/createOrUpdate', { action_record: { action_day: this.action_day, action: Number(this.action), 
         action_experience_point: 7, user_id: 3, task_id: this.selectTask } }).then((response) => {
           alert('登録しました')
         }, (error) => {
