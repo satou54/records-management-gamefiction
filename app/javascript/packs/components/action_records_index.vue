@@ -18,11 +18,10 @@
       </div>
       <div>
         <label id="action">実績</label>
-        <input type="text" id="action" v-bind:value="action">
+        <input type="text" id="action" v-model="action">
       </div>
-      <button>送信</button>
+      <button @click="createActionRecord">登録</button>
     </div>
-    <router-link to="/action-records/new">new</router-link>
     <router-link to="/">マイページ</router-link>
   </div>
 </template>
@@ -87,6 +86,8 @@
         this.searchAction();
       },
       searchAction: function () {
+        this.action = ''
+
         for (var i = 0; i < this.action_records.length; i++) {
           if (this.action_records[i].action_day == this.action_day
               && this.action_records[i].task_id == this.selectTask) {
@@ -94,10 +95,12 @@
           }
         }
       },
-      editLink: function (task_id) {
-        this.$router.push({
-          name: 'task-edit',
-          params: { id: task_id }
+      createActionRecord: function () {
+        axios.post('/api/action_records', { action_record: { action_day: this.action_day, action: Number(this.action), 
+        action_experience_point: 7, user_id: 3, task_id: this.selectTask } }).then((response) => {
+          alert('登録しました')
+        }, (error) => {
+          console.log(error)
         })
       }
     }
