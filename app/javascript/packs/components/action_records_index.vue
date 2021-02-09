@@ -1,28 +1,27 @@
 <template>
   <div>
     <h1>行動記録画面</h1>
-    <label id="action_day">日付</label>
-    <input type="date" id="action_day" v-model="action_day">
-    <table>
-      <thead>
-        <tr>
-          <td>タスク名</td>
-          <td>目標</td>
-          <td>実績</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="task in tasks" v-bind:key="task.id">
-          <td>{{ task.task }}</td>
-          <td>{{ task.goal }}</td>
-          <td>{{ action }}</td>
-          <td>
-            <button @click="editLink(task.id)">修正</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <div>
+        <label id="action_day">日付</label>
+        <input type="date" id="action_day" v-model="action_day">
+      </div>
+      <div>
+        <label id="task">タスク</label>
+        <select id="task" v-model="selectTask" @change="chengeTask" name="selectTask">
+          <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
+        </select>
+      </div>
+      <div>
+        <label id="goal">目標</label>
+        <output id="goal">{{ goal }}</output>
+      </div>
+      <div>
+        <label id="action">実績</label>
+        <input type="text" id="action" v-bind:value="action">
+      </div>
+      <button>送信</button>
+    </div>
     <router-link to="/action-records/new">new</router-link>
     <router-link to="/">マイページ</router-link>
   </div>
@@ -35,6 +34,8 @@
     data: function () {
       return {
         tasks: [],
+        selectTask: '',
+        goal: '',
         action_records: [],
         action_day: '',
         action: ''
@@ -72,17 +73,22 @@
           console.log(error);
         })
       },
-      /* searchActionRecord: function() {
-        for (var i = 0; i < this.action_records.length; i++) {
-          var action_record = this.action_records[i]
-          console.log('action_record:' + action_record)
-          console.log('action_day:' + action_record.action_day)
-          if (action_record.action_day == this.action_day &&
-              action_record.task_id == 1) {
-            this.action = action_record.action
+      chengeTask: function () {
+        for (var i = 0; i < this.tasks.length; i++) {
+          if (this.tasks[i].id == this.selectTask) {
+            this.goal = this.tasks[i].goal
           }
         }
-      }, */
+        this.searchAction();
+      },
+      searchAction: function () {
+        for (var i = 0; i < this.action_records.length; i++) {
+          if (this.action_records[i].action_day == this.action_day
+              && this.action_records[i].task_id == this.selectTask) {
+            this.action = this.action_records[i].action
+          }
+        }
+      },
       editLink: function (task_id) {
         this.$router.push({
           name: 'task-edit',
