@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   namespace :api, format: "json" do
     resources :tasks
-    resources :action_records
+    resources :action_records do
+      post "createOrUpdate", :on => :collection
+    end
   end
 end

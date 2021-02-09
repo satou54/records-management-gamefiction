@@ -1,6 +1,4 @@
 class Api::ActionRecordsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def index
     @action_records = ActionRecord.all
   end
