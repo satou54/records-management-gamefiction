@@ -1,11 +1,11 @@
 puts "テストデータ削除"
-User.destory_all
-Task.destory_all
-ActionRecord.destory_all
+User.destroy_all
+Task.destroy_all
+ActionRecord.destroy_all
 
 puts "テストデータ投入"
 
-User.create!(emai: "test@example.com", password: "password")
+User.create!(email: "test@example.com", password: "password")
 
 puts "usersテーブルにデータ投入完了"
 
