@@ -4,4 +4,6 @@ class ActionRecord < ApplicationRecord
 
   validates :action_day, presence: true
   validates :action, presence: true
+
+  validates :action_day, uniqueness: { scope: :task_id }
 end

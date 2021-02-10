@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_094103) do
+ActiveRecord::Schema.define(version: 2021_02_10_050909) do
 
   create_table "action_records", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "action_day", null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_094103) do
     t.integer "task_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["action_day", "task_id"], name: "index_action_records_on_action_day_and_task_id", unique: true
     t.index ["task_id"], name: "index_action_records_on_task_id"
     t.index ["user_id"], name: "index_action_records_on_user_id"
   end
