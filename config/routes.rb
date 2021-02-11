@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :api, format: "json" do
+    mount_devise_token_auth_for "User", at: "auth", controllers: {
+                                          registrations: "api/auth/registrations",
+                                        }
     resources :tasks
     resources :action_records do
       post "createOrUpdate", :on => :collection
