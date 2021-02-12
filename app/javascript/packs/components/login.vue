@@ -1,0 +1,44 @@
+<template>
+<div>
+    <h1>ログイン画面</h1>
+    <div>
+      <label for="email">
+        Email
+      </label>
+      <input v-model="user.email" id="Email" type="text" placeholder="email">
+    </div>
+    <div>
+      <label for="password">
+        Password
+      </label>
+      <input v-model="user.password" id="password" type="password" placeholder="password">
+    </div>
+    <button @click="loginUser">
+      Login
+    </button>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios'
+
+  export default {
+    data: function () {
+      return {
+        user: {
+          email: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      loginUser: function () {
+        axios.post('api/auth/sign_in', this.user).then((response) => {
+          console.log('ログイン成功')
+        }, (error) => {
+          console.log(error)
+        })
+      }
+    }
+  }
+</script>

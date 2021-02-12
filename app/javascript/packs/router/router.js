@@ -1,6 +1,8 @@
 import Vue from 'vue/dist/vue.esm.js'
 import VueRouter from 'vue-router'
 import Mypage from '../components/mypage.vue'
+import SignUp from '../components/sinup.vue'
+import Login from '../components/login.vue'
 import TaskIndex from '../components/task_index.vue'
 import TaskNew from '../components/task_new.vue'
 import TaskEdit from '../components/task_edit.vue'
@@ -14,6 +16,14 @@ export default new VueRouter ({
     {
       path: '/',
       component: Mypage
+    },
+    {
+      path: '/signup',
+      component: SignUp
+    },
+    {
+      path: '/login',
+      component: Login
     },
     {
       path: '/tasks',
