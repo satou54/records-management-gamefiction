@@ -38,6 +38,9 @@
           localStorage.setItem('client', response.headers.client)
           localStorage.setItem('uid', response.headers.uid)
           localStorage.setItem('token-type', response.headers['token-type'])
+          localStorage.setItem('user_id', response.data['data'].id)
+          localStorage.setItem('email', response.data['data'].email)
+          localStorage.setItem('name', response.data['data'].name)
           return response
         }, (error) => {
           console.log(error)

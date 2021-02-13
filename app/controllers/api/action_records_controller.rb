@@ -1,4 +1,6 @@
 class Api::ActionRecordsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @action_records = ActionRecord.all
   end
