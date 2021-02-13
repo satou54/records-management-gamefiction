@@ -16,9 +16,10 @@ export default {
     logoutUser: function () {
       axios.delete('/api/auth/sign_out', { headers: 
         { 'access-token': localStorage.getItem('access-token'),
-          uid: localStorage.getItem('uid'),
-          client: localStorage.getItem('client') }} ).then((response) => {
+          'uid': localStorage.getItem('uid'),
+          'client': localStorage.getItem('client') }} ).then((response) => {
             localStorage.clear()
+            console.log('logout')
       }, (error) => {
         console.log(error)
       })

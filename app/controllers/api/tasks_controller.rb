@@ -1,6 +1,9 @@
 class Api::TasksController < ApplicationController
   def index
     @tasks = Task.all
+    puts "------------"
+    puts "tasks#index"
+    puts user_signed_in?
   end
 
   def show
