@@ -45,11 +45,13 @@
     },
     methods: {
       fetchTasks: function () {
-        axios.get('/api/tasks', { headers: {
-            'access-token': localStorage.getItem('access-token'),
-            uid: localStorage.getItem('uid'),
-            client: localStorage.getItem('client') 
-          }}).then((response) => {
+        axios.get('/api/tasks', 
+                  { headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                  }}
+        ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);
           }
