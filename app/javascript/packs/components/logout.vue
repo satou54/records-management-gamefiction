@@ -4,7 +4,6 @@
     <button @click="logoutUser">
       ログアウト
     </button>
-    </p>
   </div>
 </template>
 

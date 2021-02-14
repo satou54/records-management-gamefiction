@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     createTask: function () {
-      axios.post('/api/tasks', { task: { task: this.task, goal: this.goal, user_id: 2 } }).then((response) => {
+      axios.post('/api/tasks', { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }).then((response) => {
       }, (error) => {
         console.log(error);
       });

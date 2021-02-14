@@ -1,9 +1,8 @@
 class Api::TasksController < ApplicationController
   def index
     @tasks = Task.all
-    puts "------------"
-    puts "tasks#index"
-    puts user_signed_in?
+    #ログインエラー解決後に変更
+    #@tasks = current_user.taks
   end
 
   def show
