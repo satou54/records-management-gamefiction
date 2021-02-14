@@ -38,7 +38,10 @@ export default {
   },
   methods: {
     fetchTasks: function () {
-      axios.get('/api/tasks/' + this.id).then((response) => {
+      axios.get('/api/tasks/' + this.id, { headers: {
+            'access-token': localStorage.getItem('access-token'),
+            uid: localStorage.getItem('uid'),
+            client: localStorage.getItem('client') } }).then((response) => {
         this.task = (response.data.task['task']);
         this.goal = (response.data.task['goal']);
         this.user_id = (response.data.task['user_id'])
@@ -47,7 +50,14 @@ export default {
       });
     },
     updateTask: function () {
-      axios.put('/api/tasks/' + this.id, { task: { task: this.task, goal: this.goal, user_id: this.user_id } }).then((response) => {
+      axios.put('/api/tasks/' + this.id, 
+      { task: { task: this.task, goal: this.goal, user_id: this.user_id } }, 
+      { headers: {
+        'access-token': localStorage.getItem('access-token'),
+        uid: localStorage.getItem('uid'),
+        client: localStorage.getItem('client') 
+      }}
+      ).then((response) => {
         console.log('目標修正OK')
       }, (error) => {
         console.log(error);

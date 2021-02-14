@@ -1,10 +1,8 @@
 class Api::ActionRecordsController < ApplicationController
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def index
-    @action_records = ActionRecord.all
-    # ログイン中のユーザのアクションレコードを取得
-    #@action_records = current_user.action_records
+    @action_records = current_user.action_records
   end
 
   def show

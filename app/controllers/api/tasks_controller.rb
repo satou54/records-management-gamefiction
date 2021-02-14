@@ -1,8 +1,8 @@
 class Api::TasksController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @tasks = Task.all
-    #ログインエラー解決後に変更
-    #@tasks = current_user.taks
+    @tasks = current_user.tasks
   end
 
   def show

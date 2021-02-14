@@ -1,21 +1,23 @@
 <template>
-<div>
-    <h1>ログイン画面</h1>
-    <div>
-      <label for="email">
-        Email
-      </label>
-      <input v-model="user.email" id="Email" type="text" placeholder="email">
-    </div>
-    <div>
-      <label for="password">
-        Password
-      </label>
-      <input v-model="user.password" id="password" type="password" placeholder="password">
-    </div>
-    <button @click="loginUser">
-      Login
-    </button>
+  <div>
+    <form>
+      <h1>ログイン画面</h1>
+      <div>
+        <label for="email">
+          Email
+        </label>
+        <input v-model="user.email" id="Email" type="text" placeholder="email">
+      </div>
+      <div>
+        <label for="password">
+          Password
+        </label>
+        <input v-model="user.password" id="password" type="password" placeholder="password">
+      </div>
+      <button @click="loginUser">
+        Login
+      </button>
+    </form>
   </div>
 </template>
 
