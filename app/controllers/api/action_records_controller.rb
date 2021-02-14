@@ -3,6 +3,8 @@ class Api::ActionRecordsController < ApplicationController
 
   def index
     @action_records = ActionRecord.all
+    # ログイン中のユーザのアクションレコードを取得
+    #@action_records = current_user.action_records
   end
 
   def show

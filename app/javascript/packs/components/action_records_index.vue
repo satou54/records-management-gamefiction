@@ -90,14 +90,15 @@
 
         for (var i = 0; i < this.action_records.length; i++) {
           if (this.action_records[i].action_day == this.action_day
-              && this.action_records[i].task_id == this.selectTask) {
+              && this.action_records[i].task_id == this.selectTask
+              && this.action_records[i].user_id == localStorage.getItem('user_id')) {
             this.action = this.action_records[i].action
           }
         }
       },
       createActionRecord: function () {
         axios.post('/api/action_records/createOrUpdate', { action_record: { action_day: this.action_day, action: Number(this.action), 
-        action_experience_point: 7, user_id: 3, task_id: this.selectTask } }).then((response) => {
+        action_experience_point: 7, user_id: localStorage.getItem('user_id'), task_id: this.selectTask } }).then((response) => {
           alert('登録しました')
         }, (error) => {
           console.log(error)
