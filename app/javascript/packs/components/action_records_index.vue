@@ -55,7 +55,13 @@
         this.action_day = yyyy + '-' + mm+'-' + dd;
       },
       fetchTasks: function () {
-        axios.get('/api/tasks').then((response) => {
+        axios.get('/api/tasks', 
+                  { headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                  }}
+        ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);
           }
@@ -64,7 +70,13 @@
         });
       },
       fetchActionRecord: function () {
-        axios.get('/api/action_records').then((response) => {
+        axios.get('/api/action_records', 
+                  { headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                  }}
+        ).then((response) => {
           for(var i = 0; i < response.data.action_records.length; i++) {
             this.action_records.push(response.data.action_records[i]);
           }
@@ -97,9 +109,16 @@
         }
       },
       createActionRecord: function () {
-        axios.post('/api/action_records/createOrUpdate', { action_record: { action_day: this.action_day, action: Number(this.action), 
-        action_experience_point: 7, user_id: localStorage.getItem('user_id'), task_id: this.selectTask } }).then((response) => {
-          alert('登録しました')
+        axios.post('/api/action_records/createOrUpdate', 
+                  { action_record: { action_day: this.action_day, action: Number(this.action), 
+                    action_experience_point: 7, user_id: localStorage.getItem('user_id'), task_id: this.selectTask } },
+                  { headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                  }}
+        ).then((response) => {
+          alert('登録しました。')
         }, (error) => {
           console.log(error)
         })

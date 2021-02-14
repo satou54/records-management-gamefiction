@@ -31,7 +31,15 @@ export default {
   },
   methods: {
     createTask: function () {
-      axios.post('/api/tasks', { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }).then((response) => {
+      axios.post('/api/tasks', 
+                { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }, 
+                { headers: {
+                      'access-token': localStorage.getItem('access-token'),
+                      uid: localStorage.getItem('uid'),
+                      client: localStorage.getItem('client') 
+                }}
+      ).then((response) => {
+        alert('新規登録しました。')
       }, (error) => {
         console.log(error);
       });
