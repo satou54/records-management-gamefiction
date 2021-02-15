@@ -27,6 +27,7 @@
         </tr>
       </tbody>
     </table>
+    <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>
 

@@ -21,6 +21,7 @@ export default {
                   }} 
       ).then((response) => {
           localStorage.clear()
+          location.href = "http://localhost:3000/"
       }, (error) => {
         console.log(error)
       })

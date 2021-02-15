@@ -15,7 +15,7 @@
       </div>
     </div>
     <router-link to="/tasks">目標設定画面</router-link>
-    <router-link to="/">マイページ</router-link>
+    <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>
 

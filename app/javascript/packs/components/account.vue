@@ -17,6 +17,6 @@
     </div>
     <button>設定</button>
     <br>
-    <router-link to="/">マイページ</router-link>
+    <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>

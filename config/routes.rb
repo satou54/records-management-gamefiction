@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "/logout", to: "home#index"
   get "/account", to: "home#index"
 
+  get "/mypage", to: "home#index"
   get "/tasks", to: "home#index"
   get "/task/new", to: "home#index"
   get "/task/:id/edit", to: "home#index"
