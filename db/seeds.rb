@@ -5,8 +5,8 @@ ActionRecord.destroy_all
 
 puts "テストデータ投入"
 
-User.create!(email: "test@example.com", password: "password")
-User.create!(email: "test2@example.com", password: "password")
+User.create!(name: "test", email: "test@example.com", password: "password")
+User.create!(name: "test2", email: "test2@example.com", password: "password")
 
 puts "usersテーブルにデータ投入完了"
 
