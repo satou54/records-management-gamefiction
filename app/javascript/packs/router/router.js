@@ -1,5 +1,6 @@
 import Vue from 'vue/dist/vue.esm.js'
 import VueRouter from 'vue-router'
+import Top from '../components/top.vue'
 import Mypage from '../components/mypage.vue'
 import SignUp from '../components/sinup.vue'
 import Login from '../components/login.vue'
@@ -18,7 +19,7 @@ export default new VueRouter ({
   routes: [
     {
       path: '/',
-      component: Mypage
+      component: Top
     },
     {
       path: '/signup',
@@ -35,6 +36,10 @@ export default new VueRouter ({
     {
       path: '/account',
       component: Account
+    },
+    {
+      path: '/mypage',
+      component: Mypage
     },
     {
       path: '/tasks',

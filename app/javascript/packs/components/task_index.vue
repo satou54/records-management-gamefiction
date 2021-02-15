@@ -21,7 +21,7 @@
       </tbody>
     </table>
     <router-link to="/task/new">new</router-link>
-    <router-link to="/">マイページ</router-link>
+    <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>
 

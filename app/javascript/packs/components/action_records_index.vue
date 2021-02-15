@@ -22,7 +22,7 @@
       </div>
       <button @click="createActionRecord">登録</button>
     </div>
-    <router-link to="/">マイページ</router-link>
+    <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>
 
