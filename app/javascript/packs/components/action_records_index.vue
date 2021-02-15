@@ -111,7 +111,7 @@
       createActionRecord: function () {
         axios.post('/api/action_records/createOrUpdate', 
                   { action_record: { action_day: this.action_day, action: Number(this.action), 
-                    action_experience_point: 7, user_id: localStorage.getItem('user_id'), task_id: this.selectTask } },
+                    action_experience_point: 10, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
                   { headers: {
                     'access-token': localStorage.getItem('access-token'),
                     uid: localStorage.getItem('uid'),

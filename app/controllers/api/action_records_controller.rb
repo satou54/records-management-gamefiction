@@ -15,11 +15,13 @@ class Api::ActionRecordsController < ApplicationController
 
   def createOrUpdate
     # action_day,task_id,user_idと一致するデータが存在するかチェック
-    @action_record = ActionRecord.find_by(action_day: params[:action_day],
-                                          task_id: params[:task_id],
-                                          user_id: params[:user_id])
+    @action_record = ActionRecord.find_by(action_day: action_record_params[:action_day],
+                                          task_id: action_record_params[:task_id],
+                                          user_id: action_record_params[:user_id])
 
     if (@action_record.nil?)
+      puts "create"
+
       # 一致するデータがない場合、createの処理を行う
       @action_record = ActionRecord.new(action_record_params)
 
@@ -29,6 +31,8 @@ class Api::ActionRecordsController < ApplicationController
         render json: @action_record.errors, status: :unprocessable_entity
       end
     else
+      puts "update"
+
       # 一致するデータがある場合、updateの処理を行う
       if @action_record.update(action_record_params)
         render :show, status: :ok
