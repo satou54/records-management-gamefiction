@@ -38,6 +38,67 @@ class Api::ActionRecordsController < ApplicationController
     end
   end
 
+  def actionRecordReferences
+    # paramsに入れた期間の値を受け取る
+    interval = params[:interval]
+
+    # form...toの場合、toの日付は含まれないため指定する範囲の翌日をtoに指定する
+    case interval
+    when "thisMonth"
+      from = Time.now.beginning_of_month
+      to = Time.now.next_month.beginning_of_month
+    when "lastMonth"
+      from = Time.now.prev_month.beginning_of_month
+      to = Time.now.beginning_of_month
+    when "lastThreeMonth"
+      from = Time.now.ago(3.month).beginning_of_month
+      to = Time.now.next_month.beginning_of_month
+    when "lastSixMonth"
+      from = Time.now.ago(6.month).beginning_of_month
+      to = Time.now.next_month.beginning_of_month
+    end
+
+    # ユーザのtask_idを配列に入れる
+    tasks_ids = current_user.tasks.ids
+
+    # 参照されるデータ一覧
+    @references_data = []
+
+    tasks_ids.each do |id|
+      # タスク毎のハッシュを作成
+      task_data = {}
+
+      # タスクの名前を変数に代入
+      task_name = Task.find(id).task
+
+      # 期間内の日数を計算
+      days = Date.parse(to.to_s) - Date.parse(from.to_s)
+
+      # 期間内の目標の合計値を変数に代入
+      total_goal = Task.find(id).goal * days.to_i
+
+      # 期間内の実績の合計値を変数に代入
+      total_actions = ActionRecord.where(task_id: id)
+        .where(action_day: from...to).select(:action)
+        .pluck(:action)
+      total_actions = total_actions.sum
+
+      # 達成度を計算し変数に代入
+      achievement_rate = (total_actions.to_f / total_goal.to_f * 100).floor(1).to_f
+
+      task_data.store(:task, task_name)
+      task_data.store(:total_goal, total_goal)
+      task_data.store(:total_action, total_actions)
+      task_data.store(:achievement_rate, achievement_rate)
+
+      # タスクのハッシュを参照用の配列に追加
+      @references_data.push(task_data)
+    end
+
+    # 作成した連想配列を返す
+    render :references, status: :ok
+  end
+
   private
 
   def action_record_params

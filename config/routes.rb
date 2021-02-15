@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get "/task/:id/edit", to: "home#index"
 
   get "/action_records", to: "home#index"
+  get "/action_records/references", to: "home#index"
 
   devise_for :users
 
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
                                         }
     resources :tasks
     resources :action_records do
+      get "actionRecordReferences", :on => :collection
       post "createOrUpdate", :on => :collection
     end
   end
