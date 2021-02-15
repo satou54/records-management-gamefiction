@@ -9,6 +9,7 @@ import TaskIndex from '../components/task_index.vue'
 import TaskNew from '../components/task_new.vue'
 import TaskEdit from '../components/task_edit.vue'
 import ActionRecordsIndex from '../components/action_records_index.vue'
+import ActionRecordsReferences from '../components/action_records_references.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,10 @@ export default new VueRouter ({
     {
       path: '/action_records',
       component: ActionRecordsIndex
+    },
+    {
+      path: '/action_records/references',
+      component: ActionRecordsReferences
     }
   ]
 })
