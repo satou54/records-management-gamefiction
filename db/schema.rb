@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_15_071441) do
+ActiveRecord::Schema.define(version: 2021_02_16_013339) do
 
   create_table "action_records", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "action_day", null: false
@@ -41,6 +41,15 @@ ActiveRecord::Schema.define(version: 2021_02_15_071441) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "user_levels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "level", null: false
+    t.integer "total_experience_point", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_levels_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -63,7 +72,6 @@ ActiveRecord::Schema.define(version: 2021_02_15_071441) do
     t.text "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "level", default: 1, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -73,4 +81,5 @@ ActiveRecord::Schema.define(version: 2021_02_15_071441) do
   add_foreign_key "action_records", "tasks"
   add_foreign_key "action_records", "users"
   add_foreign_key "tasks", "users"
+  add_foreign_key "user_levels", "users"
 end

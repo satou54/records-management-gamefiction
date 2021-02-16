@@ -19,6 +19,43 @@ class Api::ActionRecordsController < ApplicationController
                                           task_id: action_record_params[:task_id],
                                           user_id: action_record_params[:user_id])
 
+    # task_idからtaskのgoalを取得
+    goal = Task.find(action_record_params[:task_id]).goal
+    puts "task.goal"
+    puts goal
+    # actionとgoalを比較して経験値を算出
+    # action / goal *100が経験値
+    point = (action_record_params[:action].to_f / goal.to_f * 100).floor
+    puts "point"
+    puts point
+
+    # １週間の目標(goal)に対して1週間のactionの合計を比較
+    # weeks_action =
+
+    # 今回で目標に達した場合は経験値追加
+
+    # usersテーブルの総経験値を取得
+    # total_experience_point = current_user.total_experience_point
+
+    # 今回獲得した経験値を足してusersテーブルに保存
+    # total_experience_point += point
+    #
+
+    # userのlevelを取得
+    # level = current_user.level
+
+    # levelテーブルの次のレベルの経験値を取得
+    #  next_level_experience_point = Level.finc_by(level: level+1).experience_point
+
+    # userの総経験値と次のレベルの経験値を比較して達していたらusersテーブルのレベルを更新
+    # if (total_experience_point >= next_level_experience_point)
+
+    # end
+
+    # 次のレベルアップまでの必要経験値を計算する
+
+    # 配列を作って情報を返す
+
     if (@action_record.nil?)
       puts "create"
 
