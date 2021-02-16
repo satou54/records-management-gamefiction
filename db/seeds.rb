@@ -8,21 +8,32 @@ puts "テストデータ投入"
 User.create!(name: "test", email: "test@example.com", password: "password")
 User.create!(name: "test2", email: "test2@example.com", password: "password")
 
-puts "usersテーブルにデータ投入完了"
-
 user1 = User.first
 user2 = User.second
+
+puts "usersテーブルにデータ投入完了"
+
+UserLevel.create!(level: 1, total_experience_point: 10, user_id: user1.id)
+UserLevel.create!(level: 1, total_experience_point: 10, user_id: user2.id)
+
+puts "user_levelsテーブルにデータ投入完了"
+
+Level.create!(level: 1, required_experience_point: 10)
+Level.create!(level: 2, required_experience_point: 100)
+Level.create!(level: 3, required_experience_point: 200)
+Level.create!(level: 4, required_experience_point: 300)
+Level.create!(level: 5, required_experience_point: 400)
+Level.create!(level: 6, required_experience_point: 500)
 
 Task.create!(task: "test1", goal: 1, user_id: user1.id)
 Task.create!(task: "test2", goal: 10, user_id: user1.id)
 Task.create!(task: "test3", goal: 10, user_id: user2.id)
 
-puts "tasksテーブルにデータ投入完了"
-
 task1 = Task.first
 task2 = Task.second
 task3 = Task.third
 
+puts "tasksテーブルにデータ投入完了"
 
 ActionRecord.create!(action_day: "2021-02-02", action: 10, 
                      action_experience_point: 5, 

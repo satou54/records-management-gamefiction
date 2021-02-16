@@ -21,40 +21,129 @@ class Api::ActionRecordsController < ApplicationController
 
     # task_idからtaskのgoalを取得
     goal = Task.find(action_record_params[:task_id]).goal
-    puts "task.goal"
-    puts goal
+
     # actionとgoalを比較して経験値を算出
-    # action / goal *100が経験値
+    # 目標に対する実績の割合が1%で経験値1増える
     point = (action_record_params[:action].to_f / goal.to_f * 100).floor
-    puts "point"
-    puts point
 
-    # １週間の目標(goal)に対して1週間のactionの合計を比較
-    # weeks_action =
+    # １週間の目標(goal)に対して1週間のactionの合計を比較    
+    # 追加した日を取得してTime型に変換
+    action_day = Time.parse(action_record_params[:action_day])
 
-    # 今回で目標に達した場合は経験値追加
+    # 曜日を取得。日-土が0-6で取得できる
+    action_day_of_the_week = action_day.wday
+
+    # 曜日毎に1週間の範囲を取得
+    # from...toの場合toは指定した日を含まないため、日曜日ではなく月曜日を指定している
+    case action_day_of_the_week
+    # 日曜日
+    when 0 then
+      from = (action_day - 6.day).at_beginning_of_day
+      to = (action_day + 1.day).at_beginning_of_day
+    # 月曜日
+    when 1 then
+      from = action_day.at_beginning_of_day
+      to = (action_day + 7.day).at_beginning_of_day
+    # 火曜日
+    when 2 then
+      from = (action_day - 1.day).at_beginning_of_day
+      to = (action_day + 6.day).at_beginning_of_day
+    # 水曜日
+    when 3 then
+      from = (action_day - 2.day).at_beginning_of_day
+      to = (action_day + 5.day).at_beginning_of_day
+    # 木曜日
+    when 4 then
+      from = (action_day - 3.day).at_beginning_of_day
+      to = (action_day + 4.day).at_beginning_of_day
+    # 金曜日
+    when 5 then
+      from = (action_day - 4.day).at_beginning_of_day
+      to = (action_day + 3.day).at_beginning_of_day
+    # 土曜日
+    when 6 then
+      from = (action_day - 5.day).at_beginning_of_day
+      to = (action_day + 2.day).at_beginning_of_day
+    end
+
+    # １週間の実績を配列で取得
+    week_of_actions = ActionRecord.where(task_id: action_record_params[:task_id])
+                      .where(action_day: from...to).select(:action).pluck(:action)
+
+    # 1週間の実績の合計
+    week_of_action = week_of_actions.sum
+
+    # 今回の追加分の前に目標を達成しているかチェック
+    if ((week_of_action - action_record_params[:action]) < goal)
+      puts "今回の追加分までに目標未達成"
+      #今回の追加分を含めて目標を達成しているかチェック
+      if (week_of_action >= goal)
+        puts "今回の追加分で目標達成!"
+        # 目標達成で+100の経験値を追加
+        point += 100
+      end
+    end
 
     # usersテーブルの総経験値を取得
-    # total_experience_point = current_user.total_experience_point
+    total_experience_point = UserLevel.find_by(user_id: current_user.id).total_experience_point
+    puts "total_experience_point"
+    puts total_experience_point
 
-    # 今回獲得した経験値を足してusersテーブルに保存
-    # total_experience_point += point
-    #
+    # 今回獲得した経験値を足してuser_levelsテーブルに保存
+    total_experience_point += point
+    puts "total_experience_point + point"
+    puts total_experience_point
 
     # userのlevelを取得
-    # level = current_user.level
+    level = UserLevel.find_by(user_id: current_user.id).level
+    puts "level"
+    puts level
 
     # levelテーブルの次のレベルの経験値を取得
-    #  next_level_experience_point = Level.finc_by(level: level+1).experience_point
+    next_level_required_experience_point = Level.find_by(level: (level+1)).required_experience_point
+    puts "next_level_required_experience_point"
+    puts next_level_required_experience_point
 
-    # userの総経験値と次のレベルの経験値を比較して達していたらusersテーブルのレベルを更新
-    # if (total_experience_point >= next_level_experience_point)
+    # 総経験値が次レベルの必要経験値を上回ってる場合は処理に入る
+    if (total_experience_point >= next_level_required_experience_point) 
+      # 総経験値が次レベルの必要経験値を下回るまでレベルアップする
+      while total_experience_point >= next_level_required_experience_point
+        puts "レベルアップ"
+        level += 1
+        next_level_required_experience_point = Level.find_by(level: (level+1)).required_experience_point
+        puts level
+        puts next_level_required_experience_point
+      end
 
-    # end
+      # ユーザのレベルアップ後のレベルをuser_levelsに登録
+      puts "level_after"
+      puts level
+      user  = UserLevel.find_by(user_id: current_user.id)
+      user.update_attribute("level", level)
+    end
+
+    # 今回の経験値を追加した総経験値をuser_levelsテーブルに追加
+    user_level = UserLevel.find_by(user_id: current_user.id)
+    user_level.update_attribute("total_experience_point", total_experience_point)
 
     # 次のレベルアップまでの必要経験値を計算する
+    next_level_required_experience_point = Level.find_by(level: (level+1)).required_experience_point
+    until_levelup = next_level_required_experience_point - total_experience_point
+    puts "next_level_required_experience_point"
+    puts next_level_required_experience_point
+    puts "until_level_up"
+    puts until_levelup
 
     # 配列を作って情報を返す
+    levelup_data = {}
+    levelup_data.store(:level, level)
+    levelup_data.store(:total_experience_point, total_experience_point)
+    levelup_data.store(:next_level_required_experience_point, next_level_required_experience_point)
+    levelup_data.store(:until_levelup, until_levelup)
+
+    puts "levelup_data"
+    puts levelup_data
+
 
     if (@action_record.nil?)
       puts "create"
