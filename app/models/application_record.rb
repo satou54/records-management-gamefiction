@@ -9,8 +9,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   # 引数に指定した曜日(日-土が0-6)から1週間の範囲を取得
   # from...toの場合はtoの日付が範囲検索に含まれないため、日曜日ではなく月曜日を指定
-  def getWeekRange(action_day_of_the_week)
-    case action_day_of_the_week
+  def getWeekRange(action_day, day_of_week)
+    case day_of_week
     # 日曜日
     when 0
       from = (action_day - 6.day).at_beginning_of_day
@@ -40,6 +40,7 @@ class ApplicationRecord < ActiveRecord::Base
       from = (action_day - 5.day).at_beginning_of_day
       to = (action_day + 2.day).at_beginning_of_day
     end
+    range_of_weeke = [from, to]
   end
 
   # 経験値を計算
