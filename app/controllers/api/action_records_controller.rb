@@ -21,19 +21,28 @@ class Api::ActionRecordsController < ApplicationController
 
     if (@action_record.nil?)
       @action_record = ActionRecord.new(action_record_params)
+      puts "経験値"
+      puts action_record_params[:action_experience_point]
+
 
       if @action_record.save
         # レベル処理を行う
-        levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
 
-        render :index, status: :created
+        puts "levelup_data"
+        puts levelup_data
+
+        render :show, status: :created
       else
         render json: @action_record.errors, status: :unprocessable_entity
       end
     else
       if @action_record.update(action_record_params)
         # レベル処理を行う
-        levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+
+        puts "levelup_data"
+        puts levelup_data
 
         render :show, status: :ok
       else
@@ -106,7 +115,6 @@ class Api::ActionRecordsController < ApplicationController
   private
 
   def action_record_params
-    params.fetch(:action_record, {}).permit(:action_day, :action,
-                                            :action_experience_point, :user_id, :task_id)
+    params.fetch(:action_record, {}).permit(:action_day, :action, :action_experience_point, :user_id, :task_id)
   end
 end

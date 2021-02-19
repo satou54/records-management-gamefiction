@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       # データが存在しない場合
 
       # 経験値を計算
-      point = view_context.culcurateExperiencePoint(action, goal)
+      action_experience_point = view_context.culcurateExperiencePoint(action, goal)
 
       # 今回の追加分の前に目標を達成しているかチェック
       if ((week_of_action - action) < goal)
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
         if (week_of_action >= goal)
           puts "今回の追加分で目標達成!"
           # 目標達成で経験値を追加
-          point += 100
+          point = action_experience_point + 100
         end
       end
 
@@ -71,10 +71,9 @@ class ApplicationController < ActionController::Base
           next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
         end
 
-        # レベルアップ後のレベルを登録
-        puts "level_after"
+        # レベルアップ処理後のレベルを登録
         user_level.uploadUserLevel(current_user.id, level)
-        end
+      end
     else
       # 一致するデータがある場合
 
@@ -84,7 +83,9 @@ class ApplicationController < ActionController::Base
       # 修正により実績が増加した場合
       if (difference > 0)
         # 差分と目標で経験値を算出
-        point = (difference.to_f / goal.to_f * 100).floor
+        point = view_context.culcurateExperiencePoint(difference, goal)
+        # 実績の経験値を取得
+        action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
         # 今回の差分の前に目標に達しているかチェック
         if ((week_of_action - action) < goal)
           # 目標に達していない場合、今回の追加分で目標に達したかチェック
@@ -114,7 +115,9 @@ class ApplicationController < ActionController::Base
         # 修正によりactionが減少した場合
         
         # 差分と目標から減少する経験値を計算
-        point = (difference.to_f / goal.to_f * 100).floor
+        point = view_context.culcurateExperiencePoint(difference, goal)
+        # 実績の経験値を取得
+        action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
         # 今回の減少分で減少する前に目標を達しているかチェック
         if ((week_of_action - action) > goal)
           # 目標を達してい場合、今回の減少分で割ったかチェック
@@ -124,7 +127,7 @@ class ApplicationController < ActionController::Base
           end
         end
         # 今回の減少分の経験値を引いて新しい総経験値を計算
-        total_experience_point += 100
+        total_experience_point += point
 
         # 現在のレベルの必要経験値を取得
         current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
@@ -142,7 +145,10 @@ class ApplicationController < ActionController::Base
         end
       end
 
-      # 総経験値をuser_levelsテーブルに登録
+      # 実績の経験値を登録
+      action_record.uploadActionExperiencePoint(action_day, task_id, current_user.id, action_experience_point)
+
+      # 総経験値を登録
       user_level.uploadUserTotalExperiencePoint(current_user.id, total_experience_point)
 
       # 次のレベルアップに必要な経験値を計算する
@@ -150,12 +156,15 @@ class ApplicationController < ActionController::Base
 
       # 配列を作って情報を返す
       levelup_data = {}
+      levelup_data.store(:action, action)
+      levelup_data.store(:action_day, action_day)
+      levelup_data.store(:action_experience_point, action_experience_point)
+      levelup_data.store(:user_id, current_user.id)
+      levelup_data.store(:task_id, task_id)
       levelup_data.store(:level, level)
       levelup_data.store(:total_experience_point, total_experience_point)
       levelup_data.store(:next_level_required_experience_point, next_level_required_experience_point)
       levelup_data.store(:until_levelup, until_levelup)
-      puts "levelup_data"
-      puts levelup_data
 
       levelup_data
     end
