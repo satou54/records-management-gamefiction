@@ -12,4 +12,9 @@ class ActionRecord < ApplicationRecord
     ActionRecord.where(task_id: :task_id)
       .where(action_day: from...to).select(:action).pluck(:action)
   end
+
+  # 既にデータが存在するかチェックする
+  def checkActionRecord?(action_day, task_id, user_id)
+    ActionRecord.find_by(action_day, task_id, user_id)
+  end
 end
