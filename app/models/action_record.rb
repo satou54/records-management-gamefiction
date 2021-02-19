@@ -4,8 +4,8 @@ class ActionRecord < ApplicationRecord
 
   validates :action_day, presence: true
   validates :action, presence: true
-
-  validates :action_day, uniqueness: { scope: :task_id }
+  validates :action_experience_point, presence: true
+  validates :action_day, uniqueness: { scope: [:task_id, :user_id] }
 
   # 実績の経験値を取得
   def getActionExperiencePoint(action_day, task_id, user_id)

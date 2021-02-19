@@ -1,6 +1,9 @@
 class UserLevel < ApplicationRecord
   belongs_to :user
 
+  validates :level, presence: true
+  validates :total_experience_point, presence: true
+
   # ユーザのレベルを取得
   def getUserLevel(user_id)
     UserLevel.find_by(user_id: user_id).level
