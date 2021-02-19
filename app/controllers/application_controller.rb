@@ -5,41 +5,48 @@ class ApplicationController < ActionController::Base
 
   # ユーザのレベルアップとレベルダウン処理を行う
   def levelUpAndDown(task_id, action_day, action)
+
+    # 各モデルのインスタンス作成
+    task = Task.new
+    action_record = ActionRecord.new
+    user_level = UserLevel.new
+    level_info = Level.new
+
     # task_idから目標を取得
-    goal = getGoal(task_id)
+    goal = task.getGoal(task_id)
 
     # 実績日をTime型に変換
     action_day = Time.parse(action_day)
 
     # 曜日を取得
-    action_day_of_week = getDayOfTheWeek(action_day)
+    action_day_of_week = view_context.getDayOfTheWeek(action_day)
 
     # 曜日毎に1週間の範囲を取得
-    action_day_of_the_week = getWeekRange(action_day, action_day_of_week)
+    action_day_of_the_week = view_context.getWeekRange(action_day, action_day_of_week)
     from = action_day_of_the_week[0]
     to = action_day_of_the_week[1]
 
     # 1週間の実績を配列で取得
-    week_of_actions = weekOfActions(task_id, from, to)
+    week_of_actions = action_record.weekOfActions(task_id, from, to)
 
     # 1週間の実績を合計
     week_of_action = week_of_actions.sum
 
     # 総経験値を取得
-    total_experience_point = getTotalExperiencePoint(current_user.id)
+    total_experience_point = user_level.getTotalExperiencePoint(current_user.id)
 
     # レベルを取得
-    getUserLevel(current_user.id)
+    level = user_level.getUserLevel(current_user.id)
 
     # 次レベルの経験値を取得
-    next_level_required_experience_point = getRequreidExperiecePoint(level + 1)
+    next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
 
     # 既にデータが存在しているかチェック
-    if (checkActionRecord?(action_day, task_id, current_user.id).nil?)
+    if (action_record.checkActionRecord?(action_day, task_id, current_user.id).nil?)
       # データが存在しない場合
 
       # 経験値を計算
-      point = culcurateExperiencePoint(action, goal)
+      point = view_context.culcurateExperiencePoint(action, goal)
 
       # 今回の追加分の前に目標を達成しているかチェック
       if ((week_of_action - action) < goal)
@@ -61,12 +68,12 @@ class ApplicationController < ActionController::Base
         while total_experience_point >= next_level_required_experience_point
           puts "レベルアップ"
           level += 1
-          next_level_required_experience_point = getRequreidExperiecePoint(level + 1)
+          next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
         end
 
         # レベルアップ後のレベルを登録
         puts "level_after"
-        uploadUserLevel(current_user.id, level)
+        user_level.uploadUserLevel(current_user.id, level)
         end
     else
       # 一致するデータがある場合
@@ -97,11 +104,11 @@ class ApplicationController < ActionController::Base
             # レベルアップの繰り返し処理終了後にusers_levelsテーブルにレベルを登録
             puts "レベルアップ"
             level += 1
-            next_level_required_experience_point = getRequreidExperiecePoint(level + 1)
+            next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
           end
           
           # ユーザのレベルアップ処理後にレベルを登録
-          uploadUserLevel(current_user.id, level)
+          user_level.uploadUserLevel(current_user.id, level)
         end
       else
         # 修正によりactionが減少した場合
@@ -120,7 +127,7 @@ class ApplicationController < ActionController::Base
         total_experience_point += 100
 
         # 現在のレベルの必要経験値を取得
-        current_level_required_experience_point = getRequreidExperiecePoint(level)
+        current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
 
         # 今回の減少分を含めた総経験値が現在のレベルの必要経験値を割っていないかチェック
         if (total_experience_point < current_level_required_experience_point)
@@ -128,18 +135,18 @@ class ApplicationController < ActionController::Base
           while total_experience_point >=  current_level_required_experience_point
             puts "レベルダウン"
             level -= 1
-            current_level_required_experience_point = getRequreidExperiecePoint(level)
+            current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
           end
           # レベルダウン処理後のレベルを登録
-          uploadUserLevel(current_user.id, level)
+          user_level.uploadUserLevel(current_user.id, level)
         end
       end
 
       # 総経験値をuser_levelsテーブルに登録
-      uploadUserTotalExperiencePoint(current_user.id, total_experience_point)
+      user_level.uploadUserTotalExperiencePoint(current_user.id, total_experience_point)
 
       # 次のレベルアップに必要な経験値を計算する
-      until_levelup = getNextLevelRequreidExperiencePoint(level)
+      until_levelup = level_info.getNextLevelRequreidExperiencePoint(level, total_experience_point)
 
       # 配列を作って情報を返す
       levelup_data = {}

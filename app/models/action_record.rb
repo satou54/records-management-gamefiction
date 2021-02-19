@@ -15,6 +15,6 @@ class ActionRecord < ApplicationRecord
 
   # 既にデータが存在するかチェックする
   def checkActionRecord?(action_day, task_id, user_id)
-    ActionRecord.find_by(action_day, task_id, user_id)
+    ActionRecord.find_by(action_day: action_day, task_id: task_id, user_id: user_id)
   end
 end

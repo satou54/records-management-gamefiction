@@ -33,7 +33,7 @@ class Api::ActionRecordsController < ApplicationController
     else
       if @action_record.update(action_record_params)
         # レベル処理を行う
-        evelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+        levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
 
         render :show, status: :ok
       else

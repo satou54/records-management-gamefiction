@@ -3,7 +3,7 @@ class UserLevel < ApplicationRecord
 
   # ユーザのレベルを取得
   def getUserLevel(user_id)
-    UserLevel.find_by(user_id: current_user.id).level
+    UserLevel.find_by(user_id: user_id).level
   end
 
   # ユーザの総経験値を取得
@@ -19,7 +19,7 @@ class UserLevel < ApplicationRecord
 
   # ユーザの総経験値を登録
   def uploadUserTotalExperiencePoint(user_id, total_experience_point)
-    user = UserLevel.find_by(user_id: current_user.id)
+    user = UserLevel.find_by(user_id: user_id)
     user.update_attribute("total_experience_point", total_experience_point)
   end
 end
