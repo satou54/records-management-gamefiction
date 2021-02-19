@@ -15,22 +15,35 @@ class Api::ActionRecordsController < ApplicationController
 
   def createOrUpdate
     # action_day,task_id,user_idと一致するデータが存在するかチェック
-    @action_record = ActionRecord.find_by(action_day: params[:action_day],
-                                          task_id: params[:task_id],
-                                          user_id: params[:user_id])
+    @action_record = ActionRecord.find_by(action_day: action_record_params[:action_day],
+                                          task_id: action_record_params[:task_id],
+                                          user_id: action_record_params[:user_id])
 
     if (@action_record.nil?)
-      # 一致するデータがない場合、createの処理を行う
       @action_record = ActionRecord.new(action_record_params)
+      puts "経験値"
+      puts action_record_params[:action_experience_point]
+
 
       if @action_record.save
-        render :index, status: :created
+        # レベル処理を行う
+        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+
+        puts "levelup_data"
+        puts levelup_data
+
+        render :show, status: :created
       else
         render json: @action_record.errors, status: :unprocessable_entity
       end
     else
-      # 一致するデータがある場合、updateの処理を行う
       if @action_record.update(action_record_params)
+        # レベル処理を行う
+        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+
+        puts "levelup_data"
+        puts levelup_data
+
         render :show, status: :ok
       else
         render json: @action_record.errors, status: :unprocessable_entity
@@ -102,7 +115,6 @@ class Api::ActionRecordsController < ApplicationController
   private
 
   def action_record_params
-    params.fetch(:action_record, {}).permit(:action_day, :action,
-                                            :action_experience_point, :user_id, :task_id)
+    params.fetch(:action_record, {}).permit(:action_day, :action, :action_experience_point, :user_id, :task_id)
   end
 end

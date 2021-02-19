@@ -7,4 +7,5 @@ class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
   has_many :action_records, dependent: :destroy
+  has_many :user_levels
 end

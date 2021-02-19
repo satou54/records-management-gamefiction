@@ -2,4 +2,171 @@ class ApplicationController < ActionController::Base
   include DeviseTokenAuth::Concerns::SetUserByToken
   skip_before_action :verify_authenticity_token, if: :devise_controller?
   protect_from_forgery with: :null_session
+
+  # ユーザのレベルアップとレベルダウン処理を行う
+  def levelUpAndDown(task_id, action_day, action)
+
+    # 各モデルのインスタンス作成
+    task = Task.new
+    action_record = ActionRecord.new
+    user_level = UserLevel.new
+    level_info = Level.new
+
+    # task_idから目標を取得
+    goal = task.getGoal(task_id)
+
+    # 実績日をTime型に変換
+    action_day = Time.parse(action_day)
+
+    # 曜日を取得
+    action_day_of_week = view_context.getDayOfTheWeek(action_day)
+
+    # 曜日毎に1週間の範囲を取得
+    action_day_of_the_week = view_context.getWeekRange(action_day, action_day_of_week)
+    from = action_day_of_the_week[0]
+    to = action_day_of_the_week[1]
+
+    # 1週間の実績を配列で取得
+    week_of_actions = action_record.weekOfActions(task_id, from, to)
+
+    # 1週間の実績を合計
+    week_of_action = week_of_actions.sum
+
+    # 総経験値を取得
+    total_experience_point = user_level.getTotalExperiencePoint(current_user.id)
+
+    # レベルを取得
+    level = user_level.getUserLevel(current_user.id)
+
+    # 次レベルの経験値を取得
+    next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
+
+    # 既にデータが存在しているかチェック
+    if (action_record.checkActionRecord?(action_day, task_id, current_user.id).nil?)
+      # データが存在しない場合
+
+      # 経験値を計算
+      action_experience_point = view_context.culcurateExperiencePoint(action, goal)
+
+      # 今回の追加分の前に目標を達成しているかチェック
+      if ((week_of_action - action) < goal)
+        puts "今回の追加分までに目標未達成"
+        #今回の追加分を含めた場合に目標を達成しているかチェック
+        if (week_of_action >= goal)
+          puts "今回の追加分で目標達成!"
+          # 目標達成で経験値を追加
+          point = action_experience_point + 100
+        end
+      end
+
+      # 今回獲得した経験値を足して新しい総経験値を計算
+      total_experience_point += point
+
+      # 総経験値が次レベルの必要経験値を上回ってる場合は処理に入る
+      if (total_experience_point >= next_level_required_experience_point) 
+        # 総経験値が次レベルの必要経験値を下回るまでレベルアップする
+        while total_experience_point >= next_level_required_experience_point
+          puts "レベルアップ"
+          level += 1
+          next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
+        end
+
+        # レベルアップ処理後のレベルを登録
+        user_level.uploadUserLevel(current_user.id, level)
+      end
+    else
+      # 一致するデータがある場合
+
+      # 今回修正された実績と登録されている実績との差分を出す
+      difference = action.to_f - @action_record.action.to_f
+
+      # 修正により実績が増加した場合
+      if (difference > 0)
+        # 差分と目標で経験値を算出
+        point = view_context.culcurateExperiencePoint(difference, goal)
+        # 実績の経験値を取得
+        action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
+        # 今回の差分の前に目標に達しているかチェック
+        if ((week_of_action - action) < goal)
+          # 目標に達していない場合、今回の追加分で目標に達したかチェック
+          if (week_of_action >= goal)
+            # 今回の追加分で目標に達した場合は経験値を増加
+            point += 100
+          end
+        end
+
+        # 今回獲得した経験値を足して新しい総経験値を計算
+        total_experience_point += point
+
+        # 現在の総経験値が次のレベルの必要経験値を上回っているかチェック
+        if (total_experience_point >= next_level_required_experience_point)  
+          # 上回っている場合、総経験値が次のレベルの必要経験値を下回るまでレベルアップ処理を繰り返す
+          while total_experience_point >= next_level_required_experience_point
+            # レベルアップの繰り返し処理終了後にusers_levelsテーブルにレベルを登録
+            puts "レベルアップ"
+            level += 1
+            next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
+          end
+          
+          # ユーザのレベルアップ処理後にレベルを登録
+          user_level.uploadUserLevel(current_user.id, level)
+        end
+      else
+        # 修正によりactionが減少した場合
+        
+        # 差分と目標から減少する経験値を計算
+        point = view_context.culcurateExperiencePoint(difference, goal)
+        # 実績の経験値を取得
+        action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
+        # 今回の減少分で減少する前に目標を達しているかチェック
+        if ((week_of_action - action) > goal)
+          # 目標を達してい場合、今回の減少分で割ったかチェック
+          if (week_of_action < goal)
+            # 今回の減少分で割っている場合は経験値を減少
+            point -= 100
+          end
+        end
+        # 今回の減少分の経験値を引いて新しい総経験値を計算
+        total_experience_point += point
+
+        # 現在のレベルの必要経験値を取得
+        current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
+
+        # 今回の減少分を含めた総経験値が現在のレベルの必要経験値を割っていないかチェック
+        if (total_experience_point < current_level_required_experience_point)
+          # 必要経験値を割っている場合はレベルダウン後の必要経験値を割らなくなるまでレベルダウンを繰り返す
+          while total_experience_point >=  current_level_required_experience_point
+            puts "レベルダウン"
+            level -= 1
+            current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
+          end
+          # レベルダウン処理後のレベルを登録
+          user_level.uploadUserLevel(current_user.id, level)
+        end
+      end
+
+      # 実績の経験値を登録
+      action_record.uploadActionExperiencePoint(action_day, task_id, current_user.id, action_experience_point)
+
+      # 総経験値を登録
+      user_level.uploadUserTotalExperiencePoint(current_user.id, total_experience_point)
+
+      # 次のレベルアップに必要な経験値を計算する
+      until_levelup = level_info.getNextLevelRequreidExperiencePoint(level, total_experience_point)
+
+      # 配列を作って情報を返す
+      levelup_data = {}
+      levelup_data.store(:action, action)
+      levelup_data.store(:action_day, action_day)
+      levelup_data.store(:action_experience_point, action_experience_point)
+      levelup_data.store(:user_id, current_user.id)
+      levelup_data.store(:task_id, task_id)
+      levelup_data.store(:level, level)
+      levelup_data.store(:total_experience_point, total_experience_point)
+      levelup_data.store(:next_level_required_experience_point, next_level_required_experience_point)
+      levelup_data.store(:until_levelup, until_levelup)
+
+      levelup_data
+    end
+  end
 end
