@@ -112,7 +112,6 @@
         }
       },
       culculateActionExperiencePoint: function () {
-        // 目標と実績が少数点第２位まで対応
         this.action_experience_point = (Math.round(this.action * 100) / 100) / (Math.round(this.goal * 100) / 100) * 100
       },
       createActionRecord: function () {

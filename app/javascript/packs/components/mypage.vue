@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>マイページ</h1>
-    <p>ユーザ名：</p>
-    <p>level:</p>
+    <p>ユーザ名：{{ name }}</p>
+    <p>level: {{ level }}</p>
 
     <table>
       <thead>
@@ -37,11 +37,14 @@
   export default {
     data: function () {
       return {
+        name: localStorage.getItem('name'),
+        level: '',
         tasks: [],
       }
     },
     mounted: function () {
       this.fetchTasks();
+      this.fetchUserLevel();
     },
     methods: {
       fetchTasks: function () {
@@ -50,13 +53,29 @@
                     'access-token': localStorage.getItem('access-token'),
                     uid: localStorage.getItem('uid'),
                     client: localStorage.getItem('client') 
-                  }}
+                    }
+                  }
         ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);
           }
         }, (error) => {
           console.log(error);
+        });
+      },
+      fetchUserLevel: function () {
+        axios.get('/api/user_levels',
+                  { params: { user_id: localStorage.getItem('user_id') },
+                    headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                    }
+                  }
+        ).then((response) => {
+          this.level = response.data.user_level.level
+        }, (error) => {
+          console.log(error)
         });
       },
       editLink: function (task_id) {
