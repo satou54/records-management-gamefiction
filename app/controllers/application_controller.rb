@@ -50,10 +50,8 @@ class ApplicationController < ActionController::Base
 
       # 今回の追加分の前に目標を達成しているかチェック
       if ((week_of_action - action) < goal)
-        puts "今回の追加分までに目標未達成"
         #今回の追加分を含めた場合に目標を達成しているかチェック
         if (week_of_action >= goal)
-          puts "今回の追加分で目標達成!"
           # 目標達成で経験値を追加
           point = action_experience_point + 100
         end
@@ -63,10 +61,9 @@ class ApplicationController < ActionController::Base
       total_experience_point += point
 
       # 総経験値が次レベルの必要経験値を上回ってる場合は処理に入る
-      if (total_experience_point >= next_level_required_experience_point) 
+      if (total_experience_point >= next_level_required_experience_point)
         # 総経験値が次レベルの必要経験値を下回るまでレベルアップする
         while total_experience_point >= next_level_required_experience_point
-          puts "レベルアップ"
           level += 1
           next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
         end
@@ -99,22 +96,19 @@ class ApplicationController < ActionController::Base
         total_experience_point += point
 
         # 現在の総経験値が次のレベルの必要経験値を上回っているかチェック
-        if (total_experience_point >= next_level_required_experience_point)  
+        if (total_experience_point >= next_level_required_experience_point)
           # 上回っている場合、総経験値が次のレベルの必要経験値を下回るまでレベルアップ処理を繰り返す
           while total_experience_point >= next_level_required_experience_point
-            puts "レベルアップ"
             level += 1
-            puts "level"
-            puts level
             next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
           end
-          
+
           # ユーザのレベルアップ処理後にレベルを登録
           user_level.uploadUserLevel(current_user.id, level)
         end
       else
         # 修正によりactionが減少した場合
-        
+
         # 差分と目標から減少する経験値を計算
         point = action_record.culcurateExperiencePoint(difference, goal)
         # 実績の経験値を取得
@@ -136,8 +130,7 @@ class ApplicationController < ActionController::Base
         # 今回の減少分を含めた総経験値が現在のレベルの必要経験値を割っていないかチェック
         if (total_experience_point < current_level_required_experience_point)
           # 必要経験値を割っている場合はレベルダウン後の必要経験値を割らなくなるまでレベルダウンを繰り返す
-          while total_experience_point >=  current_level_required_experience_point
-            puts "レベルダウン"
+          while total_experience_point >= current_level_required_experience_point
             level -= 1
             current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
           end

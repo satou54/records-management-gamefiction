@@ -26,9 +26,6 @@ class Api::ActionRecordsController < ApplicationController
         # レベル処理を行う
         levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
 
-        puts "levelup_data"
-        puts levelup_data
-
         render :show, status: :created
       else
         render json: @action_record.errors, status: :unprocessable_entity
@@ -37,9 +34,6 @@ class Api::ActionRecordsController < ApplicationController
       if @action_record.update(action_record_params)
         # レベル処理を行う
         levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
-
-        puts "levelup_data"
-        puts levelup_data
 
         render :show, status: :ok
       else
