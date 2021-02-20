@@ -1,4 +1,8 @@
 class Api::UserLevelsController < ApplicationController
+  def show
+    @user_level = UserLevel.find_by(user_id: params[:user_id])
+  end
+
   def create
     @user_level = UserLevel.new(user_levels_params)
 

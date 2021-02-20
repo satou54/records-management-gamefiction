@@ -19,22 +19,19 @@ class Api::ActionRecordsController < ApplicationController
                                           task_id: action_record_params[:task_id],
                                           user_id: action_record_params[:user_id])
 
+    # レベル処理を行う
+    levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+
     if (@action_record.nil?)
       @action_record = ActionRecord.new(action_record_params)
 
       if @action_record.save
-        # レベル処理を行う
-        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
-
         render :show, status: :created
       else
         render json: @action_record.errors, status: :unprocessable_entity
       end
     else
       if @action_record.update(action_record_params)
-        # レベル処理を行う
-        levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
-
         render :show, status: :ok
       else
         render json: @action_record.errors, status: :unprocessable_entity

@@ -52,7 +52,7 @@ export default {
   methods: {
     getReferencesData: function () {
       axios.get('/api/action_records/actionRecordReferences', 
-                { params: { interval: this.interval } ,
+                { params: { interval: this.interval },
                   headers: this.headers
                 }
       ).then((response) => {
