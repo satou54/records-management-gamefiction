@@ -1,27 +1,29 @@
 <template>
   <div>
     <h1>行動記録画面</h1>
-    <div>
+    <form>
       <div>
-        <label id="action_day">日付</label>
-        <input type="date" id="action_day" @change="chengeDate" v-model="action_day">
+        <div>
+          <label id="action_day">日付</label>
+          <input type="date" id="action_day" @change="chengeDate" v-model="action_day">
+        </div>
+        <div>
+          <label id="task">タスク</label>
+          <select id="task" v-model="selectTask" @change="chengeTask" name="selectTask">
+            <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
+          </select>
+        </div>
+        <div>
+          <label id="goal">目標</label>
+          <output id="goal">{{ goal }}</output>
+        </div>
+        <div>
+          <label id="action">実績</label>
+          <input type="text" id="action" v-model="action">
+        </div>
+        <button @click="createActionRecord">登録</button>
       </div>
-      <div>
-        <label id="task">タスク</label>
-        <select id="task" v-model="selectTask" @change="chengeTask" name="selectTask">
-          <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
-        </select>
-      </div>
-      <div>
-        <label id="goal">目標</label>
-        <output id="goal">{{ goal }}</output>
-      </div>
-      <div>
-        <label id="action">実績</label>
-        <input type="text" id="action" v-model="action">
-      </div>
-      <button @click="createActionRecord">登録</button>
-    </div>
+    </form>
     <router-link to="/mypage">マイページ</router-link>
   </div>
 </template>
@@ -37,7 +39,8 @@
         goal: '',
         action_records: [],
         action_day: '',
-        action: ''
+        action: '',
+        action_experience_point: ''
       }
     },
     mounted: function () {
@@ -108,10 +111,14 @@
           }
         }
       },
+      culculateActionExperiencePoint: function () {
+        this.action_experience_point = this.action / this.goal * 100
+      },
       createActionRecord: function () {
+        this.culculateActionExperiencePoint();
         axios.post('/api/action_records/createOrUpdate', 
                   { action_record: { action_day: this.action_day, action: Number(this.action), 
-                    action_experience_point: 0, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
+                    action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
                   { headers: {
                     'access-token': localStorage.getItem('access-token'),
                     uid: localStorage.getItem('uid'),

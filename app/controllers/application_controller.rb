@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       # データが存在しない場合
 
       # 経験値を計算
-      action_experience_point = view_context.culcurateExperiencePoint(action, goal)
+      action_experience_point = action_record.culcurateExperiencePoint(action, goal)
 
       # 今回の追加分の前に目標を達成しているかチェック
       if ((week_of_action - action) < goal)
@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
       # 修正により実績が増加した場合
       if (difference > 0)
         # 差分と目標で経験値を算出
-        point = view_context.culcurateExperiencePoint(difference, goal)
+        point = action_record.culcurateExperiencePoint(difference, goal)
         # 実績の経験値を取得
         action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
         # 今回の差分の前に目標に達しているかチェック
@@ -102,9 +102,10 @@ class ApplicationController < ActionController::Base
         if (total_experience_point >= next_level_required_experience_point)  
           # 上回っている場合、総経験値が次のレベルの必要経験値を下回るまでレベルアップ処理を繰り返す
           while total_experience_point >= next_level_required_experience_point
-            # レベルアップの繰り返し処理終了後にusers_levelsテーブルにレベルを登録
             puts "レベルアップ"
             level += 1
+            puts "level"
+            puts level
             next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
           end
           
@@ -115,7 +116,7 @@ class ApplicationController < ActionController::Base
         # 修正によりactionが減少した場合
         
         # 差分と目標から減少する経験値を計算
-        point = view_context.culcurateExperiencePoint(difference, goal)
+        point = action_record.culcurateExperiencePoint(difference, goal)
         # 実績の経験値を取得
         action_experience_point = action_record.getActionExperiencePoint(action_day, task_id, current_user.id) + point
         # 今回の減少分で減少する前に目標を達しているかチェック
@@ -144,9 +145,6 @@ class ApplicationController < ActionController::Base
           user_level.uploadUserLevel(current_user.id, level)
         end
       end
-
-      # 実績の経験値を登録
-      action_record.uploadActionExperiencePoint(action_day, task_id, current_user.id, action_experience_point)
 
       # 総経験値を登録
       user_level.uploadUserTotalExperiencePoint(current_user.id, total_experience_point)
