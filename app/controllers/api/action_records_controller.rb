@@ -21,9 +21,6 @@ class Api::ActionRecordsController < ApplicationController
 
     if (@action_record.nil?)
       @action_record = ActionRecord.new(action_record_params)
-      puts "経験値"
-      puts action_record_params[:action_experience_point]
-
 
       if @action_record.save
         # レベル処理を行う

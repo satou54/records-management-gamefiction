@@ -40,10 +40,4 @@ module ApplicationHelper
     end
     range_of_weeke = [from, to]
   end
-
-  # 経験値を計算
-  # 目標に対する実績の割合1%で経験値1増える
-  def culcurateExperiencePoint(action, goal)
-    (action.to_f / goal.to_f * 100).floor
-  end
 end
