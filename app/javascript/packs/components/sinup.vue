@@ -1,35 +1,37 @@
 <template>
-<div>
-    <h1>新規登録画面</h1>
-    <form>
-      <div>
-        <label for="name">
-          ユーザ名
-        </label>
-        <input v-model="user.name" id="name" type="text" placeholder="name">
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">ユーザ登録</div>
+          <div class="card-body">
+            <form>
+              <div class="form-group row">
+                <label for="name" class="col-md-4 col-form-label text-md-right">ユーザ名</label>
+                <input v-model="user.name" id="name" class="form-control col-md-6" type="text" placeholder="name">
+              </div>
+              <div class="form-group row">
+                <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
+                <input v-model="user.email" id="Email" class="form-control col-md-6" type="text" placeholder="email">
+              </div>
+              <div class="from-group row">
+                <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
+                <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
+              </div>
+              <div class="form-group row">
+                <label for="password" class="col-md-4 col-form-label text-md-right">パスワード(確認用)</label>
+                <input v-model="user.password_confirmation" id="password_confirmation" class="form-control col-md-6" type="password" placeholder="password_confirmation">
+              </div>
+              <div class="row">
+                <div class="col-md-8 offset-md-4">
+                  <button @click="registerUser" class="btn btn-primary">登録</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div>
-        <label for="email">
-          メールアドレス
-        </label>
-        <input v-model="user.email" id="Email" type="text" placeholder="email">
-      </div>
-      <div>
-        <label for="password">
-          パスワード
-        </label>
-        <input v-model="user.password" id="password" type="password" placeholder="password">
-      </div>
-      <div>
-        <label for="password">
-          パスワード(確認用)
-        </label>
-        <input v-model="user.password_confirmation" id="password_confirmation" type="password" placeholder="password_confirmation">
-      </div>
-      <button @click="registerUser">
-        Sign Up
-      </button>
-    </form>
+    </div>
   </div>
 </template>
 
