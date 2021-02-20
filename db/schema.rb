@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_19_135742) do
+ActiveRecord::Schema.define(version: 2021_02_20_101054) do
 
   create_table "action_records", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.date "action_day", null: false
-    t.integer "action", null: false
+    t.float "action", null: false
     t.integer "action_experience_point", default: 0, null: false
     t.bigint "user_id", null: false
     t.integer "task_id", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2021_02_19_135742) do
 
   create_table "tasks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "task", null: false
-    t.integer "goal", null: false
+    t.float "goal", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
