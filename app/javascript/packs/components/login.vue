@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <form>
-      <h1>ログイン画面</h1>
-      <div>
-        <label for="email">
-          Email
-        </label>
-        <input v-model="user.email" id="Email" type="text" placeholder="email">
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">ログイン</div>
+            <dif class="card-body">
+              <form>
+                <div class="form-group row">
+                  <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
+                  <input v-model="user.email" id="email" class="form-control col-md-6" type="text" placeholder="email">
+                </div>
+                <div class="form-group row">
+                  <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
+                  <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
+                </div>
+                <div class="row">
+                  <div class="col-md-8 offset-md-4">
+                    <button @click="loginUser" class="btn btn-primary">ログイン</button>
+                  </div>
+                </div>
+              </form>
+            </dif>
+        </div>
       </div>
-      <div>
-        <label for="password">
-          Password
-        </label>
-        <input v-model="user.password" id="password" type="password" placeholder="password">
-      </div>
-      <button @click="loginUser">
-        Login
-      </button>
-    </form>
+    </div>
   </div>
 </template>
 
