@@ -58,18 +58,15 @@
           localStorage.setItem('user_id', response.data['data'].id)
           localStorage.setItem('email', response.data['data'].email)
           localStorage.setItem('name', response.data['data'].name)
-          console.log('ログイン完了')
-          // user_levelsテーブルに新規作成したユーザの情報を作成
           axios.post('api/user_levels', { level: 1, total_experience_point: 0, 
                                           user_id: localStorage.getItem('user_id') 
                                         }).then((response) => {
-            console.log('user_levelsテーブルに新規作成完了')
           }, (error) => {
             console.log('失敗')
             console.log(error)
           })
-          //location.href = "http://localhost:3000/mypage"
-          // return response
+          location.href = "http://localhost:3000/mypage"
+          return response
         }, (error) => {
           console.log(error)
         })
