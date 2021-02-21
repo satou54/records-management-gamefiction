@@ -16,7 +16,7 @@
                 <thead>
                   <tr>
                     <th scope="col">タスク名</th>
-                    <th scope="col">目標</th>
+                    <th scope="col">1週間の目標</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -25,7 +25,7 @@
                     <td>{{ task.task }}</td>
                     <td>{{ task.goal }}</td>
                     <td>
-                      <button @click="editLink(task.id)">修正</button>
+                      <button class="btn btn-primary" @click="editLink(task.id)">修正</button>
                     </td>
                   </tr>
                 </tbody>
