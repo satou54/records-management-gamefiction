@@ -1,27 +1,41 @@
 <template>
-  <div>
-    <h1>タスク設定画面</h1>
-    <table>
-      <thead>
-        <tr>
-          <td>タスク名</td>
-          <td>目標</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="task in tasks" v-bind:key="task.id">
-          <td>{{ task.task }}</td>
-          <td>{{ task.goal }}</td>
-          <td>
-            <button @click="editLink(task.id)">修正</button>
-            <button @click="deleteTask(task.id)">削除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <router-link to="/task/new">new</router-link>
-    <router-link to="/mypage">マイページ</router-link>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-md-center">タスク設定</h1>
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">タスク名</th>
+                    <th scope="col">1週間の目標</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="task in tasks" v-bind:key="task.id" scope="row">
+                    <td>{{ task.task }}</td>
+                    <td>{{ task.goal }}</td>
+                    <td>
+                      <button class="btn btn-primary" @click="editLink(task.id)">修正</button>
+                      <button class="btn btn-primary" @click="deleteTask(task.id)">削除</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="card-text mx-auto">
+                <router-link to="/task/new">new</router-link>
+                <router-link to="/mypage">マイページ</router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
