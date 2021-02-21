@@ -1,30 +1,46 @@
 <template>
-  <div>
-    <h1>行動記録画面</h1>
-    <form>
-      <div>
-        <div>
-          <label id="action_day">日付</label>
-          <input type="date" id="action_day" @change="chengeDate" v-model="action_day">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-md-center">行動記録</h1>
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <form>
+                <div class="form-group row">
+                  <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
+                  <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="action_day">
+                </div>
+                <div class="form-group row">
+                  <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
+                  <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
+                    <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
+                  </select>
+                </div>
+                <div class="form-group row">
+                  <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
+                  <output id="goal" class="form-control col-md-6">{{ goal }}</output>
+                </div>
+                <div class="form-group row">
+                  <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
+                  <input type="text" id="action" class="form-control col-md-6" v-model="action">
+                </div>
+                <div class="row">
+                  <div class="col-md-8 offset-md-4 justify-content-center">
+                    <button class="btn btn-primary mt-1" @click="createActionRecord">登録</button>
+                  </div>
+                </div>
+              </form>
+              <div class="card-text row">
+                <router-link to="/mypage">マイページ</router-link>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <label id="task">タスク</label>
-          <select id="task" v-model="selectTask" @change="chengeTask" name="selectTask">
-            <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
-          </select>
-        </div>
-        <div>
-          <label id="goal">目標</label>
-          <output id="goal">{{ goal }}</output>
-        </div>
-        <div>
-          <label id="action">実績</label>
-          <input type="text" id="action" v-model="action">
-        </div>
-        <button @click="createActionRecord">登録</button>
       </div>
-    </form>
-    <router-link to="/mypage">マイページ</router-link>
+    </div>
   </div>
 </template>
 
