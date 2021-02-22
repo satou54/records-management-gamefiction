@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   get "/signup", to: "home#index"
   get "/login", to: "home#index"
-  get "/logout", to: "home#index"
   get "/account", to: "home#index"
 
   get "/mypage", to: "home#index"
