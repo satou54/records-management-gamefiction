@@ -45,6 +45,13 @@ class Api::ActionRecordsController < ApplicationController
 
     # form...toの場合、toの日付は含まれないため指定する範囲の翌日をtoに指定する
     case interval
+    when "thisWeek"
+      action_record = ActionRecord.new
+      today = Time.now
+      day_of_week = action_record.getDayOfTheWeek(today)
+      range_of_week = action_record.getWeekRange(today, day_of_week)
+      from = range_of_week[0]
+      to = range_of_week[1]
     when "thisMonth"
       from = Time.now.beginning_of_month
       to = Time.now.next_month.beginning_of_month
@@ -76,7 +83,7 @@ class Api::ActionRecordsController < ApplicationController
       days = Date.parse(to.to_s) - Date.parse(from.to_s)
 
       # 期間内の目標の合計値を変数に代入
-      total_goal = Task.find(id).goal * days.to_i
+      total_goal = (Task.find(id).goal * days.to_i / 7).floor(1).to_f
 
       # 期間内の実績の合計値を変数に代入
       total_actions = ActionRecord.where(task_id: id)

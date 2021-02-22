@@ -17,16 +17,16 @@
                   <tr>
                     <th scope="col">タスク名</th>
                     <th scope="col">1週間の目標</th>
-                    <th scope="col"></th>
+                    <th scope="col">1週間の実績</th>
+                    <th scope="col">達成率(%)</th>
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="task in tasks" v-bind:key="task.id" scope="row">
-                    <td>{{ task.task }}</td>
-                    <td>{{ task.goal }}</td>
-                    <td>
-                      <button class="btn btn-primary" @click="editLink(task.id)">修正</button>
-                    </td>
+                  <tr v-for="reference_data in references_data" :key="reference_data.id" scope="row">
+                    <td>{{ reference_data.task }}</td>
+                    <td>{{ reference_data.total_goal }}</td>
+                    <td>{{ reference_data.total_action }}</td>
+                    <td>{{ reference_data.achievement_rate }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -51,38 +51,37 @@
       return {
         name: localStorage.getItem('name'),
         level: '',
-        tasks: [],
+        references_data: [],
+        headers: {
+                  'access-token': localStorage.getItem('access-token'),
+                  uid: localStorage.getItem('uid'),
+                  client: localStorage.getItem('client') 
+                },
       }
     },
     mounted: function () {
-      this.fetchTasks();
+      this.fetchReferencesData();
       this.fetchUserLevel();
     },
     methods: {
-      fetchTasks: function () {
-        axios.get('/api/tasks', 
-                  { headers: {
-                    'access-token': localStorage.getItem('access-token'),
-                    uid: localStorage.getItem('uid'),
-                    client: localStorage.getItem('client') 
-                    }
+      fetchReferencesData: function () {
+        axios.get('/api/action_records/actionRecordReferences', 
+                  { params: { interval: "thisWeek" },
+                    headers: this.headers
                   }
-        ).then((response) => {
-          for(var i = 0; i < response.data.tasks.length; i++) {
-            this.tasks.push(response.data.tasks[i]);
-          }
-        }, (error) => {
-          console.log(error);
-        });
+      ).then((response) => {
+        this.references_data.splice(0)
+        for(var i = 0; i <response.data.references_data.length; i++) {
+            this.references_data.push(response.data.references_data[i]);
+        }
+      }, (error) => {
+        console.log(error);
+      });
       },
       fetchUserLevel: function () {
         axios.get('/api/user_levels',
                   { params: { user_id: localStorage.getItem('user_id') },
-                    headers: {
-                    'access-token': localStorage.getItem('access-token'),
-                    uid: localStorage.getItem('uid'),
-                    client: localStorage.getItem('client') 
-                    }
+                    headers: this.headers
                   }
         ).then((response) => {
           this.level = response.data.user_level.level
