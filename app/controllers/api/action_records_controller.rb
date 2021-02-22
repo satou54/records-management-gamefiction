@@ -66,13 +66,6 @@ class Api::ActionRecordsController < ApplicationController
       to = Time.now.next_month.beginning_of_month
     end
 
-    puts "today"
-    puts today
-    puts "from"
-    puts from
-    puts "to"
-    puts to
-
     # ユーザのtask_idを配列に入れる
     tasks_ids = current_user.tasks.ids
 
