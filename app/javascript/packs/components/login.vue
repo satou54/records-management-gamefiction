@@ -79,8 +79,6 @@
         } else if (this.user.password.length < 6) {
           this.passwordValidate = 'パスワードは6文字以上です。'
           this.loginFlg = false
-        } else {
-          this.loginFlg = true
         }
 
         alert('チェック用')
