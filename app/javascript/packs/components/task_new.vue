@@ -14,9 +14,18 @@
                       <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
                       <input id="task" class="form-control col-md-6" v-model="task" placeholder="タスク">
                   </div>
+                  <div v-if="taskValidate">
+                    <p class="alert alert-danger">{{ taskValidate }}</p>
+                  </div>
                   <div class="from-group row">
-                    <label for="goal" class="col-md-4 col-form-label text-md-right">目標</label>
+                    <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
                     <input id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
+                  </div>
+                  <div v-if="goalValidate">
+                    <p class="alert alert-danger">{{ goalValidate }}</p>
+                  </div>
+                  <div v-if="taskNewValidate">
+                    <p class="alert alert-danger">{{ taskNewValidate }}</p>
                   </div>
                   <div class="row">
                     <div class="col-md-8 offset-md-4 justify-content-center">
@@ -43,24 +52,51 @@ import axios from 'axios'
 export default {
   data: function () {
     return {
+      headers: {
+                  'access-token': localStorage.getItem('access-token'),
+                  uid: localStorage.getItem('uid'),
+                  client: localStorage.getItem('client') 
+                },
       task: '',
-      goal: ''
+      goal: '',
+      taskNewflg: false,
+      taskValidate: '',
+      goalValidate: '',
+      taskNewValidate: ''
     }
   },
   methods: {
     createTask: function () {
-      axios.post('/api/tasks', 
-                { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }, 
-                { headers: {
-                      'access-token': localStorage.getItem('access-token'),
-                      uid: localStorage.getItem('uid'),
-                      client: localStorage.getItem('client') 
-                }}
-      ).then((response) => {
-        alert('新規登録しました。')
-      }, (error) => {
-        console.log(error);
-      });
+      this.taskNewflg = false
+      this.taskValidate = ''
+      this.goalValidate = ''
+      this.taskNewValidate = ''
+
+      if (!this.task) {
+        this.taskValidate = 'タスクが空です'
+      } else {
+        this.taskNewflg = true
+      }
+
+      if (!this.goal) {
+        this.goalValidate = '目標が空です。'
+        this.taskNewflg = false
+      } else if (!(/^\d+?(\.\d+)?$/).test(this.goal)) {
+        this.goalValidate = '目標は半角数字で入力してください。'
+        this.taskNewflg = false
+      }
+
+      if (this.taskNewflg) {
+        axios.post('/api/tasks', 
+                  { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }, 
+                  { headers: this.headers }
+        ).then((response) => {
+          alert('新規登録しました。')
+        }, (error) => {
+          console.log(error);
+          this.taskNewValidate = 'タスクの登録に失敗しました。'
+        });
+      }
     }
   }
 }
