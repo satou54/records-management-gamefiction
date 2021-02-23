@@ -64,7 +64,6 @@
                                           user_id: localStorage.getItem('user_id') 
                                         }).then((response) => {
           }, (error) => {
-            console.log('失敗')
             console.log(error)
           })
           location.href = "http://localhost:3000/mypage"
