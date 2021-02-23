@@ -103,11 +103,7 @@ export default {
         alert('axios')
         axios.put('/api/tasks/' + this.id, 
                   { task: { task: this.task, goal: this.goal, user_id: this.user_id } }, 
-                  { headers: {
-                    'access-token': localStorage.getItem('access-token'),
-                    uid: localStorage.getItem('uid'),
-                    client: localStorage.getItem('client') 
-                  } }
+                  { headers: this.headers }
         ).then((response) => {
           alert('修正しました。')
         }, (error) => {
