@@ -16,7 +16,6 @@
       <router-link to="/signup" class="nav-item nav-link text-white text-right" v-if="!user_login_flg">新規登録</router-link>
       <router-link to="/mypage" class="nav-item nav-link text-white text-right" v-if="user_login_flg">マイページ</router-link>
       <router-link to="" class="nav-item nav-link text-white text-right" v-if="user_login_flg" @click.native="logoutUser">ログアウト</router-link>
-      <!--<p class="nav-item nav-link text-white text-right" v-if="user_login_flg" @click="logoutUser">ログアウト</p>-->
     </div>
   </div>
   </nav>
@@ -41,22 +40,22 @@
     },
     methods: {
       user_login: function () {
-        axios.get('api/auth/validate_token',
-                  { headers: this.headers}
-        ).then((response) => {
-          this.user_login_flg = true
-        }, (error) => {
+        if (!localStorage.getItem('access-token')) {
           this.user_login_flg = false
-          console.log(error)
-        })
+        } else {
+          axios.get('api/auth/validate_token',
+                    { headers: this.headers}
+          ).then((response) => {
+            this.user_login_flg = true
+          }, (error) => {
+            this.user_login_flg = false
+            console.log(error)
+          })
+        }
       },
       logoutUser: function () {
         axios.delete('/api/auth/sign_out', 
-                    { headers: {
-                      'access-token': localStorage.getItem('access-token'),
-                      'uid': localStorage.getItem('uid'),
-                      'client': localStorage.getItem('client') 
-                    }} 
+                    { headers: this.headers } 
         ).then((response) => {
             localStorage.clear()
             location.href = "http://localhost:3000/"
