@@ -13,9 +13,15 @@
                   <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
                   <input id="task" class="form-control col-md-6" v-model="task" placeholder="タスク">
                 </div>
+                <div v-if="taskValidate">
+                  <p class="alert alert-danger">{{ taskValidate }}</p>
+                </div>
                 <div class="form-group row">
-                  <label for="goal" class="col-md-4 col-form-label text-md-right">目標</label>
+                  <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
                   <input id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
+                </div>
+                <div v-if="taskValidate">
+                  <p class="alert alert-danger">{{ goalValidate }}</p>
                 </div>
                 <div class="row">
                   <div class="col-md-8 offset-md-4 justify-content-center">
@@ -44,9 +50,18 @@ export default {
   },
   data: function () {
     return {
+      headers: {
+                  'access-token': localStorage.getItem('access-token'),
+                  uid: localStorage.getItem('uid'),
+                  client: localStorage.getItem('client') 
+                },
       task: '',
       goal: '',
-      user_id: ''
+      user_id: '',
+      taskEditFlg: '',
+      taskValidate: '',
+      goalValidate: '',
+      taskEditValidate: ''
     }
   },
   mounted: function () {
@@ -55,11 +70,7 @@ export default {
   methods: {
     fetchTasks: function () {
       axios.get('/api/tasks/' + this.id, 
-                { headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                } }
+                { headers: this.headers }
       ).then((response) => {
         this.task = (response.data.task['task']);
         this.goal = (response.data.task['goal']);
@@ -69,18 +80,41 @@ export default {
       });
     },
     updateTask: function () {
-      axios.put('/api/tasks/' + this.id, 
-                { task: { task: this.task, goal: this.goal, user_id: this.user_id } }, 
-                { headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                } }
-      ).then((response) => {
-        alert('修正しました。')
-      }, (error) => {
-        console.log(error);
-      });
+      this.taskEditFlg = false
+      this.taskValidate = false
+      this.goalValidate = false
+      this.taskEditValidate = false
+
+      if (!this.task) {
+        this.taskValidate = 'タスクが空です。'
+      } else {
+        this.taskEditFlg = true
+      }
+
+      if (!this.goal) {
+        this.goalValidate = '目標が空です。'
+        this.taskEditFlg = false
+      } else if (!(/^\d+?(\.\d+)?$/).test(this.goal)) {
+        this.goalValidate = '目標は半角数字で入力してください。'
+        this.taskEditFlg = false
+      }
+
+      if (this.taskEditFlg) {
+        alert('axios')
+        axios.put('/api/tasks/' + this.id, 
+                  { task: { task: this.task, goal: this.goal, user_id: this.user_id } }, 
+                  { headers: {
+                    'access-token': localStorage.getItem('access-token'),
+                    uid: localStorage.getItem('uid'),
+                    client: localStorage.getItem('client') 
+                  } }
+        ).then((response) => {
+          alert('修正しました。')
+        }, (error) => {
+          console.log(error);
+          this.taskEditValidate = 'タスクの修正に失敗しました。'
+        });
+      }
     }
   }
 }
