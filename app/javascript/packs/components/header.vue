@@ -43,14 +43,16 @@
         if (!localStorage.getItem('access-token')) {
           this.user_login_flg = false
         } else {
-          axios.get('api/auth/validate_token',
+          this.user_login_flg = true
+          /* axios.get('api/auth/validate_token',
                     { headers: this.headers}
           ).then((response) => {
             this.user_login_flg = true
           }, (error) => {
+            console.log('認証失敗')
             this.user_login_flg = false
             console.log(error)
-          })
+          }) */
         }
       },
       logoutUser: function () {
