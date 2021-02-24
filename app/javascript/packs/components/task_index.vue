@@ -19,7 +19,7 @@
                 <tbody>
                   <tr v-for="task in tasks" v-bind:key="task.id" scope="row">
                     <td>{{ task.task }}</td>
-                    <td>{{ task.goal }}</td>
+                    <td>{{ task.goal }} {{ task.unit }}</td>
                     <td>
                       <button class="btn btn-primary" @click="editLink(task.id)">修正</button>
                       <button class="btn btn-primary" @click="deleteTask(task.id)">削除</button>
@@ -46,6 +46,11 @@
     data: function () {
       return {
         tasks: [],
+        headers: {
+                  'access-token': localStorage.getItem('access-token'),
+                  uid: localStorage.getItem('uid'),
+                  client: localStorage.getItem('client') 
+                }
       }
     },
     mounted: function () {
@@ -54,11 +59,7 @@
     methods: {
       fetchTasks: function () {
         axios.get('/api/tasks', 
-                  { headers: {
-                    'access-token': localStorage.getItem('access-token'),
-                    uid: localStorage.getItem('uid'),
-                    client: localStorage.getItem('client') 
-                  }}
+                  { headers: this.headers }
         ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);

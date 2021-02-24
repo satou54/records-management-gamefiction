@@ -24,6 +24,10 @@
                   <div v-if="goalValidate">
                     <p class="alert alert-danger">{{ goalValidate }}</p>
                   </div>
+                  <div class="from-group row">
+                    <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
+                    <input id="unit" class="form-control col-md-6" v-model="unit" placeholder="目標">
+                  </div>
                   <div v-if="taskNewValidate">
                     <p class="alert alert-danger">{{ taskNewValidate }}</p>
                   </div>
@@ -59,6 +63,7 @@ export default {
                 },
       task: '',
       goal: '',
+      unit: '',
       taskNewflg: false,
       taskValidate: '',
       goalValidate: '',
@@ -88,7 +93,7 @@ export default {
 
       if (this.taskNewflg) {
         axios.post('/api/tasks', 
-                  { task: { task: this.task, goal: this.goal, user_id: localStorage.getItem('user_id') } }, 
+                  { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: localStorage.getItem('user_id') } }, 
                   { headers: this.headers }
         ).then((response) => {
           alert('新規登録しました。')

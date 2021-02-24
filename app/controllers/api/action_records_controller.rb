@@ -85,6 +85,9 @@ class Api::ActionRecordsController < ApplicationController
       # 期間内の目標の合計値を変数に代入
       total_goal = (Task.find(id).goal * days.to_i / 7).floor(1).to_f
 
+      # 目標の単位を取得
+      unit = Task.find(id).unit
+
       # 期間内の実績の合計値を変数に代入
       total_actions = ActionRecord.where(task_id: id)
         .where(action_day: from...to).select(:action)
@@ -96,6 +99,7 @@ class Api::ActionRecordsController < ApplicationController
 
       task_data.store(:task, task_name)
       task_data.store(:total_goal, total_goal)
+      task_data.store(:unit, unit)
       task_data.store(:total_action, total_actions)
       task_data.store(:achievement_rate, achievement_rate)
 
