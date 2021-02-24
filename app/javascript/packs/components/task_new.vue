@@ -99,7 +99,16 @@ export default {
           alert('新規登録しました。')
         }, (error) => {
           console.log(error);
-          this.taskNewValidate = 'タスクの登録に失敗しました。'
+          if (error.response.data && error.response.data.errors) {
+            var errors = error.response.data.errors
+            if (!!errors['task']) {
+              this.taskValidate = this.errors = errors['task'][0]
+            } else if (!!errors['goal']) {
+              this.goalValidate = errors['goal'][0]
+            }
+          } else {
+            this.taskNewValidate = 'タスクの登録に失敗しました。'
+          }
         });
       }
     }

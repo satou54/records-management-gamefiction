@@ -28,13 +28,13 @@ class Api::ActionRecordsController < ApplicationController
       if @action_record.save
         render :show, status: :created
       else
-        render json: @action_record.errors, status: :unprocessable_entity
+        render json: { errors: @action_record.errors.keys.map { |key| [key, @action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
       end
     else
       if @action_record.update(action_record_params)
         render :show, status: :ok
       else
-        render json: @action_record.errors, status: :unprocessable_entity
+        render json: { errors: @action_record.errors.keys.map { |key| [key, @action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
       end
     end
   end
