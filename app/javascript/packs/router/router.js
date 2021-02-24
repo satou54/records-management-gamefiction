@@ -18,15 +18,18 @@ export default new VueRouter ({
   routes: [
     {
       path: '/',
-      component: Top
+      component: Top,
+      meta: { isPublic: true }
     },
     {
       path: '/signup',
-      component: SignUp
+      component: SignUp,
+      meta: { isPublic: true }
     },
     {
       path: '/login',
-      component: Login
+      component: Login,
+      meta: { isPublic: true }
     },
     {
       path: '/account',
