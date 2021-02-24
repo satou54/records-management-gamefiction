@@ -23,6 +23,10 @@
                 <div v-if="taskValidate">
                   <p class="alert alert-danger">{{ goalValidate }}</p>
                 </div>
+                <div class="form-group row">
+                  <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
+                  <input id="unit" class="form-control col-md-6" v-model="unit" placeholder="目標">
+                </div>
                 <div class="row">
                   <div class="col-md-8 offset-md-4 justify-content-center">
                     <button class="btn btn-primary mt-1" v-on:click="updateTask">目標修正</button>
@@ -57,6 +61,7 @@ export default {
                 },
       task: '',
       goal: '',
+      unit: '',
       user_id: '',
       taskEditFlg: '',
       taskValidate: '',
@@ -74,7 +79,8 @@ export default {
       ).then((response) => {
         this.task = (response.data.task['task']);
         this.goal = (response.data.task['goal']);
-        this.user_id = (response.data.task['user_id'])
+        this.unit = (response.data.task['unit']);
+        this.user_id = (response.data.task['user_id']);
       }, (error) => {
         console.log(error);
       });
@@ -100,9 +106,8 @@ export default {
       }
 
       if (this.taskEditFlg) {
-        alert('axios')
         axios.put('/api/tasks/' + this.id, 
-                  { task: { task: this.task, goal: this.goal, user_id: this.user_id } }, 
+                  { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.user_id } }, 
                   { headers: this.headers }
         ).then((response) => {
           alert('修正しました。')

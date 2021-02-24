@@ -32,8 +32,8 @@
                 <tbody>
                   <tr v-for="reference_data in references_data" :key="reference_data.id" scope="row">
                     <td>{{ reference_data.task }}</td>
-                    <td>{{ reference_data.total_goal }}</td>
-                    <td>{{ reference_data.total_action }}</td>
+                    <td>{{ reference_data.total_goal }} {{ reference_data.unit }}</td>
+                    <td>{{ reference_data.total_action }} {{ reference_data.unit }}</td>
                     <td>{{ reference_data.achievement_rate }}</td>
                   </tr>
                 </tbody>

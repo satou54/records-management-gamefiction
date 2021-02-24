@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group row">
                   <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
-                  <output id="goal" class="form-control col-md-6">{{ goal }}</output>
+                  <output id="goal" class="form-control col-md-6">{{ goal }} {{ unit }}</output>
                 </div>
                 <div class="form-group row">
                   <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
@@ -70,6 +70,7 @@
         tasks: [],
         selectTask: '',
         goal: '',
+        unit: '',
         ActionRecords: [],
         ActionDay: '',
         action: '',
@@ -126,6 +127,7 @@
         for (var i = 0; i < this.tasks.length; i++) {
           if (this.tasks[i].id == this.selectTask) {
             this.goal = this.tasks[i].goal
+            this.unit = this.tasks[i].unit
           }
         }
         this.searchAction();
