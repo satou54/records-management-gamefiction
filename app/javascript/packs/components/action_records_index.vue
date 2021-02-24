@@ -187,7 +187,16 @@
             alert('登録しました。')
           }, (error) => {
             console.log(error)
-            this.actionRecordValidate = '登録に失敗しました。'
+            if (error.response.data && error.response.data.errors) {
+              var errors = error.response.data.errors
+              if (!!errors['action_day']) {
+                this.actionDayValidate = this.errors = errors['action_day'][0]
+              } else if (!!errors['action']) {
+                this.actionValidate = errors['action'][0]
+              }
+            } else {
+              this.actionRecordValidate = '登録に失敗しました。'
+            }
           })
         }
         alert('check')

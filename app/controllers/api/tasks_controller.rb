@@ -15,7 +15,7 @@ class Api::TasksController < ApplicationController
     if @task.save
       render :index, status: :created
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: { errors: @task.errors.keys.map { |key| [key, @task.errors.full_messages_for(key)] }.to_h, render: "index.json.jbuilder" }, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +29,7 @@ class Api::TasksController < ApplicationController
     if @task.update(task_params)
       render :show, status: :ok
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: { errors: @task.errors.keys.map { |key| [key, @task.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ class Api::TasksController < ApplicationController
     if @task.destroy
       render :index, status: :ok
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: { errors: @task.errors.keys.map { |key| [key, @task.errors.full_messages_for(key)] }.to_h, render: "index.json.jbuilder" }, status: :unprocessable_entity
     end
   end
 

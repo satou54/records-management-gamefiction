@@ -113,7 +113,16 @@ export default {
           alert('修正しました。')
         }, (error) => {
           console.log(error);
-          this.taskEditValidate = 'タスクの修正に失敗しました。'
+          if (error.response.data && error.response.data.errors) {
+            var errors = error.response.data.errors
+            if (!!errors['task']) {
+              this.taskValidate = this.errors = errors['task'][0]
+            } else if (!!errors['goal']) {
+              this.goalValidate = errors['goal'][0]
+            }
+          } else {
+            this.taskEditValidate = 'タスクの修正に失敗しました。'
+          }
         });
       }
     }
