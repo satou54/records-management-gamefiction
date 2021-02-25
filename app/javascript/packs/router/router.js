@@ -1,15 +1,15 @@
 import Vue from 'vue/dist/vue.esm.js'
 import VueRouter from 'vue-router'
-import Top from '../components/top.vue'
-import Mypage from '../components/mypage.vue'
-import SignUp from '../components/sinup.vue'
-import Login from '../components/login.vue'
-import Account from '../components/account.vue'
-import TaskIndex from '../components/task_index.vue'
-import TaskNew from '../components/task_new.vue'
-import TaskEdit from '../components/task_edit.vue'
-import ActionRecordsIndex from '../components/action_records_index.vue'
-import ActionRecordsReferences from '../components/action_records_references.vue'
+import Top from '../components/TopPage.vue'
+import Mypage from '../components/UserMyPage.vue'
+import SignUp from '../components/UserSignUp.vue'
+import Login from '../components/UserLogin.vue'
+import Account from '../components/AccountDetail.vue'
+import TaskIndex from '../components/TaskIndex.vue'
+import TaskNew from '../components/TaskNew.vue'
+import TaskEdit from '../components/TaskEdit.vue'
+import ActionRecordsRegistration from '../components/ActionRecordsRegistration.vue'
+import ActionRecordsReferences from '../components/ActionRecordsReferences.vue'
 
 Vue.use(VueRouter)
 
@@ -55,7 +55,7 @@ export default new VueRouter ({
     },
     {
       path: '/action_records',
-      component: ActionRecordsIndex
+      component: ActionRecordsRegistration
     },
     {
       path: '/action_records/references',

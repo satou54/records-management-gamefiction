@@ -81,8 +81,6 @@
           this.loginFlg = false
         }
 
-        alert('チェック用')
-
         if (this.loginFlg) {
           axios.post('api/auth/sign_in', this.user).then((response) => {
             localStorage.setItem('access-token', response.headers['access-token'])
@@ -98,7 +96,6 @@
             console.log(error)
             if (error.response.status == 401) {
               this.loginValidate = "メールアドレスかパスワードが間違っています。"
-              alert('メールアドレスかパスワードが間違っています。')
             }
           })
         }

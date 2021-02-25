@@ -1,6 +1,6 @@
 import Vue from 'vue/dist/vue.esm.js'
 import router from './router/router'
-import Header from './components/header.vue'
+import Header from './components/NaviBar.vue'
 
 router.beforeEach((to, from, next) => {
     // isPublicでない場合(=認証が必要な場合)、かつ、ローカルストレージにアクセストークンを保持していない場合

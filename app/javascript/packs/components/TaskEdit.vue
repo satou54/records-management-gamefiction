@@ -62,7 +62,7 @@ export default {
       task: '',
       goal: '',
       unit: '',
-      user_id: '',
+      userId: '',
       taskEditFlg: '',
       taskValidate: '',
       goalValidate: '',
@@ -80,7 +80,7 @@ export default {
         this.task = (response.data.task['task']);
         this.goal = (response.data.task['goal']);
         this.unit = (response.data.task['unit']);
-        this.user_id = (response.data.task['user_id']);
+        this.userId = (response.data.task['user_id']);
       }, (error) => {
         console.log(error);
       });
@@ -107,7 +107,7 @@ export default {
 
       if (this.taskEditFlg) {
         axios.put('/api/tasks/' + this.id, 
-                  { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.user_id } }, 
+                  { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.userId } }, 
                   { headers: this.headers }
         ).then((response) => {
           alert('修正しました。')
