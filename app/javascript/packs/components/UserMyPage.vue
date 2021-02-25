@@ -17,7 +17,7 @@
                   <tr>
                     <th scope="col">タスク名</th>
                     <th scope="col">1週間の目標</th>
-                    <th scope="col">1週間の実績</th>
+                    <th scope="col">今週の実績</th>
                     <th scope="col">達成率(%)</th>
                 </tr>
                 </thead>
