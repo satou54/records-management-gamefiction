@@ -22,11 +22,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="reference_data in references_data" :key="reference_data.id" scope="row">
-                    <td>{{ reference_data.task }}</td>
-                    <td>{{ reference_data.total_goal }} {{ reference_data.unit }}</td>
-                    <td>{{ reference_data.total_action }} {{reference_data.unit }}</td>
-                    <td>{{ reference_data.achievement_rate }}</td>
+                  <tr v-for="referenceData in referencesData" :key="referenceData.id" scope="row">
+                    <td>{{ referenceData.task }}</td>
+                    <td>{{ referenceData.total_goal }} {{ referenceData.unit }}</td>
+                    <td>{{ referenceData.total_action }} {{referenceData.unit }}</td>
+                    <td>{{ referenceData.achievement_rate }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -51,7 +51,7 @@
       return {
         name: localStorage.getItem('name'),
         level: '',
-        references_data: [],
+        referencesData: [],
         headers: {
                   'access-token': localStorage.getItem('access-token'),
                   uid: localStorage.getItem('uid'),
@@ -70,9 +70,9 @@
                     headers: this.headers
                   }
       ).then((response) => {
-        this.references_data.splice(0)
+        this.referencesData.splice(0)
         for(var i = 0; i <response.data.references_data.length; i++) {
-            this.references_data.push(response.data.references_data[i]);
+            this.referencesData.push(response.data.references_data[i]);
         }
       }, (error) => {
         console.log(error);

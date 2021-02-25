@@ -45,15 +45,6 @@
           this.userLoginFlg = false
         } else {
           this.userLoginFlg = true
-          /* axios.get('api/auth/validate_token',
-                    { headers: this.headers}
-          ).then((response) => {
-            this.userLoginFlg = true
-          }, (error) => {
-            console.log('認証失敗')
-            this.userLoginFlg = false
-            console.log(error)
-          }) */
         }
       },
       loginGestUser: function () {

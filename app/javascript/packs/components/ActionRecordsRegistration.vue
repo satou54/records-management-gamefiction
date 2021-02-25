@@ -155,7 +155,6 @@
 
         if (!this.ActionDay) {
           this.actionDayValidate = '日付が入力されていません。'
-          alert('日付が入力されていません')
         } else {
           this.actionRecordFlg = true
         }
@@ -163,17 +162,14 @@
         if (!this.selectTask) {
           this.taskValidate = 'タスクが選択されていません。'
           this.actionRecordFlg = false
-          alert('タスクが選択されていません')
         }
 
         if (!this.action) {
           this.actionValidate = '実績が入力されていません。'
           this.actionRecordFlg = false
-          alert('実績が入力されていません')
         } else if (!(/^\d+?(\.\d+)?$/).test(this.action)) {
           this.actionValidate = '実績は半角数字で入力してください。'
           this.actionRecordFlg = false
-          alert('実績は半角数字で入力してください')
         }
 
 
@@ -199,7 +195,6 @@
             }
           })
         }
-        alert('check')
       }
     }
   }

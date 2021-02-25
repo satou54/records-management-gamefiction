@@ -113,8 +113,6 @@
           this.passwordConfirmValidate = 'パスワードが一致しません。'
         }
         
-        alert('チェック用')
-
         if (this.signUpFlg) {
           axios.post('api/auth', this.user ).then((response) => {
             localStorage.setItem('access-token', response.headers['access-token'])
@@ -136,7 +134,6 @@
             console.log(error)
             if (error.response.status == 422) {
               this.signUpValidate = "登録に失敗しました。もう一度試してください。"
-              alert('登録に失敗しました。もう一度試してみてください。')
             }
           })
         }
