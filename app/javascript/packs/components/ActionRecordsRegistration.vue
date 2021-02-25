@@ -13,18 +13,14 @@
                   <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
                   <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
                 </div>
-                <div v-if="actionDayValidate">
-                  <p class="alert alert-danger">{{ actionDayValidate }}</p>
-                </div>
+                <span v-if="!validationActionDay" class="text-warning">{{ actionDayValidateMessage }}</span>
                 <div class="form-group row">
                   <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
                   <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
                     <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
                   </select>
                 </div>
-                <div v-if="taskValidate">
-                  <p class="alert alert-danger">{{ taskValidate }}</p>
-                </div>
+                <span v-if="!validationTask" class="text-warning">{{ taskValidateMessage }}</span>
                 <div class="form-group row">
                   <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
                   <output id="goal" class="form-control col-md-6">{{ goal }} {{ unit }}</output>
@@ -33,15 +29,11 @@
                   <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
                   <input type="text" id="action" class="form-control col-md-6" v-model="action">
                 </div>
-                <div v-if="actionValidate">
-                  <p class="alert alert-danger">{{ actionValidate }}</p>
-                </div>
-                <div v-if="actionRecordValidate">
-                  <p class="alert alert-danger">{{ actionRecordValidate }}</p>
-                </div>
+                <span v-if="!validationAction" class="text-warning">{{ actionValidateMessage }}</span>
+                <span v-if="!!actionRecordValidateMessage" class="text-warning">{{ actionRecordValidateMessage }}</span>
                 <div class="row">
                   <div class="col-md-8 offset-md-4 justify-content-center">
-                    <button class="btn btn-primary mt-1" @click="createActionRecord">登録</button>
+                    <button class="btn btn-primary mt-1" :disabled="!validation" @click="createActionRecord">登録</button>
                   </div>
                 </div>
               </form>
@@ -75,17 +67,45 @@
         ActionDay: '',
         action: '',
         action_experience_point: '',
-        actionRecordFlg: '',
-        actionDayValidate: '',
-        taskValidate: '',
-        actionValidate: '',
-        actionRecordValidate: ''
+        actionDayValidateMessage: '',
+        taskValidateMessage: '',
+        actionValidateMessage: '',
+        actionRecordValidateMessage: ''
       }
     },
     mounted: function () {
       this.getToday();
       this.fetchTasks();
       this.fetchActionRecord();
+    },
+    computed: {
+      validation: function () {
+        return (this.validationActionDay && this.validationTask && this.validationAction)
+      },
+      validationActionDay: function () {
+        if (!this.ActionDay) {
+          this.actionDayValidateMessage = '日付が入力されていません。'
+          return false
+        }
+        return true
+      },
+      validationTask: function () {
+        if (!this.selectTask) {
+          this.taskValidateMessage = 'タスクが選択されていません。'
+          return false
+        }
+        return true
+      },
+      validationAction: function () {
+        if (!this.action) {
+          this.actionValidateMessage = '実績が入力されていません。'
+          return false
+        } else if (!(/^\d+?(\.\d+)?$/).test(this.action)) {
+          this.actionValidateMessage = '実績は半角数字で入力してください。'
+          return false
+        }
+        return true
+      }
     },
     methods: {
       getToday: function () {
@@ -147,54 +167,27 @@
         this.action_experience_point = (Math.round(this.action * 100) / 100) / (Math.round(this.goal * 100) / 100) * 100
       },
       createActionRecord: function () {
-        this.actionRecordFlg = false
-        this.actionDayValidate = ''
-        this.taskValidate = ''
-        this.actionValidate = ''
-        this.ActionRecordValidate = ''
-
-        if (!this.ActionDay) {
-          this.actionDayValidate = '日付が入力されていません。'
-        } else {
-          this.actionRecordFlg = true
-        }
-
-        if (!this.selectTask) {
-          this.taskValidate = 'タスクが選択されていません。'
-          this.actionRecordFlg = false
-        }
-
-        if (!this.action) {
-          this.actionValidate = '実績が入力されていません。'
-          this.actionRecordFlg = false
-        } else if (!(/^\d+?(\.\d+)?$/).test(this.action)) {
-          this.actionValidate = '実績は半角数字で入力してください。'
-          this.actionRecordFlg = false
-        }
-
-
-        if (this.actionRecordFlg) {
-          this.culculateActionExperiencePoint();
-          axios.post('/api/action_records/createOrUpdate', 
-                    { action_record: { action_day: this.ActionDay, action: Number(this.action), 
-                      action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
-                    { headers: this.headers }
-          ).then((response) => {
-            alert('登録しました。')
-          }, (error) => {
-            console.log(error)
-            if (error.response.data && error.response.data.errors) {
-              var errors = error.response.data.errors
-              if (!!errors['action_day']) {
-                this.actionDayValidate = this.errors = errors['action_day'][0]
-              } else if (!!errors['action']) {
-                this.actionValidate = errors['action'][0]
-              }
-            } else {
-              this.actionRecordValidate = '登録に失敗しました。'
+        this.culculateActionExperiencePoint();
+        axios.post('/api/action_records/createOrUpdate', 
+                  { action_record: { action_day: this.ActionDay, action: Number(this.action), 
+                    action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
+                  { headers: this.headers }
+        ).then((response) => {
+          alert('登録しました。')
+          alert('task: ' + this.selectTask)
+        }, (error) => {
+          console.log(error)
+          if (error.response.data && error.response.data.errors) {
+            var errors = error.response.data.errors
+            if (!!errors['action_day']) {
+              this.actionDayValidateMessage = this.errors = errors['action_day'][0]
+            } else if (!!errors['action']) {
+              this.actionValidateMessage = errors['action'][0]
             }
-          })
-        }
+          } else {
+            this.actionRecordValidateMessage = '登録に失敗しました。'
+          }
+        })
       }
     }
   }
