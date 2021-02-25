@@ -10,13 +10,12 @@
             <div class="card-text">
               <div class="center-block">
                 <label for="interval">期間:</label>
-                <select id="interval" class="interval_list"  v-model="interval">
+                <select id="interval" class="interval_list" @change="getReferencesData" v-model="interval">
                   <option value="thisMonth" selected>今月</option>
                   <option value="lastMonth">先月</option>
                   <option value="lastThreeMonth">過去3ヶ月</option>
                   <option value="lastSixMonth">過去6ヶ月</option>
                 </select>
-                <button class="btn btn-primary mb-1 ml-1" @click="getReferencesData">参照</button>
               </div>
             </div>
             <div class="card-text">
