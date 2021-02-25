@@ -7,8 +7,8 @@ Level.destroy_all
 
 puts "テストデータ投入"
 
-User.create!(name: "test", email: "test@example.com", password: "password")
-User.create!(name: "test2", email: "test2@example.com", password: "password")
+User.create!(name: "ゲスト", email: "test@example.com", password: "password")
+User.create!(name: "ユーザ2", email: "test2@example.com", password: "password")
 
 user1 = User.first
 user2 = User.second

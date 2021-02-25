@@ -7,6 +7,7 @@
           <p>目標設定×行動記録×ゲームフィケーションで習慣をつくろう</p>
           <p>jumbotronを使って背景に画像入れる</p>
           <p>アプリ名とコメントを真ん中に配置</p>
+          <button @click="loginGestUser">ゲストログイン</button>
         </div>
       </div>
     </div>
@@ -36,7 +37,25 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
+    methods: {
+      loginGestUser: function () {
+      axios.post('api/auth/sign_in', {email: "test@example.com", password: "password"} ).then((response) => {
+        localStorage.setItem('access-token', response.headers['access-token'])
+        localStorage.setItem('client', response.headers.client)
+        localStorage.setItem('uid', response.headers.uid)
+        localStorage.setItem('token-type', response.headers['token-type'])
+        localStorage.setItem('user_id', response.data['data'].id)
+        localStorage.setItem('email', response.data['data'].email)
+        localStorage.setItem('name', response.data['data'].name)
+        location.href = "http://localhost:3000/mypage"
+        return response
+      }, (error) => {
+        console.log(error)
+      })
+    }
+    }
   }
 </script>
 

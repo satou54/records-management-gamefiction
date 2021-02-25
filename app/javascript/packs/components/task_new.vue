@@ -34,6 +34,7 @@
                   <div class="row">
                     <div class="col-md-8 offset-md-4 justify-content-center">
                       <button class="btn btn-primary mt-1" v-on:click="createTask">新規作成</button>
+                      <button @click="clickTest">test</button>
                     </div>
                   </div>
                 </form>
@@ -111,6 +112,8 @@ export default {
           }
         });
       }
+    },
+    clickTest: function () {
     }
   }
 }

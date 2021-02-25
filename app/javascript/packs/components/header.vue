@@ -12,10 +12,11 @@
     <div class="collapse navbar-collapse" id="navmenu1">
     <div class="navbar-nav">
       <router-link to="/" class="nav-item nav-link text-white text-right">TOP</router-link>
-      <router-link to="/login" class="nav-item nav-link text-white text-right" v-if="!user_login_flg">ログイン</router-link>
-      <router-link to="/signup" class="nav-item nav-link text-white text-right" v-if="!user_login_flg">新規登録</router-link>
-      <router-link to="/mypage" class="nav-item nav-link text-white text-right" v-if="user_login_flg">マイページ</router-link>
-      <router-link to="" class="nav-item nav-link text-white text-right" v-if="user_login_flg" @click.native="logoutUser">ログアウト</router-link>
+      <router-link to="/login" class="nav-item nav-link text-white text-right" v-if="!userLoginFlg">ログイン</router-link>
+      <router-link to="" class="nav-item nav-link text-white text-right" v-if="!userLoginFlg" @click.native="loginGestUser">ゲストログイン</router-link>
+      <router-link to="/signup" class="nav-item nav-link text-white text-right" v-if="!userLoginFlg">新規登録</router-link>
+      <router-link to="/mypage" class="nav-item nav-link text-white text-right" v-if="userLoginFlg">マイページ</router-link>
+      <router-link to="" class="nav-item nav-link text-white text-right" v-if="userLoginFlg" @click.native="logoutUser">ログアウト</router-link>
     </div>
   </div>
   </nav>
@@ -27,7 +28,7 @@
   export default {
     data: function () {
       return {
-        user_login_flg: false,
+        userLoginFlg: false,
         headers: {
                   'access-token': localStorage.getItem('access-token'),
                   uid: localStorage.getItem('uid'),
@@ -36,24 +37,39 @@
       }
     },
     mounted: function () {
-      this.user_login();
+      this.userAuthentication();
     },
     methods: {
-      user_login: function () {
+      userAuthentication: function () {
         if (!localStorage.getItem('access-token')) {
-          this.user_login_flg = false
+          this.userLoginFlg = false
         } else {
-          this.user_login_flg = true
+          this.userLoginFlg = true
           /* axios.get('api/auth/validate_token',
                     { headers: this.headers}
           ).then((response) => {
-            this.user_login_flg = true
+            this.userLoginFlg = true
           }, (error) => {
             console.log('認証失敗')
-            this.user_login_flg = false
+            this.userLoginFlg = false
             console.log(error)
           }) */
         }
+      },
+      loginGestUser: function () {
+        axios.post('api/auth/sign_in', {email: "test@example.com", password: "password"} ).then((response) => {
+          localStorage.setItem('access-token', response.headers['access-token'])
+          localStorage.setItem('client', response.headers.client)
+          localStorage.setItem('uid', response.headers.uid)
+          localStorage.setItem('token-type', response.headers['token-type'])
+          localStorage.setItem('user_id', response.data['data'].id)
+          localStorage.setItem('email', response.data['data'].email)
+          localStorage.setItem('name', response.data['data'].name)
+          location.href = "http://localhost:3000/mypage"
+          return response
+        }, (error) => {
+          console.log(error)
+        })
       },
       logoutUser: function () {
         axios.delete('/api/auth/sign_out', 
