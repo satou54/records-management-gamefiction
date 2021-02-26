@@ -3,12 +3,12 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-10">
         <div class="card">
-          <div class="card-header">
-            <h1 class="text-md-center">タスク設定</h1>
+          <div class="card-header text-center">
+            <h1>タスク設定</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
-              <table class="table">
+              <table class="table table-borderless">
                 <thead>
                   <tr>
                     <th scope="col">タスク名</th>
@@ -22,12 +22,12 @@
                     <td>{{ task.goal }} {{ task.unit }}</td>
                     <td>
                       <button class="btn btn-primary" @click="editLink(task.id)">修正</button>
-                      <button class="btn btn-primary" @click="deleteTask(task.id)">削除</button>
+                      <button class="btn btn-warning" @click="deleteTask(task.id)" onclick="return confirm('削除しますか?')">削除</button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <div class="card-text mx-auto">
+              <div class="card-text mx-auto text-center">
                 <router-link to="/task/new">new</router-link>
                 <router-link to="/mypage">マイページ</router-link>
               </div>

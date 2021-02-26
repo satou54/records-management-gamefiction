@@ -3,16 +3,16 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-10">
         <div class="card">
-          <div class="card-header">
-            <h1 class="text-md-center">マイページ</h1>
+          <div class="card-header text-center">
+            <h1>マイページ</h1>
           </div>
           <div class="card-body">
-            <div class="card-text">
+            <div class="card-text user-info">
               <p>名前：{{ name }}</p>
               <p>level: {{ level }}</p>
             </div>
             <div class="card-text">
-              <table class="table">
+              <table class="table table-borderless">
                 <thead>
                   <tr>
                     <th scope="col">タスク名</th>
@@ -31,7 +31,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="card-text mx-auto">
+            <div class="card-text mx-auto text-center">
               <router-link to="/tasks">目標設定</router-link>
               <router-link to="/action_records">行動記録</router-link>
               <router-link to="/action_records/references">行動参照</router-link>
@@ -98,3 +98,9 @@
     }
   }
 </script>
+
+<style scoped>
+.user-info p {
+  padding-left: 20px;
+}
+</style>

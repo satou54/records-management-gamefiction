@@ -14,3 +14,90 @@
  *= require_self
  */
 @import "bootstrap/scss/bootstrap";
+
+/* グローバル変数 */
+$base-color: #272343;
+
+/* 全体 */
+body {
+  background-color: #e3f6f5;
+  color: $base-color;
+  font-family: "Arial", "メイリオ";
+}
+
+a {
+  color: $base-color;
+}
+
+h1 {
+  color: $base-color;
+}
+
+/* ボタン */
+.btn {
+  display: inline-block;
+}
+
+.btn-warning {
+  background-color: #ffd803;
+  color: white;
+}
+
+.btn-warning:hover {
+  color: white;
+}
+
+/* 警告メッセージ */
+.text-warning {
+  color: #ffd803;
+}
+
+/* テーブル */
+table {
+  th {
+    color: $base-color;
+    text-align: center;
+    width: 25%;
+  }
+  td {
+    color: $base-color;
+    text-align: center;
+    width: 25%;
+  }
+}
+
+/* ナビバー */
+nav {
+  background-color: #e3f6f5;
+  color: $base-color;
+
+  .navbar-light .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0);
+  }
+
+  .navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' 
+    xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(39,35,67,1)' 
+    stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' 
+    d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+
+  .navbar-nav {
+    margin: 0 0 0 auto;
+  }
+
+  .nav-item {
+    color: $base-color;
+  }
+}
+
+/* カード */
+.card {
+  background-color: #fffffe;
+  border: 0px none;
+}
+
+.card-header {
+  background-color: #fffffe;
+  border-bottom: 1px solid $base-color;
+}

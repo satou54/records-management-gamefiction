@@ -1,41 +1,37 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-10">
-          <div class="card">
-            <div class="card-header">
-              <h1 class="text-md-center">タスク新規作成</h1>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-header text-center">
+            <h1 >タスク新規作成</h1>
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <form>
+                <div class="form-group row">
+                    <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
+                    <input type="text" id="task" class="form-control col-md-6" v-model="task" placeholder="タスク">
+                    <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
+                </div>
+                <div class="from-group row">
+                  <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
+                  <input type="text" id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
+                  <span v-if="!validationGoal" class="col-md-6 offset-md-4 text-warning">{{ goalValidateMessage }}</span>
+                </div>
+                <div class="from-group row">
+                  <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
+                  <input type="text" id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
+                  <span v-if="!!taskNewValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskNewValidateMessage }}</span>
+                </div>
+                <div class="row">
+                  <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" v-on:click="createTask">新規作成</button>
+                </div>
+              </form>
             </div>
-            <div class="card-body">
-              <div class="card-text">
-                <form>
-                  <div class="form-group row">
-                      <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
-                      <input id="task" class="form-control col-md-6" v-model="task" placeholder="タスク">
-                  </div>
-                  <span v-if="!validationTask" class="text-warning">{{ taskValidateMessage }}</span>
-                  <div class="from-group row">
-                    <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
-                    <input id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
-                  </div>
-                  <span v-if="!validationGoal" class="text-warning">{{ goalValidateMessage }}</span>
-                  <div class="from-group row">
-                    <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
-                    <input id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
-                  </div>
-                  <span v-if="!!taskNewValidateMessage" class="text-warning">{{ taskNewValidateMessage }}</span>
-                  <div class="row">
-                    <div class="col-md-8 offset-md-4 justify-content-center">
-                      <button class="btn btn-primary mt-1" :disabled="!validation" v-on:click="createTask">新規作成</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-text row">
-                <router-link to="/tasks">目標設定画面</router-link>
-                <router-link to="/mypage">マイページ</router-link>
-              </div>
+            <div class="card-text mx-auto text-center">
+              <router-link to="/tasks">目標設定画面</router-link>
+              <router-link to="/mypage">マイページ</router-link>
             </div>
           </div>
         </div>
@@ -109,3 +105,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.row {
+  margin-bottom: 10px;
+}
+</style>
