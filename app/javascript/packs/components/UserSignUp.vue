@@ -3,34 +3,34 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">ユーザ登録</div>
+          <div class="card-header text-center">
+            <h1>ユーザ新規登録</h1>
+          </div>
           <div class="card-body">
             <form>
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">ユーザ名</label>
                 <input v-model="user.name" id="name" class="form-control col-md-6" type="text" placeholder="name">
+                <span v-if="!validationName" class="col-md-6 offset-md-4 text-warning">{{ nameValidateMessage }}</span>
               </div>
-              <span v-if="!validationName" class="text-warning">{{ nameValidateMessage }}</span>
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
                 <input v-model="user.email" id="Email" class="form-control col-md-6" type="text" placeholder="email">
+                <span v-if="!validationEmail" class="col-md-6 offset-md-4 text-warning">{{ emailValidateMessage }}</span>
               </div>
-              <span v-if="!validationEmail" class="text-warning">{{ emailValidateMessage }}</span>
               <div class="from-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
                 <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
+                <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
               </div>
-              <span v-if="!validationPassword" class="text-warning">{{ passwordValidateMessage }}</span>
               <div class="form-group row">
                 <label for="passwordConfirmation" class="col-md-4 col-form-label text-md-right">パスワード(確認)</label>
                 <input v-model="user.passwordConfirmation" id="passwordConfirmation" class="form-control col-md-6" type="password" placeholder="passwordConfirmation">
+                <span v-if="!validationPasswordConfirm" class="col-md-6 offset-md-4 text-warning">{{ passwordConfirmValidateMessage }}</span>
+              <span v-if="!!signUpValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ signUpValidateMessage }}</span>
               </div>
-              <span v-if="!validationPasswordConfirm" class="text-warning">{{ passwordConfirmValidateMessage }}</span>
-              <span v-if="!!signUpValidateMessage" class="text-warning">{{ signUpValidateMessage }}</span>
               <div class="row">
-                <div class="col-md-8 offset-md-4">
-                  <button @click="registerUser" :disabled="!validation" class="btn btn-primary">登録</button>
-                </div>
+                <button @click="registerUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">登録</button>
               </div>
             </form>
           </div>

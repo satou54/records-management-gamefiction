@@ -3,8 +3,8 @@
     <div class="row justify-content-center">
       <div class="col-md-10">
         <div class="card">
-          <div class="card-header">
-            <h1 class="text-md-center">行動記録</h1>
+          <div class="card-header text-center">
+            <h1>行動記録</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
@@ -12,15 +12,15 @@
                 <div class="form-group row">
                   <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
                   <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
+                  <span v-if="!validationActionDay" class="col-md-6 offset-md-4 text-warning">{{ actionDayValidateMessage }}</span>
                 </div>
-                <span v-if="!validationActionDay" class="text-warning">{{ actionDayValidateMessage }}</span>
                 <div class="form-group row">
                   <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
                   <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
                     <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
                   </select>
+                  <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
                 </div>
-                <span v-if="!validationTask" class="text-warning">{{ taskValidateMessage }}</span>
                 <div class="form-group row">
                   <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
                   <output id="goal" class="form-control col-md-6">{{ goal }} {{ unit }}</output>
@@ -28,16 +28,14 @@
                 <div class="form-group row">
                   <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
                   <input type="text" id="action" class="form-control col-md-6" v-model="action">
+                  <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
+                  <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
                 </div>
-                <span v-if="!validationAction" class="text-warning">{{ actionValidateMessage }}</span>
-                <span v-if="!!actionRecordValidateMessage" class="text-warning">{{ actionRecordValidateMessage }}</span>
                 <div class="row">
-                  <div class="col-md-8 offset-md-4 justify-content-center">
-                    <button class="btn btn-primary mt-1" :disabled="!validation" @click="createActionRecord">登録</button>
-                  </div>
+                      <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
                 </div>
               </form>
-              <div class="card-text row">
+              <div class="card-text mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
             </div>

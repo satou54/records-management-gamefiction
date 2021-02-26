@@ -3,12 +3,12 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-10">
         <div class="card">
-          <div class="card-header">
-            <h1 class="text-md-center">行動参照</h1>
+          <div class="card-header text-center">
+            <h1>行動参照</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
-              <div class="center-block">
+              <div class="center-block text-center cp_ipselect cp_sl01">
                 <label for="interval">期間:</label>
                 <select id="interval" class="interval_list" @change="getReferencesData" v-model="interval">
                   <option value="thisMonth" selected>今月</option>
@@ -19,7 +19,7 @@
               </div>
             </div>
             <div class="card-text">
-              <table class="table">
+              <table class="table table-borderless">
                 <thead>
                   <tr>
                     <th scope="col">タスク名</th>
@@ -37,7 +37,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="card-text mx-auto">
+              <div class="card-text mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
             </div>
@@ -84,3 +84,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* セレクトメニュー */
+.interval_list {
+  cursor: pointer;
+  text-overflow: ellipsis;
+  outline: none;
+  appearance: none;
+  border: 1px solid #272343;
+  border-radius: 2px;
+  padding: 1px 15px 1px 15px;
+  color: #272343;
+}
+</style>
