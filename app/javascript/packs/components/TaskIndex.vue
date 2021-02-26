@@ -27,6 +27,9 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="task-error text-center">
+                <span v-if="!!taskErrorMessage" class="text-center">{{ taskErrorMessage }}</span>
+              </div>
               <div class="card-text mx-auto text-center">
                 <router-link to="/task/new">new</router-link>
                 <router-link to="/mypage">マイページ</router-link>
@@ -50,7 +53,8 @@
                   'access-token': localStorage.getItem('access-token'),
                   uid: localStorage.getItem('uid'),
                   client: localStorage.getItem('client') 
-                }
+                },
+        taskErrorMessage: ''
       }
     },
     mounted: function () {
@@ -69,11 +73,15 @@
         });
       },
       deleteTask: function (task_id) {
-        const params = { id: task_id }
-        axios.delete('/api/tasks/' + task_id, { params: params }).then((response) => {
+        axios.delete('/api/tasks/' + task_id, 
+                    { data: {id: task_id}, 
+                      headers: this.headers 
+                    }
+        ).then((response) => {
           location.reload();
         }, (error) => {
           console.log(error);
+          this.taskErrorMessage = "タスクの削除に失敗しました。"
         })
       },
       editLink: function (task_id) {
