@@ -4,14 +4,14 @@
       <div class="col-md-10">
         <div class="card">
           <div class="card-header text-center">
-            <h1>タスク設定</h1>
+            <h1>習慣設定</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th scope="col">タスク名</th>
+                    <th scope="col">習慣</th>
                     <th scope="col">1週間の目標</th>
                     <th scope="col"></th>
                   </tr>
@@ -81,7 +81,7 @@
           location.reload();
         }, (error) => {
           console.log(error);
-          this.taskErrorMessage = "タスクの削除に失敗しました。"
+          this.taskErrorMessage = "習慣の削除に失敗しました。"
         })
       },
       editLink: function (task_id) {
