@@ -4,14 +4,14 @@
       <div class="col-md-10">
         <div class="card">
           <div class="card-header text-center">
-            <h1>タスク修正画面</h1>
+            <h1>習慣修正画面</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
               <form>
                 <div class="form-group row">
-                  <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
-                  <input type="text" id="task" class="form-control col-md-6" v-model="task" placeholder="タスク">
+                  <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
+                  <input type="text" id="task" class="form-control col-md-6" v-model="task" placeholder="習慣">
                   <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
                 </div>
                 <div class="form-group row">
@@ -72,7 +72,7 @@ export default {
     },
     validationTask: function () {
       if (!this.task) {
-        this.taskValidateMessage = 'タスクが空です。'
+        this.taskValidateMessage = '習慣が空です。'
         return false
       }
       return true
@@ -117,7 +117,7 @@ export default {
             this.goalValidateMessage = errors['goal'][0]
           }
         } else {
-          this.taskEditValidateMessage = 'タスクの修正に失敗しました。'
+          this.taskEditValidateMessage = '習慣の修正に失敗しました。'
         }
       });
     }

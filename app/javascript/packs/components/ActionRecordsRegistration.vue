@@ -15,7 +15,7 @@
                   <span v-if="!validationActionDay" class="col-md-6 offset-md-4 text-warning">{{ actionDayValidateMessage }}</span>
                 </div>
                 <div class="form-group row">
-                  <label for="task" class="col-md-4 col-form-label text-md-right">タスク</label>
+                  <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
                   <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
                     <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
                   </select>
@@ -89,7 +89,7 @@
       },
       validationTask: function () {
         if (!this.selectTask) {
-          this.taskValidateMessage = 'タスクが選択されていません。'
+          this.taskValidateMessage = '習慣が選択されていません。'
           return false
         }
         return true

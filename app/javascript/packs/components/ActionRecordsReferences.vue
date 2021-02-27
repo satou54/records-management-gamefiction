@@ -22,7 +22,7 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th scope="col">タスク名</th>
+                    <th scope="col">習慣</th>
                     <th scope="col">期間内の総目標</th>
                     <th scope="col">期間内の総実績</th>
                     <th scope="col">達成率(%)</th>
