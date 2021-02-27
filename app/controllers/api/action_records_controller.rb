@@ -1,16 +1,12 @@
 class Api::ActionRecordsController < ApplicationController
   before_action :authenticate_user!
+  # １週間
+  WEEK = 7
+  # 確率
+  PERCENT = 100
 
   def index
     @action_records = current_user.action_records
-  end
-
-  def show
-    @action_record = ActionRecord.find(params[:id])
-  end
-
-  def new
-    @action_record = ActionRecord.new
   end
 
   def createOrUpdate
@@ -43,7 +39,7 @@ class Api::ActionRecordsController < ApplicationController
     # paramsに入れた期間の値を受け取る
     interval = params[:interval]
 
-    # form...toの場合、toの日付は含まれないため指定する範囲の翌日をtoに指定する
+    # intervalの値に応じてform...toを取得
     case interval
     when "thisWeek"
       action_record = ActionRecord.new
@@ -76,26 +72,31 @@ class Api::ActionRecordsController < ApplicationController
       # タスク毎のハッシュを作成
       task_data = {}
 
+      # タスクのidからデータを取得
+      task = Task.find(id)
+
       # タスクの名前を変数に代入
-      task_name = Task.find(id).task
+      task_name = task.task
 
       # 期間内の日数を計算
       days = Date.parse(to.to_s) - Date.parse(from.to_s)
 
       # 期間内の目標の合計値を変数に代入
-      total_goal = (Task.find(id).goal * days.to_i / 7).floor(1).to_f
+      total_goal = (task.goal * days.to_i / WEEK).floor(1).to_f
 
       # 目標の単位を取得
-      unit = Task.find(id).unit
+      unit = task.unit
 
-      # 期間内の実績の合計値を変数に代入
+      # 期間内の実績の合計値を配列に代入
       total_actions = ActionRecord.where(task_id: id)
         .where(action_day: from...to).select(:action)
         .pluck(:action)
+
+      # 配列を合計して総実績を取得
       total_actions = total_actions.sum
 
       # 達成度を計算し変数に代入
-      achievement_rate = (total_actions.to_f / total_goal.to_f * 100).floor(1).to_f
+      achievement_rate = (total_actions.to_f / total_goal.to_f * PERCENT).floor(1).to_f
 
       task_data.store(:task, task_name)
       task_data.store(:total_goal, total_goal)

@@ -172,7 +172,6 @@
                   { headers: this.headers }
         ).then((response) => {
           alert('登録しました。')
-          alert('task: ' + this.selectTask)
         }, (error) => {
           console.log(error)
           if (error.response.data && error.response.data.errors) {
