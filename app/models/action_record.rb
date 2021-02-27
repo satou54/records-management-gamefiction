@@ -7,10 +7,12 @@ class ActionRecord < ApplicationRecord
   validates :action_experience_point, presence: true
   validates :action_day, uniqueness: { scope: [:task_id, :user_id] }
 
+  PERCENT = 100
+
   # 経験値を計算
   # 目標に対する実績の割合1%で経験値1増える
   def culcurateExperiencePoint(action, goal)
-    (action.to_f / goal.to_f * 100).floor
+    (action.to_f / goal.to_f * PERCENT).floor
   end
 
   # 実績の経験値を取得
@@ -41,7 +43,6 @@ class ActionRecord < ApplicationRecord
   end
 
   # 引数に指定した曜日(日-土が0-6)から1週間の範囲を取得
-  # from...toの場合はtoの日付が範囲検索に含まれないため、日曜日ではなく月曜日を指定
   def getWeekRange(action_day, day_of_week)
     case day_of_week
     # 日曜日
