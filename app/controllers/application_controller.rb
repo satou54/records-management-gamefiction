@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, if: :devise_controller?
   protect_from_forgery with: :null_session
 
+  # 目標達成時の経験値
+  ACHIEVEMENTEXPERIENCEPOINT = 100
+
   # ユーザのレベルアップとレベルダウン処理を行う
   def levelUpAndDown(task_id, action_day, action)
 
@@ -52,7 +55,7 @@ class ApplicationController < ActionController::Base
         #今回の追加分を含めた場合に目標を達成しているかチェック
         if ((week_of_action + action) >= goal)
           # 目標達成で経験値を追加
-          point += 100
+          point += ACHIEVEMENTEXPERIENCEPOINT
         end
       end
 
@@ -87,7 +90,7 @@ class ApplicationController < ActionController::Base
           # 目標に達していない場合、今回の追加分で目標に達したかチェック
           if ((week_of_action + difference) >= goal)
             # 今回の追加分で目標に達した場合は経験値を増加
-            point += 100
+            point += ACHIEVEMENTEXPERIENCEPOINT
           end
         end
 
@@ -116,7 +119,7 @@ class ApplicationController < ActionController::Base
           # 目標を達してい場合、今回の減少分で割ったかチェック
           if ((week_of_action + difference) < goal)
             # 今回の減少分で割っている場合は経験値を減少
-            point -= 100
+            point -= ACHIEVEMENTEXPERIENCEPOINT
           end
         end
 
