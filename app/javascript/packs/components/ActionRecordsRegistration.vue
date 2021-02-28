@@ -8,7 +8,7 @@
           </div>
           <div class="card-body">
             <div class="card-text">
-              <form>
+              <!-- <form> -->
                 <div class="form-group row">
                   <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
                   <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
@@ -34,11 +34,19 @@
                 <div class="row">
                       <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
                 </div>
-              </form>
+              <!-- </form> -->
               <div class="card-text mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
             </div>
+          </div>
+          <div class="col-12" id="progress-content">
+                <div class="col-3">
+                  <label for="progress-bar">Level: {{ before_level }}</label>
+                </div>
+                <div class="col-12">
+                  <progress v-bind:value="state" max="100">0%</progress>
+                </div>
           </div>
         </div>
       </div>
@@ -68,7 +76,14 @@
         actionDayValidateMessage: '',
         taskValidateMessage: '',
         actionValidateMessage: '',
-        actionRecordValidateMessage: ''
+        actionRecordValidateMessage: '',
+        startState: '',
+        before_level: '',
+        after_level: '',
+        state: '',
+        endState: '',
+        intervalId: '',
+        stateFlg: ''
       }
     },
     mounted: function () {
@@ -171,7 +186,28 @@
                     action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
                   { headers: this.headers }
         ).then((response) => {
-          alert('登録しました。')
+          this.before_level = response.data.level_up_data['before_level']
+          this.after_level = response.data.level_up_data['after_level']
+          this.state = response.data.level_up_data['before_experience_point_percent']
+          this.endState = response.data.level_up_data['after_experience_point_percent']
+
+          if (this.after_level - this.before_level == 0) {
+            // レベルアップ・ダウンなしの場合
+            if (this.endState > this.state) {
+              this.stateFlg = true
+            } else {
+              this.stateFlg = false
+            }
+            this.intervalId = setInterval(this.updateProgress, 30)
+          } else if (this.after_level - this.before_level > 0) {
+            // レベルアップありの場合
+            this.stateFlg = true
+            this.intervalId = setInterval(this.updateProgressLevelUp, 30)
+          } else {
+            // レベルダウンの場合
+            this.stateFlg = false
+            this.intervalId = setInterval(this.updateProgressLevelDown, 30)
+          }
         }, (error) => {
           console.log(error)
           if (error.response.data && error.response.data.errors) {
@@ -185,7 +221,67 @@
             this.actionRecordValidateMessage = '登録に失敗しました。'
           }
         })
+      },
+      updateProgress: function () {
+        console.log('updateProgress')
+        if (this.stateFlg) {
+          this.state += 1
+        } else {
+          this.state -= 1
+        }
+        console.log("progress:", this.state, "%");
+
+        if (this.state == this.endState) {
+          clearInterval(this.intervalId);
+          console.log('経験値処理終了')
+        }
+      },
+      updateProgressLevelUp: function () {
+        this.state += 1
+        console.log("progress:", this.state, "%");
+        
+        if (this.state == 100) {
+          alert('レベルアップします。')
+          this.state = 0
+          this.before_level += 1
+
+          if (this.after_level == this.before_level) {
+            alert('規定回数に達しました')
+            clearInterval(this.intervalId)
+            this.intervalId = setInterval(this.updateProgress, 30)
+          }
+        }
+
+      },
+      updateProgressLevelDown: function () {
+        this.state -= 1
+        console.log("progress:", this.state, "%");
+
+        if (this.state == 0) {
+          alert('レベルダウンします。')
+          this.state = 100
+          this.before_level -= 1
+          
+          if (this.after_level == this.before_level) {
+            alert('規定回数に達しました')
+            clearInterval(this.intervalId)
+            this.intervalId = setInterval(this.updateProgress, 30)
+          }
+        }
       }
     }
   }
 </script>
+
+<style scoped>
+progress {
+  width: 80%;
+  margin-top: 5px;
+  float: left;
+}
+
+#progress-content label {
+  float: left;
+  margin-right: 5px;
+}
+</style>

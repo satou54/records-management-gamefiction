@@ -16,19 +16,19 @@ class Api::ActionRecordsController < ApplicationController
                                           user_id: action_record_params[:user_id])
 
     # レベル処理を行う
-    levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+    @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
 
     if (@action_record.nil?)
       @action_record = ActionRecord.new(action_record_params)
 
       if @action_record.save
-        render :show, status: :created
+        render :registration, status: :created
       else
         render json: { errors: @action_record.errors.keys.map { |key| [key, @action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
       end
     else
       if @action_record.update(action_record_params)
-        render :show, status: :ok
+        render :registration, status: :ok
       else
         render json: { errors: @action_record.errors.keys.map { |key| [key, @action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
       end

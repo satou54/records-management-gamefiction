@@ -39,9 +39,23 @@ class ApplicationController < ActionController::Base
 
     # レベルを取得
     level = user_level.getUserLevel(current_user.id)
+    before_level = level
 
-    # 次レベルの経験値を取得
+    # 現在のレベルの必要経験値を取得
+    current_level_required_experience_point = level_info.getRequreidExperiecePoint(level)
+
+    # 次レベルの必要経験値を取得
     next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
+
+    puts "total"
+    puts total_experience_point
+    puts "current"
+    puts current_level_required_experience_point
+    puts "next"
+    puts next_level_required_experience_point
+
+    # 変更前のレベルの経験値テーブルにおける%を計算する
+    before_experience_point_percent = ((total_experience_point - current_level_required_experience_point).to_f / (next_level_required_experience_point - current_level_required_experience_point).to_f * 100).floor
 
     # 既にデータが存在しているかチェック
     if (action_record.checkActionRecord?(action_day, task_id, current_user.id).nil?)
@@ -149,13 +163,28 @@ class ApplicationController < ActionController::Base
     # 次のレベルアップに必要な経験値を計算する
     until_levelup = level_info.getNextLevelRequreidExperiencePoint(level, total_experience_point)
 
+    # レベル処理後のレベル
+    after_level = UserLevel.find_by(user_id: current_user.id).level
+
+    # レベル処理後のレベルの必要経験値
+    current_level_required_experience_point = level_info.getRequreidExperiecePoint(after_level)
+
+    # 変更後のレベルの経験値テーブルにおけるを計算する
+    after_experience_point_percent = ((total_experience_point - current_level_required_experience_point).to_f / (next_level_required_experience_point - current_level_required_experience_point).to_f * 100).floor
+
+    puts "--------------------------"
+    puts before_level
+    puts after_level
+    puts before_experience_point_percent
+    puts after_experience_point_percent
+    puts "---------------------------"
+
     # 配列を作って情報を返す
     levelup_data = {}
-    levelup_data.store(:level, level)
-    levelup_data.store(:total_experience_point, total_experience_point)
-    levelup_data.store(:next_level_required_experience_point, next_level_required_experience_point)
-    levelup_data.store(:until_levelup, until_levelup)
-    levelup_data.store(:user_id, current_user.id)
+    levelup_data.store(:before_level, before_level)
+    levelup_data.store(:after_level, after_level)
+    levelup_data.store(:before_experience_point_percent, before_experience_point_percent)
+    levelup_data.store(:after_experience_point_percent, after_experience_point_percent)
 
     levelup_data
   end
