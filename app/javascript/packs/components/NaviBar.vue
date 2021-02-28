@@ -63,7 +63,11 @@
         })
       },
       closeToggle: function () {
-        document.getElementById("navbar-toggler").click();
+        var window_w = window.innerWidth
+        // ハンバーガーメニュー表示時のみ行う
+        if (window_w <= 575) {
+          document.getElementById("navbar-toggler").click();
+        }
       },
       logoutUser: function () {
         axios.delete('/api/auth/sign_out', 
