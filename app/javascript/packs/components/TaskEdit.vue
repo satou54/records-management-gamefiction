@@ -8,26 +8,24 @@
           </div>
           <div class="card-body">
             <div class="card-text">
-              <form>
-                <div class="form-group row">
-                  <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
-                  <input type="text" id="task" class="form-control col-md-6" v-model="task" placeholder="習慣">
-                  <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
-                </div>
-                <div class="form-group row">
-                  <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
-                  <input type="text" id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
-                  <span v-if="!validationGoal" class="col-md-6 offset-md-4 text-warning">{{ goalValidateMessage }}</span>
-                </div>
-                <div class="form-group row">
-                  <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
-                  <input type="text" id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
-                  <span v-if="!!taskEditValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskEditValidateMessage }}</span>
-                </div>
-                <div class="row">
-                  <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" v-on:click="updateTask">目標修正</button>
-                </div>
-              </form>
+              <div class="form-group row">
+                <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
+                <input type="text" id="task" class="form-control col-md-6" v-model="task" placeholder="習慣">
+                <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
+              </div>
+              <div class="form-group row">
+                <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
+                <input type="text" id="goal" class="form-control col-md-6" v-model="goal" placeholder="目標">
+                <span v-if="!validationGoal" class="col-md-6 offset-md-4 text-warning">{{ goalValidateMessage }}</span>
+              </div>
+              <div class="form-group row">
+                <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
+                <input type="text" id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
+                <span v-if="!!taskEditValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskEditValidateMessage }}</span>
+              </div>
+              <div class="row">
+                <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" v-on:click="updateTask">目標修正</button>
+              </div>
             </div>
             <div class="card-text mx-auto text-center">
               <router-link to="/tasks">目標設定画面</router-link>

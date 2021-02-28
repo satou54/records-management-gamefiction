@@ -7,22 +7,20 @@
             <h1>ログイン</h1>
           </div>
           <div class="card-body">
-            <form>
-              <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
-                <input v-model="user.email" id="email" class="form-control col-md-6" type="text" placeholder="email">
-                <span v-if="!validationEmail" class="col-md-6 offset-md-4 text-warning">{{ emailValidateMessage }}</span>
-              </div>
-              <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
-                <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
-                <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
-              <span v-if="!!loginValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ loginValidateMessage }}</span>
-              </div>
-              <div class="row">
-                <button @click="loginUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">ログイン</button>
-              </div>
-            </form>
+            <div class="form-group row">
+              <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
+              <input v-model="user.email" id="email" class="form-control col-md-6" type="text" placeholder="email">
+              <span v-if="!validationEmail" class="col-md-6 offset-md-4 text-warning">{{ emailValidateMessage }}</span>
+            </div>
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
+              <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
+              <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
+            <span v-if="!!loginValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ loginValidateMessage }}</span>
+            </div>
+            <div class="row">
+              <button @click="loginUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">ログイン</button>
+            </div>
           </div>
         </div>
       </div>
