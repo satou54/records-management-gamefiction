@@ -8,33 +8,31 @@
           </div>
           <div class="card-body">
             <div class="card-text">
-              <!-- <form> -->
-                <div class="form-group row">
-                  <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
-                  <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
-                  <span v-if="!validationActionDay" class="col-md-6 offset-md-4 text-warning">{{ actionDayValidateMessage }}</span>
-                </div>
-                <div class="form-group row">
-                  <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
-                  <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
-                    <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
-                  </select>
-                  <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
-                </div>
-                <div class="form-group row">
-                  <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
-                  <output id="goal" class="form-control col-md-6">{{ goal }} {{ unit }}</output>
-                </div>
-                <div class="form-group row">
-                  <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
-                  <input type="text" id="action" class="form-control col-md-6" v-model="action">
-                  <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
-                  <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
-                </div>
-                <div class="row">
-                      <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
-                </div>
-              <!-- </form> -->
+              <div class="form-group row">
+                <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
+                <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
+                <span v-if="!validationActionDay" class="col-md-6 offset-md-4 text-warning">{{ actionDayValidateMessage }}</span>
+              </div>
+              <div class="form-group row">
+                <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
+                <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
+                  <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
+                </select>
+                <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
+              </div>
+              <div class="form-group row">
+                <label for="goal" class="col-md-4 col-form-label text-md-right">1週間の目標</label>
+                <output id="goal" class="form-control col-md-6">{{ goal }} {{ unit }}</output>
+              </div>
+              <div class="form-group row">
+                <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
+                <input type="text" id="action" class="form-control col-md-6" v-model="action">
+                <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
+                <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
+              </div>
+              <div class="row">
+                    <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
+              </div>
               <div class="card-text mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
