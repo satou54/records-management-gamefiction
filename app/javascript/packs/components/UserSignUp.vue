@@ -9,22 +9,22 @@
           <div class="card-body">
             <div class="form-group row">
               <label for="name" class="col-md-4 col-form-label text-md-right">ユーザ名</label>
-              <input v-model="user.name" id="name" class="form-control col-md-6" type="text" placeholder="name">
+              <input v-model.trim="user.name" id="name" class="form-control col-md-6" type="text" placeholder="name">
               <span v-if="!validationName" class="col-md-6 offset-md-4 text-warning">{{ nameValidateMessage }}</span>
             </div>
             <div class="form-group row">
               <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
-              <input v-model="user.email" id="Email" class="form-control col-md-6" type="text" placeholder="email">
+              <input v-model.trim="user.email" id="Email" class="form-control col-md-6" type="text" placeholder="email">
               <span v-if="!validationEmail" class="col-md-6 offset-md-4 text-warning">{{ emailValidateMessage }}</span>
             </div>
             <div class="from-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
-              <input v-model="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
+              <input v-model.trim="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
               <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
             </div>
             <div class="form-group row">
               <label for="passwordConfirmation" class="col-md-4 col-form-label text-md-right">パスワード(確認)</label>
-              <input v-model="user.passwordConfirmation" id="passwordConfirmation" class="form-control col-md-6" type="password" placeholder="passwordConfirmation">
+              <input v-model.trim="user.passwordConfirmation" id="passwordConfirmation" class="form-control col-md-6" type="password" placeholder="passwordConfirmation">
               <span v-if="!validationPasswordConfirm" class="col-md-6 offset-md-4 text-warning">{{ passwordConfirmValidateMessage }}</span>
               <span v-if="!!signUpValidateMessage" class="mt-3 mb-0 mx-auto alert alert-warning">{{ signUpValidateMessage }}</span>
             </div>
