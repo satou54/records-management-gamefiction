@@ -32,20 +32,32 @@
                 <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
               </div>
               <div class="row">
-                    <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
+                    <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord(); progressBarModalPosition()" data-toggle="modal" data-target="#progressBarModal" data-backdrop="false">登録</button>
               </div>
-              <div class="card-text mx-auto text-center">
+              <div class="mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
             </div>
-          </div>
-          <div class="col-12" id="progress-content">
-                <div class="col-3">
-                  <label for="progress-bar">Level: {{ before_level }}</label>
+            <div class="modal col-12" id="progressBarModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+              <div class="modal-dialog modal-xl mx-auto">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="col-12" id="progress-content">
+                      <div class="col-3">
+                        <label for="progress-bar">Level: {{ before_level }}</label>
+                      </div>
+                      <div class="col-12">
+                        <progress v-bind:value="state" max="100">{{ state }}%</progress>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-12">
-                  <progress v-bind:value="state" max="100">0%</progress>
-                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -83,7 +95,7 @@
         state: '',
         endState: '',
         intervalId: '',
-        stateFlg: ''
+        stateFlg: '',
       }
     },
     mounted: function () {
@@ -243,12 +255,10 @@
         console.log("progress:", this.state, "%");
         
         if (this.state == 100) {
-          alert('レベルアップします。')
           this.state = 0
           this.before_level += 1
 
           if (this.after_level == this.before_level) {
-            alert('規定回数に達しました')
             clearInterval(this.intervalId)
             this.intervalId = setInterval(this.updateProgress, 30)
           }
@@ -260,22 +270,28 @@
         console.log("progress:", this.state, "%");
 
         if (this.state == 0) {
-          alert('レベルダウンします。')
           this.state = 100
           this.before_level -= 1
           
           if (this.after_level == this.before_level) {
-            alert('規定回数に達しました')
             clearInterval(this.intervalId)
             this.intervalId = setInterval(this.updateProgress, 30)
           }
         }
+      },
+      progressBarModalPosition: function () {
+        var windowHeight = window.innerHeight
+        document.getElementById('progressBarModal').style.top = (windowHeight - 94) + 'px'
       }
     }
   }
 </script>
 
 <style scoped>
+.modal {
+  top: auto
+}
+
 progress {
   width: 80%;
   margin-top: 5px;
