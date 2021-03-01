@@ -81,7 +81,7 @@
               <div class="card-body">
                 <div class="card-text">
                   <p class="text-center">行動した日の記録をします。当日だけでなく過去に振り返って記録することもできます。</p>
-                  <img src="/assets/task_new.png" class="site-image">
+                  <img src="/assets/action_record_registration.png" class="site-image">
                 </div>
               </div>
             </div>
@@ -95,7 +95,7 @@
                     1週間の目標達成、行動記録で経験値が増加し、必要経験値が溜まるとレベルアップします。
                     ゲームフィケーションを用いることで習慣化する可能性が高くなります。
                   </p>
-                  <img src="/assets/task_new.png" class="site-image">
+                  <img src="/assets/progress_bar.png" class="site-image">
                 </div>
               </div>
             </div>
@@ -106,7 +106,7 @@
               <div class="card-body">
                 <div class="card-text">
                   <p class="text-center">過去の行動を振り返ることができます。一定期間ごとに振り返って自分の行動を確認しよう。</p>
-                  <img src="/assets/task_new.png" class="site-image">
+                  <img src="/assets/action_records_references.png" class="site-image">
                 </div>
               </div>
             </div>
@@ -255,6 +255,7 @@ button {
 #app-function img {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 
 #closing p {
