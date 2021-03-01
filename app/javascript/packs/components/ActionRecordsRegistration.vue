@@ -29,6 +29,7 @@
                 <input type="text" id="action" class="form-control col-md-6" v-model="action">
                 <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
                 <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
+                <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
               </div>
               <div class="row">
                     <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord">登録</button>
@@ -75,6 +76,7 @@
         taskValidateMessage: '',
         actionValidateMessage: '',
         actionRecordValidateMessage: '',
+        actionRecordSuccessMessage: '',
         startState: '',
         before_level: '',
         after_level: '',
@@ -184,6 +186,8 @@
                     action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
                   { headers: this.headers }
         ).then((response) => {
+          this.actionRecordSuccessMessage = '行動を記録しました'
+
           this.before_level = response.data.level_up_data['before_level']
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']

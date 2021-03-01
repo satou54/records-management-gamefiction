@@ -26,7 +26,7 @@
               <label for="passwordConfirmation" class="col-md-4 col-form-label text-md-right">パスワード(確認)</label>
               <input v-model="user.passwordConfirmation" id="passwordConfirmation" class="form-control col-md-6" type="password" placeholder="passwordConfirmation">
               <span v-if="!validationPasswordConfirm" class="col-md-6 offset-md-4 text-warning">{{ passwordConfirmValidateMessage }}</span>
-            <span v-if="!!signUpValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ signUpValidateMessage }}</span>
+              <span v-if="!!signUpValidateMessage" class="mt-3 mb-0 mx-auto alert alert-warning">{{ signUpValidateMessage }}</span>
             </div>
             <div class="row">
               <button @click="registerUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">登録</button>

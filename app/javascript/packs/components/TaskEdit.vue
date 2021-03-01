@@ -4,7 +4,7 @@
       <div class="col-md-10">
         <div class="card">
           <div class="card-header text-center">
-            <h1>習慣修正画面</h1>
+            <h1>習慣編集画面</h1>
           </div>
           <div class="card-body">
             <div class="card-text">
@@ -22,6 +22,7 @@
                 <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
                 <input type="text" id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
                 <span v-if="!!taskEditValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskEditValidateMessage }}</span>
+                <span v-if="!!taskEditSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ taskEditSuccessMessage }}</span>
               </div>
               <div class="row">
                 <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" v-on:click="updateTask">目標修正</button>
@@ -59,6 +60,7 @@ export default {
       taskValidateMessage: '',
       goalValidateMessage: '',
       taskEditValidateMessage: '',
+      taskEditSuccessMessage: ''
     }
   },
   mounted: function () {
@@ -104,6 +106,7 @@ export default {
                 { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.userId } }, 
                 { headers: this.headers }
       ).then((response) => {
+        this.taskEditSuccessMessage = '習慣を編集しました'
         this.taskEditValidateMessage = ''
       }, (error) => {
         console.log(error);

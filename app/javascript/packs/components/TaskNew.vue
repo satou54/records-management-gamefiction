@@ -22,6 +22,7 @@
                 <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
                 <input type="text" id="unit" class="form-control col-md-6" v-model="unit" placeholder="例)km、分">
                 <span v-if="!!taskNewValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskNewValidateMessage }}</span>
+                <span v-if="!!taskNewSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ taskNewSuccessMessage }}</span>
               </div>
               <div class="row">
                 <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" v-on:click="createTask">新規作成</button>
@@ -55,6 +56,7 @@ export default {
       taskValidateMessage: '',
       goalValidateMessage: '',
       taskNewValidateMessage: '',
+      taskNewSuccessMessage: ''
     }
   },
   computed: {
@@ -86,6 +88,7 @@ export default {
                 { headers: this.headers }
       ).then((response) => {
         alert('新規登録しました。')
+        this.taskNewSuccessMessage = '習慣を新規登録しました'
       }, (error) => {
         console.log(error);
         if (error.response.data && error.response.data.errors) {
