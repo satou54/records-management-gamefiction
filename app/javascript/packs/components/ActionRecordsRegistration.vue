@@ -10,12 +10,12 @@
             <div class="card-text">
               <div class="form-group row">
                 <label for="action_day" class="col-md-4 col-form-label text-md-right">日付</label>
-                <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model="ActionDay">
+                <input type="date" id="action_day" class="form-control col-md-6" @change="chengeDate" v-model.trim="ActionDay">
                 <span v-if="!validationActionDay" class="col-md-6 offset-md-4 text-warning">{{ actionDayValidateMessage }}</span>
               </div>
               <div class="form-group row">
                 <label for="task" class="col-md-4 col-form-label text-md-right">習慣</label>
-                <select id="task" class="form-control col-md-6" v-model="selectTask" @change="chengeTask" name="selectTask">
+                <select id="task" class="form-control col-md-6" v-model.trim="selectTask" @change="chengeTask" name="selectTask">
                   <option v-for="task in tasks" :key="task.id" v-bind:value="task.id">{{ task.task }}</option>
                 </select>
                 <span v-if="!validationTask" class="col-md-6 offset-md-4 text-warning">{{ taskValidateMessage }}</span>
@@ -26,7 +26,7 @@
               </div>
               <div class="form-group row">
                 <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
-                <input type="text" id="action" class="form-control col-md-6" v-model="action">
+                <input type="text" id="action" class="form-control col-md-6" v-model.trim="action">
                 <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
                 <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
                 <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
