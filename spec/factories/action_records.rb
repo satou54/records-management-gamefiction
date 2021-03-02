@@ -3,7 +3,7 @@ FactoryBot.define do
     action_day { "2021-02-06" }
     action { 1 }
     action_experience_point { 1 }
-    user { nil }
-    task { nil }
+    user
+    task
   end
 end
