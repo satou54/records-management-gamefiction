@@ -9,6 +9,12 @@ ja:
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード(確認)
+    models:
+      task: 習慣
+    attributes:
+      task: 習慣
+      goal: 目標
+      unit: 単位
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
