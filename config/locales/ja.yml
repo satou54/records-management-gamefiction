@@ -15,6 +15,12 @@ ja:
       task: 習慣
       goal: 目標
       unit: 単位
+    models:
+      action_record: 行動記録
+    attributes:
+      action_day: 日付
+      action: 実績
+      action_experience_point: 経験値
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
