@@ -21,7 +21,7 @@
               <div class="from-group row">
                 <label for="unit" class="col-md-4 col-form-label text-md-right">目標の単位</label>
                 <input type="text" id="unit" class="form-control col-md-6" v-model.trim="unit" placeholder="例)km、分">
-                <span v-if="!!taskNewValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ taskNewValidateMessage }}</span>
+                <span v-if="!!taskNewValidateMessage" class="mt-3 mb-0 mx-auto alert alert-danger">{{ taskNewValidateMessage }}</span>
                 <span v-if="!!taskNewSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ taskNewSuccessMessage }}</span>
               </div>
               <div class="row">
@@ -67,6 +67,9 @@ export default {
       if (!this.task) {
         this.taskValidateMessage = '習慣が空です。'
         return false
+      } else if (this.task.length > 30) {
+        this.taskValidateMessage = '習慣は30文字以内で入力してください'
+        return false
       }
       return true
     },
@@ -88,18 +91,19 @@ export default {
                 { headers: this.headers }
       ).then((response) => {
         alert('新規登録しました。')
+        this.taskValidateMessage = ''
         this.taskNewSuccessMessage = '習慣を新規登録しました'
       }, (error) => {
         console.log(error);
+        this.taskNewSuccessMessage = ''
+        this.taskNewValidateMessage = '習慣の登録に失敗しました'
         if (error.response.data && error.response.data.errors) {
           var errors = error.response.data.errors
           if (!!errors['task']) {
-            this.taskValidate = this.errors = errors['task'][0]
+            this.taskNewValidateMessage = errors['task'][0].replace('Task', '習慣')
           } else if (!!errors['goal']) {
-            this.goalValidate = errors['goal'][0]
+            this.taskNewValidateMessage = errors['goal'][0].replace('Goal', '目標')
           }
-        } else {
-          this.taskNewValidateMessage = '習慣の登録に失敗しました。'
         }
       });
     }

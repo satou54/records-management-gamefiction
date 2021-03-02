@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :action_records, dependent: :destroy
   has_many :user_levels, dependent: :destroy
 
-  validates :name, presence: true
-  validates :email, presence: true, uniqueness: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+  validates :name, presence: true, length: { maximum: 25 }
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, uniqueness: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }
+  validates :password, presence: true, length: { minimum: 6 }
+  validates :password_confirmation, presence: true, length: { minimum: 6 }
 end

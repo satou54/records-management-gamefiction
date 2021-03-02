@@ -26,7 +26,7 @@
               </div>
               <div class="form-group row">
                 <label for="action" class="col-md-4 col-form-label text-md-right">実績</label>
-                <input type="text" id="action" class="form-control col-md-6" v-model.trim="action">
+                <input type="text" id="action" class="form-control col-md-6" v-model.trim.number="action">
                 <span v-if="!validationAction" class="col-md-6 offset-md-4 text-warning">{{ actionValidateMessage }}</span>
                 <span v-if="!!actionRecordValidateMessage" class="col-md-6 offset-md-4 text-warning">{{ actionRecordValidateMessage }}</span>
                 <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
@@ -199,6 +199,7 @@
                   { headers: this.headers }
         ).then((response) => {
           this.actionRecordSuccessMessage = '行動を記録しました'
+          this.actionRecordValidateMessage = ''
 
           this.before_level = response.data.level_up_data['before_level']
           this.after_level = response.data.level_up_data['after_level']
@@ -224,15 +225,15 @@
           }
         }, (error) => {
           console.log(error)
+          this.actionRecordSuccessMessage = ''
+          this.actionRecordValidateMessage = '登録に失敗しました'
           if (error.response.data && error.response.data.errors) {
             var errors = error.response.data.errors
             if (!!errors['action_day']) {
-              this.actionDayValidateMessage = this.errors = errors['action_day'][0]
+              this.actionRecordValidateMessage = errors['action_day'][0].replace('Action_day', '日付')
             } else if (!!errors['action']) {
-              this.actionValidateMessage = errors['action'][0]
+              this.actionRecordValidateMessage = errors['action'][0].replace('Action', '実績')
             }
-          } else {
-            this.actionRecordValidateMessage = '登録に失敗しました。'
           }
         })
       },

@@ -26,7 +26,7 @@
               <label for="passwordConfirmation" class="col-md-4 col-form-label text-md-right">パスワード(確認)</label>
               <input v-model.trim="user.passwordConfirmation" id="passwordConfirmation" class="form-control col-md-6" type="password" placeholder="passwordConfirmation">
               <span v-if="!validationPasswordConfirm" class="col-md-6 offset-md-4 text-warning">{{ passwordConfirmValidateMessage }}</span>
-              <span v-if="!!signUpValidateMessage" class="mt-3 mb-0 mx-auto alert alert-warning">{{ signUpValidateMessage }}</span>
+              <span v-if="!!signUpValidateMessage" class="mt-3 mb-0 mx-auto alert alert-danger">{{ signUpValidateMessage }}</span>
             </div>
             <div class="row">
               <button @click="registerUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">登録</button>
@@ -64,8 +64,10 @@
       },
       validationName: function () {
         if (!this.user.name) {
-          this.nameValidateMessage = 'ユーザ名が空です。'
+          this.nameValidateMessage = 'ユーザ名が空です'
           return false
+        } else if (this.user.name.length > 25) {
+          this.nameValidateMessage = 'ユーザ名は25文字以内で入力してください'
         }
         return true
       },
@@ -73,10 +75,13 @@
         const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
         if (!this.user.email) {
-          this.emailValidateMessage = 'メールアドレスが空です。'
+          this.emailValidateMessage = 'メールアドレスが空です'
           return false
         } else if (!emailRegExp.test(this.user.email)) {
-          this.emailValidateMessage = 'メールアドレスの形式が間違っています。'
+          this.emailValidateMessage = 'メールアドレスの形式が間違っています'
+          return false
+        } else if (this.user.email.length > 255) {
+          this.emailValidateMessage = 'メールアドレスは255文字以内で入力してください'
           return false
         }
         return true
@@ -88,20 +93,20 @@
           this.passwordValidateMessage = 'パスワードが空です'
           return false
         } else if (!passwordRegExp.test(this.user.password)) {
-          this.passwordValidateMessage = 'パスワードは半角英数字で入力してください。'
+          this.passwordValidateMessage = 'パスワードは半角英数字で入力してください'
           return false
         } else if (this.user.password.length < 6) {
-          this.passwordValidateMessage = 'パスワードは6文字以上です。'
+          this.passwordValidateMessage = 'パスワードは6文字以上です'
           return false
         }
         return true
       },
       validationPasswordConfirm: function () {
         if (!this.user.passwordConfirmation) {
-          this.passwordConfirmValidateMessage = 'パスワード(確認)が空です。'
+          this.passwordConfirmValidateMessage = 'パスワード(確認)が空です'
           return false
         } else if (this.user.password !== this.user.passwordConfirmation) {
-          this.passwordConfirmValidateMessage = 'パスワードと一致しません。'
+          this.passwordConfirmValidateMessage = 'パスワードと一致しません'
           return false
         }
         return true
@@ -128,7 +133,7 @@
         }, (error) => {
           console.log(error)
           if (error.response.status == 422) {
-            this.signUpValidateMessage = "登録に失敗しました。もう一度試してください。"
+            this.signUpValidateMessage = "登録に失敗しました。もう一度試してください"
           }
         })
       }

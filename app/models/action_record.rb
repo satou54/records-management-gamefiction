@@ -3,8 +3,8 @@ class ActionRecord < ApplicationRecord
   belongs_to :task
 
   validates :action_day, presence: true
-  validates :action, presence: true
-  validates :action_experience_point, presence: true
+  validates :action, presence: true, numericality: true
+  validates :action_experience_point, presence: true, numericality: true
   validates :action_day, uniqueness: { scope: [:task_id, :user_id] }
 
   PERCENT = 100
