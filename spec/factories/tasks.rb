@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :task do
-    task { "MyString" }
-    goal { 1 }
-    user { nil }
+    task { "ランニング" }
+    goal { 10 }
+    user
   end
 end
