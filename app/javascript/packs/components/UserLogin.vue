@@ -16,7 +16,7 @@
               <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
               <input v-model.trim="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
               <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
-              <span v-if="!!loginValidateMessage" class="mt-3 mb-0 mx-auto alert alert-warning">{{ loginValidateMessage }}</span>
+              <span v-if="!!loginValidateMessage" class="mt-3 mb-0 mx-auto alert alert-danger">{{ loginValidateMessage }}</span>
             </div>
             <div class="row">
               <button @click="loginUser" :disabled="!validation" class="btn btn-primary mt-1 mx-auto d-block">ログイン</button>
@@ -49,12 +49,14 @@
       },
       validationEmail: function () {
         const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-        
         if (!this.user.email) {
-          this.emailValidateMessage = 'メールアドレスが空です。'
+          this.emailValidateMessage = 'メールアドレスが空です'
           return false
         } else if (!emailRegExp.test(this.user.email)) {
-          this.emailValidateMessage = 'メールアドレスの形式が間違っています。'
+          this.emailValidateMessage = 'メールアドレスの形式が間違っています'
+          return false
+        } else if (this.user.email.length > 255) {
+          this.emailValidateMessage = 'メールアドレスは255文字以内で入力してください'
           return false
         }
         return true
@@ -63,13 +65,13 @@
         const passwordRegExp = /^[0-9a-zA-Z]*$/
 
         if (!this.user.password) {
-          this.passwordValidateMessage = 'パスワードが空です。'
+          this.passwordValidateMessage = 'パスワードが空です'
           return false
         } else if (!passwordRegExp.test(this.user.password)) {
-          this.passwordValidateMessage = 'パスワードは半角英数字で入力してください。'
+          this.passwordValidateMessage = 'パスワードは半角英数字で入力してください'
           return false
         } else if (this.user.password.length < 6) {
-          this.passwordValidateMessage = 'パスワードは6文字以上です。'
+          this.passwordValidateMessage = 'パスワードは6文字以上です'
           return false
         }
         return true
@@ -89,8 +91,9 @@
           return response
         }, (error) => {
           console.log(error)
+          error.response.data.errors
           if (error.response.status == 401) {
-            this.loginValidateMessage = "メールアドレスかパスワードが間違っています。"
+            this.loginValidateMessage = "メールアドレスかパスワードが間違っています"
           }
         })
       }
