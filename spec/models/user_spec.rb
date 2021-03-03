@@ -66,16 +66,8 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context "パスワード(確認)が空のとき" do
-      let(:user) { build(:user, password_confirmation: "") }
-      it "エラーが発生する" do
-        expect(subject).to eq false
-        expect(user.errors.messages[:password_confirmation]).to include "を入力してください"
-      end
-    end
-
-    context "パスワード(確認)がパスワードと一致しないとき" do
-      let(:user) { build(:user, password_confirmation: "123456") }
+    context "パスワードとパスワード(確認)が一致しないとき" do
+      let(:user) { build(:user, password: "password", password_confirmation: "password1") }
       it "エラーが発生する" do
         expect(subject).to eq false
         expect(user.errors.messages[:password_confirmation]).to include "とパスワードの入力が一致しません"
