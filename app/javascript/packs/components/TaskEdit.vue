@@ -48,11 +48,6 @@ export default {
   },
   data: function () {
     return {
-      headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
       task: '',
       goal: '',
       unit: '',
@@ -93,9 +88,7 @@ export default {
   },
   methods: {
     fetchTasks: function () {
-      axios.get('/api/tasks/' + this.id, 
-                { headers: this.headers }
-      ).then((response) => {
+      axios.get('/api/tasks/' + this.id).then((response) => {
         this.task = (response.data.task['task']);
         this.goal = (response.data.task['goal']);
         this.unit = (response.data.task['unit']);
@@ -106,8 +99,7 @@ export default {
     },
     updateTask: function () {
       axios.put('/api/tasks/' + this.id, 
-                { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.userId } }, 
-                { headers: this.headers }
+                { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: this.userId } }
       ).then((response) => {
         this.taskEditSuccessMessage = '習慣を編集しました'
         this.taskEditValidateMessage = ''

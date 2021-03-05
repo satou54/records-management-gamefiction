@@ -29,11 +29,6 @@
     data: function () {
       return {
         userLoginFlg: false,
-        headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
       }
     },
     mounted: function () {
@@ -70,11 +65,9 @@
         }
       },
       logoutUser: function () {
-        axios.delete('/api/auth/sign_out', 
-                    { headers: this.headers } 
-        ).then((response) => {
-            localStorage.clear()
-            location.href = "http://localhost:3000/"
+        axios.delete('/api/auth/sign_out').then((response) => {
+          localStorage.clear()
+          location.href = "http://localhost:3000/"
         }, (error) => {
           console.log(error)
         })

@@ -45,11 +45,6 @@ import axios from 'axios'
 export default {
   data: function () {
     return {
-      headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
       task: '',
       goal: '',
       unit: '',
@@ -87,8 +82,7 @@ export default {
   methods: {
     createTask: function () {
       axios.post('/api/tasks', 
-                { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: localStorage.getItem('user_id') } }, 
-                { headers: this.headers }
+                { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: localStorage.getItem('user_id') } }
       ).then((response) => {
         alert('新規登録しました。')
         this.taskValidateMessage = ''
