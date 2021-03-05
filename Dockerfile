@@ -1,14 +1,15 @@
 FROM ruby:2.7.2
-RUN apt-get update -qq && \
-    apt-get install -y build-essential libpq-dev nodejs && \
-    apt-get install -y nginx
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update -qq \
+    && apt-get install -y nodejs yarn \
+    && mkdir /records-management-gamefiction
+
 # Nginx
-ADD nginx.conf /etc/nginx/sites-available/app.conf
-RUN rm -f /etc/nginx/sites-enabled/default && \
-    ln -s /etc/nginx/sites-available/app.conf /etc/nginx/sites-enabled/app.conf
+RUN rm -f /etc/nginx/conf.d/*
+ADD nginx.conf /etc/nginx/conf.d/records-management-gamefiction.conf
 
 # Rails App
-RUN mkdir /records-management-gamefiction
 WORKDIR /records-management-gamefiction
 ADD Gemfile /records-management-gamefiction/Gemfile
 ADD Gemfile.lock /records-management-gamefiction/Gemfile.lock

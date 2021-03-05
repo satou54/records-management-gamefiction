@@ -2,8 +2,8 @@ version: "3"
 services:
   db:
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: password
+    env_file:
+      - ./environments/db.env
     ports:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password
@@ -11,7 +11,7 @@ services:
       - mysql-data:/var/lib/mysql
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bundle exec puma -C config/puma.rb
     volumes:
       - .:/records-management-gamefiction
     ports:
