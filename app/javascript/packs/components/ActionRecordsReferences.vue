@@ -55,11 +55,6 @@ export default {
   data: function () {
     return {
       interval: 'thisMonth',
-      headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
       referencesData: []
     }
   },
@@ -69,9 +64,7 @@ export default {
   methods: {
     getReferencesData: function () {
       axios.get('/api/action_records/actionRecordReferences', 
-                { params: { interval: this.interval },
-                  headers: this.headers
-                }
+                { params: { interval: this.interval } }        
       ).then((response) => {
         this.referencesData.splice(0)
         for(var i = 0; i <response.data.references_data.length; i++) {

@@ -71,11 +71,6 @@
   export default {
     data: function () {
       return {
-        headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
         tasks: [],
         selectTask: '',
         goal: '',
@@ -142,9 +137,7 @@
         this.ActionDay = yyyy + '-' + mm+'-' + dd;
       },
       fetchTasks: function () {
-        axios.get('/api/tasks', 
-                  { headers: this.headers }
-        ).then((response) => {
+        axios.get('/api/tasks').then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);
           }
@@ -153,9 +146,7 @@
         });
       },
       fetchActionRecord: function () {
-        axios.get('/api/action_records', 
-                  { headers: this.headers }
-        ).then((response) => {
+        axios.get('/api/action_records').then((response) => {
           for(var i = 0; i < response.data.action_records.length; i++) {
             this.ActionRecords.push(response.data.action_records[i]);
           }
@@ -195,8 +186,7 @@
         this.culculateActionExperiencePoint();
         axios.post('/api/action_records/createOrUpdate', 
                   { action_record: { action_day: this.ActionDay, action: Number(this.action), 
-                    action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
-                  { headers: this.headers }
+                    action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }}
         ).then((response) => {
           this.actionRecordSuccessMessage = '行動を記録しました'
           this.actionRecordValidateMessage = ''
@@ -238,22 +228,18 @@
         })
       },
       updateProgress: function () {
-        console.log('updateProgress')
         if (this.stateFlg) {
           this.state += 1
         } else {
           this.state -= 1
         }
-        console.log("progress:", this.state, "%");
 
         if (this.state == this.endState) {
           clearInterval(this.intervalId);
-          console.log('経験値処理終了')
         }
       },
       updateProgressLevelUp: function () {
         this.state += 1
-        console.log("progress:", this.state, "%");
         
         if (this.state == 100) {
           this.state = 0
@@ -268,7 +254,6 @@
       },
       updateProgressLevelDown: function () {
         this.state -= 1
-        console.log("progress:", this.state, "%");
 
         if (this.state == 0) {
           this.state = 100

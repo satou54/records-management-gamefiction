@@ -49,11 +49,6 @@
     data: function () {
       return {
         tasks: [],
-        headers: {
-                  'access-token': localStorage.getItem('access-token'),
-                  uid: localStorage.getItem('uid'),
-                  client: localStorage.getItem('client') 
-                },
         taskErrorMessage: ''
       }
     },
@@ -62,9 +57,7 @@
     },
     methods: {
       fetchTasks: function () {
-        axios.get('/api/tasks', 
-                  { headers: this.headers }
-        ).then((response) => {
+        axios.get('/api/tasks').then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
             this.tasks.push(response.data.tasks[i]);
           }
@@ -74,9 +67,7 @@
       },
       deleteTask: function (task_id) {
         axios.delete('/api/tasks/' + task_id, 
-                    { data: {id: task_id}, 
-                      headers: this.headers 
-                    }
+                    { data: {id: task_id}}
         ).then((response) => {
           location.reload();
         }, (error) => {

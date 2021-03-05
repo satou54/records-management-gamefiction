@@ -124,7 +124,7 @@
           localStorage.setItem('name', response.data['data'].name)
           axios.post('api/user_levels', { level: 1, total_experience_point: 0, 
                                           user_id: localStorage.getItem('user_id') 
-                                        }).then((response) => {
+          }).then((response) => {
           }, (error) => {
             console.log(error)
           })
@@ -132,9 +132,7 @@
           return response
         }, (error) => {
           console.log(error)
-          if (error.response.status == 422) {
-            this.signUpValidateMessage = "登録に失敗しました。もう一度試してください"
-          }
+          this.signUpValidateMessage = "登録に失敗しました。もう一度試してください"
         })
       }
     }
