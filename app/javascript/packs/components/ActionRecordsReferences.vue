@@ -10,7 +10,7 @@
             <div class="card-text">
               <div class="center-block text-center cp_ipselect cp_sl01">
                 <label for="interval">期間:</label>
-                <select id="interval" class="interval_list" @change="getReferencesData" v-model="interval">
+                <select id="interval" class="interval-list" @change="getReferencesData" v-model="interval">
                   <option value="thisMonth" selected>今月</option>
                   <option value="lastMonth">先月</option>
                   <option value="lastThreeMonth">過去3ヶ月</option>
@@ -80,7 +80,7 @@ export default {
 
 <style scoped>
 /* セレクトメニュー */
-.interval_list {
+.interval-list {
   cursor: pointer;
   text-overflow: ellipsis;
   outline: none;

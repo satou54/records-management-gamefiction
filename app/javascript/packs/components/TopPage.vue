@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-12" id="title-content">
             <h1 class="text-center">しゅうかん+</h1>
-            <h3 class="text-center">新しい習慣をつくって人生をかえよう</h3>
+            <h3 class="text-center">新しい習慣をつくって生活をかえよう</h3>
             <button class="btn btn-primary mx-auto d-block" @click="loginGestUser" v-if="!userLoginFlg">ゲストログイン</button>
           </div>
         </div>
@@ -117,7 +117,7 @@
         <div class="row">
           <div class="col-12" id="closing-content">
             <h3 class="text-center">さっそく始めよう</h3>
-            <p class="text-center">新しい習慣をつくって人生をかえよう</p>
+            <p class="text-center">新しい習慣をつくって生活をかえよう</p>
             <button class="btn btn-primary mx-auto d-block" @click="loginGestUser" v-if="!userLoginFlg">ゲストログイン</button>
           </div>
         </div>

@@ -32,13 +32,13 @@
                 <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
               </div>
               <div class="row">
-                    <button class="btn btn-primary mt-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord(); progressBarModalPosition()" data-toggle="modal" data-target="#progressBarModal" data-backdrop="false">登録</button>
+                    <button class="btn btn-primary my-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord(); progressBarModalPosition()" data-toggle="modal" data-target="#progress-bar-modal" data-backdrop="false">登録</button>
               </div>
               <div class="mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
               </div>
             </div>
-            <div class="modal col-12" id="progressBarModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal col-12" id="progress-bar-modal" tabindex="-1" role="dialog" aria-labelledby="basic-modal" aria-hidden="true">
               <div class="modal-dialog modal-xl mx-auto">
                 <div class="modal-content">
                   <div class="modal-body">
@@ -46,18 +46,13 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <div class="col-12" id="progress-content">
-                      <div class="col-3">
-                        <label for="progress-bar">Level: {{ before_level }}</label>
-                      </div>
-                      <div class="col-12">
-                        <progress v-bind:value="state" max="100">{{ state }}%</progress>
-                      </div>
+                        <label for="progress-bar" class="text-center">Level: {{ before_level }}</label>
+                        <progress v-bind:value="state" max="100" class="text-center">{{ state }}%</progress>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -267,7 +262,7 @@
       },
       progressBarModalPosition: function () {
         var windowHeight = window.innerHeight
-        document.getElementById('progressBarModal').style.top = (windowHeight - 94) + 'px'
+        document.getElementById('progress-bar-modal').style.top = (windowHeight - 94) + 'px'
       }
     }
   }
