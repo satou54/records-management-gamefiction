@@ -46,13 +46,6 @@ class ApplicationController < ActionController::Base
     # 次レベルの必要経験値を取得
     next_level_required_experience_point = level_info.getRequreidExperiecePoint(level + 1)
 
-    puts "total"
-    puts total_experience_point
-    puts "current"
-    puts current_level_required_experience_point
-    puts "next"
-    puts next_level_required_experience_point
-
     # 変更前のレベルの経験値テーブルにおける%を計算する
     before_experience_point_percent = ((total_experience_point - current_level_required_experience_point).to_f / (next_level_required_experience_point - current_level_required_experience_point).to_f * 100).floor
 
@@ -171,14 +164,7 @@ class ApplicationController < ActionController::Base
     # 変更後のレベルの経験値テーブルにおけるを計算する
     after_experience_point_percent = ((total_experience_point - current_level_required_experience_point).to_f / (next_level_required_experience_point - current_level_required_experience_point).to_f * 100).floor
 
-    puts "--------------------------"
-    puts before_level
-    puts after_level
-    puts before_experience_point_percent
-    puts after_experience_point_percent
-    puts "---------------------------"
-
-    # 配列を作って情報を返す
+    # フロントでのレベル処理に必要なデータを作成
     levelup_data = {}
     levelup_data.store(:before_level, before_level)
     levelup_data.store(:after_level, after_level)
