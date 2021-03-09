@@ -42,10 +42,9 @@ class Api::ActionRecordsController < ApplicationController
     # intervalの値に応じてform...toを取得
     case interval
     when "thisWeek"
-      action_record = ActionRecord.new
       today = Time.now
-      day_of_week = action_record.getDayOfTheWeek(today)
-      range_of_week = action_record.getWeekRange(today, day_of_week)
+      day_of_week = ActionRecord.getDayOfTheWeek(today)
+      range_of_week = ActionRecord.getWeekRange(today, day_of_week)
       from = range_of_week[0]
       to = range_of_week[1]
     when "thisMonth"
