@@ -12,12 +12,15 @@
 
 ActiveRecord::Schema.define(version: 2021_02_24_071855) do
 
-  create_table "action_records", id: :integer, charset: "utf8mb4", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "action_records", force: :cascade do |t|
     t.date "action_day", null: false
     t.float "action", null: false
     t.integer "action_experience_point", default: 0, null: false
     t.bigint "user_id", null: false
-    t.integer "task_id", null: false
+    t.bigint "task_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["action_day", "task_id"], name: "index_action_records_on_action_day_and_task_id", unique: true
@@ -25,14 +28,14 @@ ActiveRecord::Schema.define(version: 2021_02_24_071855) do
     t.index ["user_id"], name: "index_action_records_on_user_id"
   end
 
-  create_table "levels", id: :integer, charset: "utf8mb4", force: :cascade do |t|
+  create_table "levels", force: :cascade do |t|
     t.integer "level", null: false
     t.integer "required_experience_point", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tasks", id: :integer, charset: "utf8mb4", force: :cascade do |t|
+  create_table "tasks", force: :cascade do |t|
     t.string "task", null: false
     t.float "goal", null: false
     t.bigint "user_id", null: false
@@ -42,7 +45,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_071855) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "user_levels", charset: "utf8mb4", force: :cascade do |t|
+  create_table "user_levels", force: :cascade do |t|
     t.integer "level", null: false
     t.integer "total_experience_point", null: false
     t.bigint "user_id", null: false
@@ -51,7 +54,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_071855) do
     t.index ["user_id"], name: "index_user_levels_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.string "encrypted_password", default: "", null: false
