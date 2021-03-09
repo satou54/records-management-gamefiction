@@ -49,6 +49,11 @@
   export default {
     data: function () {
       return {
+        headers: {
+                  'access-token': localStorage.getItem('access-token'),
+                  uid: localStorage.getItem('uid'),
+                  client: localStorage.getItem('client') 
+                },
         name: localStorage.getItem('name'),
         level: '',
         referencesData: []
@@ -61,7 +66,9 @@
     methods: {
       fetchReferencesData: function () {
         axios.get('/api/action_records/actionRecordReferences', 
-                  { params: { interval: "thisWeek" } }
+                  { params: { interval: "thisWeek" },
+                    headers: this.headers
+                  }
       ).then((response) => {
         this.referencesData.splice(0)
         for(var i = 0; i <response.data.references_data.length; i++) {
@@ -73,7 +80,9 @@
       },
       fetchUserLevel: function () {
         axios.get('/api/user_levels',
-                  { params: { user_id: localStorage.getItem('user_id') } }
+                  { params: { user_id: localStorage.getItem('user_id') },
+                    headers: this.headers
+                  }
         ).then((response) => {
           this.level = response.data.user_level.level
         }, (error) => {
