@@ -1,9 +1,8 @@
 class Api::ActionRecordsController < ApplicationController
+  include Common, LevelUpDown
   before_action :authenticate_user!
   # １週間
   WEEK = 7
-  # 確率
-  PERCENT = 100
 
   def index
     @action_records = current_user.action_records
@@ -42,10 +41,9 @@ class Api::ActionRecordsController < ApplicationController
     # intervalの値に応じてform...toを取得
     case interval
     when "thisWeek"
-      action_record = ActionRecord.new
       today = Time.now
-      day_of_week = action_record.getDayOfTheWeek(today)
-      range_of_week = action_record.getWeekRange(today, day_of_week)
+      day_of_week = getDayOfTheWeek(today)
+      range_of_week = getWeekRange(today, day_of_week)
       from = range_of_week[0]
       to = range_of_week[1]
     when "thisMonth"
@@ -96,7 +94,7 @@ class Api::ActionRecordsController < ApplicationController
       total_actions = total_actions.sum
 
       # 達成度を計算し変数に代入
-      achievement_rate = (total_actions.to_f / total_goal.to_f * PERCENT).floor(1).to_f
+      achievement_rate = (total_actions.to_f / total_goal.to_f * Common::PERCENT).floor(1).to_f
 
       task_data.store(:task, task_name)
       task_data.store(:total_goal, total_goal)

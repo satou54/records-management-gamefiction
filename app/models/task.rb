@@ -4,4 +4,8 @@ class Task < ApplicationRecord
 
   validates :task, presence: true, length: { maximum: 30 }
   validates :goal, presence: true, numericality: true
+
+  def self.getTaskGoal(id)
+    Task.find(id).goal
+  end
 end
