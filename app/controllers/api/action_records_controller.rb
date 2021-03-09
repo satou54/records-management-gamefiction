@@ -1,4 +1,5 @@
 class Api::ActionRecordsController < ApplicationController
+  include Common
   before_action :authenticate_user!
   # １週間
   WEEK = 7
@@ -43,8 +44,8 @@ class Api::ActionRecordsController < ApplicationController
     case interval
     when "thisWeek"
       today = Time.now
-      day_of_week = ActionRecord.getDayOfTheWeek(today)
-      range_of_week = ActionRecord.getWeekRange(today, day_of_week)
+      day_of_week = getDayOfTheWeek(today)
+      range_of_week = getWeekRange(today, day_of_week)
       from = range_of_week[0]
       to = range_of_week[1]
     when "thisMonth"

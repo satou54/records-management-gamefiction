@@ -1,11 +1,10 @@
 class ApplicationController < ActionController::Base
   include DeviseTokenAuth::Concerns::SetUserByToken
+  include Common
   skip_before_action :verify_authenticity_token, if: :devise_controller?
 
   # 目標達成時の経験値
   ACHIEVEMENTEXPERIENCEPOINT = 100
-
-  PERCENT = 100
 
   # 次レベル
   UNTILNEXTLEVEL = 1
@@ -14,16 +13,16 @@ class ApplicationController < ActionController::Base
   def levelUpAndDown(task_id, action_day, action)
 
     # task_idから目標を取得
-    goal = Task.find(task_id).goal
+    goal = Task.getTaskGoal(task_id)
 
     # 実績日をTime型に変換
     action_day = Time.parse(action_day)
 
     # 曜日を取得
-    action_day_of_week = ActionRecord.getDayOfTheWeek(action_day)
+    action_day_of_week = getDayOfTheWeek(action_day)
 
     # 曜日毎に1週間の範囲を取得
-    action_day_of_the_week = ActionRecord.getWeekRange(action_day, action_day_of_week)
+    action_day_of_the_week = getWeekRange(action_day, action_day_of_week)
     from = action_day_of_the_week[0]
     to = action_day_of_the_week[1]
 
@@ -52,7 +51,7 @@ class ApplicationController < ActionController::Base
       # データが存在しない場合
 
       # 獲得経験値を計算
-      point = ActionRecord.culcurateExperiencePoint(action, goal)
+      point = culcurateExperiencePoint(action, goal)
 
       # 今回の追加分の前に目標を達成しているかチェック
       if (week_of_action < goal)
@@ -89,7 +88,7 @@ class ApplicationController < ActionController::Base
       # 修正により実績が増加した場合
       if (difference > 0)
         # 差分と目標で経験値を算出
-        point = ActionRecord.culcurateExperiencePoint(difference, goal)
+        point = culcurateExperiencePoint(difference, goal)
 
         # 今回の差分の前に目標に達しているかチェック
         if (week_of_action <= goal)
@@ -120,7 +119,7 @@ class ApplicationController < ActionController::Base
         # 修正によりactionが減少した場合
 
         # 差分と目標から減少する経験値を計算
-        point = ActionRecord.culcurateExperiencePoint(difference, goal)
+        point = culcurateExperiencePoint(difference, goal)
 
         # 今回の減少分で減少する前に目標を達しているかチェック
         if (week_of_action >= goal)
