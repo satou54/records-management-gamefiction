@@ -32,7 +32,7 @@ class ActionRecord < ApplicationRecord
   end
 
   # 既にデータが存在するかチェックする
-  def self.checkActionRecord?(action_day, task_id, user_id)
+  def self.getActionRecord(action_day, task_id, user_id)
     ActionRecord.find_by(action_day: action_day, task_id: task_id, user_id: user_id)
   end
 
