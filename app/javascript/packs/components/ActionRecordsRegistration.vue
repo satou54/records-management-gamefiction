@@ -32,7 +32,7 @@
                 <span v-if="!!actionRecordSuccessMessage" class="mt-3 mb-0 mx-auto alert alert-primary">{{ actionRecordSuccessMessage }}</span>
               </div>
               <div class="row">
-                    <button class="btn btn-primary my-1 mx-auto d-block" :disabled="!validation" @click="createActionRecord(); progressBarModalPosition()" data-toggle="modal" data-target="#progress-bar-modal" data-backdrop="false">登録</button>
+                    <button class="btn btn-primary my-1 mx-auto d-block" :disabled="!validation" @click="registerActionRecord(); progressBarModalPosition()" data-toggle="modal" data-target="#progress-bar-modal" data-backdrop="false">登録</button>
               </div>
               <div class="mx-auto text-center">
                 <router-link to="/mypage">マイページ</router-link>
@@ -78,7 +78,9 @@
         ActionRecords: [],
         ActionDay: '',
         action: '',
+        actionRecordId: '',
         action_experience_point: '',
+        updateFlg: false,
         actionDayValidateMessage: '',
         taskValidateMessage: '',
         actionValidateMessage: '',
@@ -179,29 +181,82 @@
           if (this.ActionRecords[i].action_day == this.ActionDay
               && this.ActionRecords[i].task_id == this.selectTask
               && this.ActionRecords[i].user_id == localStorage.getItem('user_id')) {
+            this.actionRecordId = this.ActionRecords[i].id
             this.action = this.ActionRecords[i].action
+            this.updateFlg = true
           }
         }
       },
       culculateActionExperiencePoint: function () {
         this.action_experience_point = (Math.round(this.action * 100) / 100) / (Math.round(this.goal * 100) / 100) * 100
       },
-      createActionRecord: function () {
+      registerActionRecord: function () {
         this.culculateActionExperiencePoint();
-        axios.post('/api/action_records/createOrUpdate', 
+
+        if (this.updateFlg) {
+          this.updateActionRecord()
+        } else {
+          this.createActionRecord()
+        }
+      },
+      createActionRecord: function () {
+        axios.post('/api/action_records', 
                   { action_record: { action_day: this.ActionDay, action: Number(this.action), 
                     action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask }},
                   { headers: this.headers }
         ).then((response) => {
           this.actionRecordSuccessMessage = '行動を記録しました'
           this.actionRecordValidateMessage = ''
-
           this.before_level = response.data.level_up_data['before_level']
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']
           this.endState = response.data.level_up_data['after_experience_point_percent']
 
-          if (this.after_level - this.before_level == 0) {
+          this.updateLevel()
+        }, (error) => {
+          console.log(error)
+          this.actionRecordSuccessMessage = ''
+          this.actionRecordValidateMessage = '登録に失敗しました'
+          if (error.response.data && error.response.data.errors) {
+            var errors = error.response.data.errors
+            if (!!errors['action_day']) {
+              this.actionRecordValidateMessage = errors['action_day'][0].replace('Action_day', '日付')
+            } else if (!!errors['action']) {
+              this.actionRecordValidateMessage = errors['action'][0].replace('Action', '実績')
+            }
+          }
+        })
+      },
+      updateActionRecord: function () {
+        axios.put('/api/action_records/' + this.actionRecordId, 
+                  { action_record: { id: this.actionRecordId, action_day: this.ActionDay, action: Number(this.action), 
+                    action_experience_point: this.action_experience_point, user_id: localStorage.getItem('user_id'), task_id: this.selectTask } },
+                  { headers: this.headers }
+        ).then((response) => {
+          this.actionRecordSuccessMessage = '行動を記録しました'
+          this.actionRecordValidateMessage = ''
+          this.before_level = response.data.level_up_data['before_level']
+          this.after_level = response.data.level_up_data['after_level']
+          this.state = response.data.level_up_data['before_experience_point_percent']
+          this.endState = response.data.level_up_data['after_experience_point_percent']
+
+          this.updateLevel()
+        }, (error) => {
+          console.log(error)
+          this.actionRecordSuccessMessage = ''
+          this.actionRecordValidateMessage = '登録に失敗しました'
+          if (error.response.data && error.response.data.errors) {
+            var errors = error.response.data.errors
+            if (!!errors['action_day']) {
+              this.actionRecordValidateMessage = errors['action_day'][0].replace('Action_day', '日付')
+            } else if (!!errors['action']) {
+              this.actionRecordValidateMessage = errors['action'][0].replace('Action', '実績')
+            }
+          }
+        })
+      },
+      updateLevel: function () {
+        if (this.after_level - this.before_level == 0) {
             // レベルアップ・ダウンなしの場合
             if (this.endState > this.state) {
               this.stateFlg = true
@@ -218,19 +273,6 @@
             this.stateFlg = false
             this.intervalId = setInterval(this.updateProgressLevelDown, 30)
           }
-        }, (error) => {
-          console.log(error)
-          this.actionRecordSuccessMessage = ''
-          this.actionRecordValidateMessage = '登録に失敗しました'
-          if (error.response.data && error.response.data.errors) {
-            var errors = error.response.data.errors
-            if (!!errors['action_day']) {
-              this.actionRecordValidateMessage = errors['action_day'][0].replace('Action_day', '日付')
-            } else if (!!errors['action']) {
-              this.actionRecordValidateMessage = errors['action'][0].replace('Action', '実績')
-            }
-          }
-        })
       },
       updateProgress: function () {
         if (this.stateFlg) {

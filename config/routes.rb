@@ -22,7 +22,6 @@ Rails.application.routes.draw do
     resources :tasks
     resources :action_records do
       get "actionRecordReferences", :on => :collection
-      post "createOrUpdate", :on => :collection
     end
     resource :user_levels, only: [:create, :show]
   end
