@@ -74,9 +74,6 @@ module LevelUpDown
           # レベルアップ後の次レベルの必要経験値を取得
           next_level_required_experience_point = Level.getRequreidExperiecePoint(after_level + UNTILNEXTLEVEL)
         end
-
-        # レベルアップ処理後のレベルを登録
-        UserLevel.uploadUserLevel(current_user.id, after_level)
       end
     else
       # 一致するデータがある場合
@@ -110,9 +107,6 @@ module LevelUpDown
             # レベルアップ後の次レベルの必要経験値を取得
             next_level_required_experience_point = Level.getRequreidExperiecePoint(after_level + UNTILNEXTLEVEL)
           end
-
-          # ユーザのレベルアップ処理後にレベルを登録
-          UserLevel.uploadUserLevel(current_user.id, after_level)
         end
       else
         # 修正によりactionが減少した場合
@@ -144,12 +138,12 @@ module LevelUpDown
             # レベルダウン後の次レベルの必要経験値を取得
             current_level_required_experience_point = Level.getRequreidExperiecePoint(after_level)
           end
-
-          # レベルダウン処理後のレベルを登録
-          UserLevel.uploadUserLevel(current_user.id, after_level)
         end
       end
     end
+
+    # レベルダウン処理後のレベルを登録
+    UserLevel.uploadUserLevel(current_user.id, after_level)
 
     # 総経験値を登録
     UserLevel.uploadUserTotalExperiencePoint(current_user.id, after_total_experience_point)
