@@ -17,7 +17,7 @@
               <input v-model.trim="user.email" id="Email" class="form-control col-md-6" type="text" placeholder="email">
               <span v-if="!validationEmail" class="col-md-6 offset-md-4 text-warning">{{ emailValidateMessage }}</span>
             </div>
-            <div class="from-group row">
+            <div class="form-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
               <input v-model.trim="user.password" id="password" class="form-control col-md-6" type="password" placeholder="password">
               <span v-if="!validationPassword" class="col-md-6 offset-md-4 text-warning">{{ passwordValidateMessage }}</span>
