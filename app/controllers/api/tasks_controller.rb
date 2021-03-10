@@ -44,7 +44,7 @@ class Api::TasksController < ApplicationController
 
   private
 
-  def task_params
-    params.fetch(:task, {}).permit(:task, :goal, :unit, :user_id)
-  end
+    def task_params
+      params.fetch(:task, {}).permit(:task, :goal, :unit, :user_id)
+    end
 end

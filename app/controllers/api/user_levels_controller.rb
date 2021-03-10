@@ -14,7 +14,7 @@ class Api::UserLevelsController < ApplicationController
 
   private
 
-  def user_levels_params
-    params.require(:user_level).permit(:level, :total_experience_point, :user_id)
-  end
+    def user_levels_params
+      params.require(:user_level).permit(:level, :total_experience_point, :user_id)
+    end
 end
