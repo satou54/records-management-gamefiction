@@ -200,7 +200,6 @@
           this.createActionRecord()
           this.updateFlg = true
         }
-        this.fetchActionRecord()
       },
       createActionRecord: function () {
         axios.post('/api/action_records', 
@@ -215,8 +214,10 @@
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']
           this.endState = response.data.level_up_data['after_experience_point_percent']
+          console.log('id: ' + this.actionRecordId)
 
           this.updateLevel()
+          this.fetchActionRecord()
         }, (error) => {
           console.log(error)
           this.actionRecordSuccessMessage = ''
@@ -245,6 +246,7 @@
           this.endState = response.data.level_up_data['after_experience_point_percent']
 
           this.updateLevel()
+          this.fetchActionRecord()
         }, (error) => {
           console.log(error)
           this.actionRecordSuccessMessage = ''
