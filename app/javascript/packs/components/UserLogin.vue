@@ -87,7 +87,7 @@
           localStorage.setItem('user_id', response.data['data'].id)
           localStorage.setItem('email', response.data['data'].email)
           localStorage.setItem('name', response.data['data'].name)
-          location.href = "http://localhost:3000/mypage"
+          llocation.href = "/mypage"
           return response
         }, (error) => {
           console.log(error)
