@@ -176,6 +176,7 @@
       },
       searchAction: function () {
         this.action = ''
+        this.updateFlg = false
 
         for (var i = 0; i < this.ActionRecords.length; i++) {
           if (this.ActionRecords[i].action_day == this.ActionDay
@@ -197,6 +198,7 @@
           this.updateActionRecord()
         } else {
           this.createActionRecord()
+          this.updateFlg = true
         }
       },
       createActionRecord: function () {
