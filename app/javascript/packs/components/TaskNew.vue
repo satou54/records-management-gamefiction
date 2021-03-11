@@ -90,7 +90,6 @@ export default {
                 { task: { task: this.task, goal: this.goal, unit: this.unit, user_id: localStorage.getItem('user_id') } }, 
                 { headers: this.headers }
       ).then((response) => {
-        alert('新規登録しました。')
         this.taskValidateMessage = ''
         this.taskNewSuccessMessage = '習慣を新規登録しました'
       }, (error) => {

@@ -96,9 +96,9 @@
       }
     },
     mounted: function () {
-      this.getToday();
-      this.fetchTasks();
-      this.fetchActionRecord();
+      this.getToday()
+      this.fetchTasks()
+      this.fetchActionRecord()
     },
     computed: {
       validation: function () {
@@ -131,22 +131,22 @@
     },
     methods: {
       getToday: function () {
-        var today = new Date();
-        today.setDate(today.getDate());
-        var yyyy = today.getFullYear();
-        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
-        var dd = ("0" + today.getDate()).slice(-2);
-        this.ActionDay = yyyy + '-' + mm+'-' + dd;
+        var today = new Date()
+        today.setDate(today.getDate())
+        var yyyy = today.getFullYear()
+        var mm = ("0" + (today.getMonth() + 1)).slice(-2)
+        var dd = ("0" + today.getDate()).slice(-2)
+        this.ActionDay = yyyy + '-' + mm+'-' + dd
       },
       fetchTasks: function () {
         axios.get('/api/tasks', 
                   { headers: this.headers }
         ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
-            this.tasks.push(response.data.tasks[i]);
+            this.tasks.push(response.data.tasks[i])
           }
         }, (error) => {
-          console.log(error);
+          console.log(error)
         });
       },
       fetchActionRecord: function () {
@@ -154,15 +154,15 @@
                   { headers: this.headers }
         ).then((response) => {
           for(var i = 0; i < response.data.action_records.length; i++) {
-            this.ActionRecords.push(response.data.action_records[i]);
+            this.ActionRecords.push(response.data.action_records[i])
           }
         }, (error) => {
-          console.log(error);
+          console.log(error)
         })
       },
       chengeDate: function () {
         if (this.selectTask) {
-          this.searchAction();
+          this.searchAction()
         }
       },
       chengeTask: function () {
@@ -172,10 +172,11 @@
             this.unit = this.tasks[i].unit
           }
         }
-        this.searchAction();
+        this.searchAction()
       },
       searchAction: function () {
         this.action = ''
+        this.updateFlg = false
 
         for (var i = 0; i < this.ActionRecords.length; i++) {
           if (this.ActionRecords[i].action_day == this.ActionDay
@@ -191,12 +192,13 @@
         this.action_experience_point = (Math.round(this.action * 100) / 100) / (Math.round(this.goal * 100) / 100) * 100
       },
       registerActionRecord: function () {
-        this.culculateActionExperiencePoint();
+        this.culculateActionExperiencePoint()
 
         if (this.updateFlg) {
           this.updateActionRecord()
         } else {
           this.createActionRecord()
+          this.updateFlg = true
         }
       },
       createActionRecord: function () {
@@ -207,12 +209,14 @@
         ).then((response) => {
           this.actionRecordSuccessMessage = '行動を記録しました'
           this.actionRecordValidateMessage = ''
+          this.actionRecordId = response.data.level_up_data['action_record_id']
           this.before_level = response.data.level_up_data['before_level']
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']
           this.endState = response.data.level_up_data['after_experience_point_percent']
 
           this.updateLevel()
+          this.fetchActionRecord()
         }, (error) => {
           console.log(error)
           this.actionRecordSuccessMessage = ''
@@ -241,6 +245,7 @@
           this.endState = response.data.level_up_data['after_experience_point_percent']
 
           this.updateLevel()
+          this.fetchActionRecord()
         }, (error) => {
           console.log(error)
           this.actionRecordSuccessMessage = ''
@@ -282,7 +287,7 @@
         }
 
         if (this.state == this.endState) {
-          clearInterval(this.intervalId);
+          clearInterval(this.intervalId)
         }
       },
       updateProgressLevelUp: function () {

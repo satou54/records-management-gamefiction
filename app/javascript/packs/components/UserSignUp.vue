@@ -128,7 +128,7 @@
           }, (error) => {
             console.log(error)
           })
-          location.href = "http://localhost:3000/mypage"
+          location.href = "/mypage"
           return response
         }, (error) => {
           console.log(error)

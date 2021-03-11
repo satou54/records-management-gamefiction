@@ -10,6 +10,7 @@ class Api::ActionRecordsController < ApplicationController
     action_record = ActionRecord.new(action_record_params)
     @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
     if action_record.save
+      @levelup_data.store(:action_record_id, action_record.id)
       render :registration, status: :ok
     else
       render json: { errors: action_record.errors.keys.map { |key| [key, action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
@@ -20,6 +21,7 @@ class Api::ActionRecordsController < ApplicationController
     action_record = ActionRecord.find(action_record_params[:id])
     @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
     if action_record.update(action_record_params)
+      @levelup_data.store(:action_record_id, action_record.id)
       render :registration, status: :ok
     else
       render json: { errors: action_record.errors.keys.map { |key| [key, action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
