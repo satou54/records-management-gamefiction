@@ -8,9 +8,11 @@ class Api::ActionRecordsController < ApplicationController
 
   def create
     action_record = ActionRecord.new(action_record_params)
-    @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+
     if action_record.save
+      @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action], true, nil)
       @levelup_data.store(:action_record_id, action_record.id)
+
       render :registration, status: :ok
     else
       render json: { errors: action_record.errors.keys.map { |key| [key, action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
@@ -19,9 +21,13 @@ class Api::ActionRecordsController < ApplicationController
 
   def update
     action_record = ActionRecord.find(action_record_params[:id])
-    @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action])
+    # 修正前のDBに登録されているActionRecordのactionを取得
+    before_action = ActionRecord.getAction(action_record_params[:action_day], action_record_params[:user_id], action_record_params[:task_id])
+
     if action_record.update(action_record_params)
+      @levelup_data = levelUpAndDown(action_record_params[:task_id], action_record_params[:action_day], action_record_params[:action], false, before_action)
       @levelup_data.store(:action_record_id, action_record.id)
+
       render :registration, status: :ok
     else
       render json: { errors: action_record.errors.keys.map { |key| [key, action_record.errors.full_messages_for(key)] }.to_h, render: "show.json.jbuilder" }, status: :unprocessable_entity
