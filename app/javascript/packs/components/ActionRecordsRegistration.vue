@@ -210,6 +210,7 @@
         ).then((response) => {
           this.actionRecordSuccessMessage = '行動を記録しました'
           this.actionRecordValidateMessage = ''
+          this.actionRecordId = response.data.level_up_data['action_record_id']
           this.before_level = response.data.level_up_data['before_level']
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']
