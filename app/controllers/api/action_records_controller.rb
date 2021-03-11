@@ -4,8 +4,6 @@ class Api::ActionRecordsController < ApplicationController
 
   def index
     @action_records = current_user.action_records
-    puts "-----"
-    puts "index"
   end
 
   def create

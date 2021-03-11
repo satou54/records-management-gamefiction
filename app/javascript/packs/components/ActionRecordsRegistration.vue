@@ -214,7 +214,6 @@
           this.after_level = response.data.level_up_data['after_level']
           this.state = response.data.level_up_data['before_experience_point_percent']
           this.endState = response.data.level_up_data['after_experience_point_percent']
-          console.log('id: ' + this.actionRecordId)
 
           this.updateLevel()
           this.fetchActionRecord()
