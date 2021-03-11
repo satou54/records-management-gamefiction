@@ -96,9 +96,9 @@
       }
     },
     mounted: function () {
-      this.getToday();
-      this.fetchTasks();
-      this.fetchActionRecord();
+      this.getToday()
+      this.fetchTasks()
+      this.fetchActionRecord()
     },
     computed: {
       validation: function () {
@@ -131,22 +131,22 @@
     },
     methods: {
       getToday: function () {
-        var today = new Date();
-        today.setDate(today.getDate());
-        var yyyy = today.getFullYear();
-        var mm = ("0" + (today.getMonth() + 1)).slice(-2);
-        var dd = ("0" + today.getDate()).slice(-2);
-        this.ActionDay = yyyy + '-' + mm+'-' + dd;
+        var today = new Date()
+        today.setDate(today.getDate())
+        var yyyy = today.getFullYear()
+        var mm = ("0" + (today.getMonth() + 1)).slice(-2)
+        var dd = ("0" + today.getDate()).slice(-2)
+        this.ActionDay = yyyy + '-' + mm+'-' + dd
       },
       fetchTasks: function () {
         axios.get('/api/tasks', 
                   { headers: this.headers }
         ).then((response) => {
           for(var i = 0; i < response.data.tasks.length; i++) {
-            this.tasks.push(response.data.tasks[i]);
+            this.tasks.push(response.data.tasks[i])
           }
         }, (error) => {
-          console.log(error);
+          console.log(error)
         });
       },
       fetchActionRecord: function () {
@@ -154,15 +154,15 @@
                   { headers: this.headers }
         ).then((response) => {
           for(var i = 0; i < response.data.action_records.length; i++) {
-            this.ActionRecords.push(response.data.action_records[i]);
+            this.ActionRecords.push(response.data.action_records[i])
           }
         }, (error) => {
-          console.log(error);
+          console.log(error)
         })
       },
       chengeDate: function () {
         if (this.selectTask) {
-          this.searchAction();
+          this.searchAction()
         }
       },
       chengeTask: function () {
@@ -172,7 +172,7 @@
             this.unit = this.tasks[i].unit
           }
         }
-        this.searchAction();
+        this.searchAction()
       },
       searchAction: function () {
         this.action = ''
@@ -192,7 +192,7 @@
         this.action_experience_point = (Math.round(this.action * 100) / 100) / (Math.round(this.goal * 100) / 100) * 100
       },
       registerActionRecord: function () {
-        this.culculateActionExperiencePoint();
+        this.culculateActionExperiencePoint()
 
         if (this.updateFlg) {
           this.updateActionRecord()
@@ -200,6 +200,7 @@
           this.createActionRecord()
           this.updateFlg = true
         }
+        this.fetchActionRecord()
       },
       createActionRecord: function () {
         axios.post('/api/action_records', 
@@ -284,7 +285,7 @@
         }
 
         if (this.state == this.endState) {
-          clearInterval(this.intervalId);
+          clearInterval(this.intervalId)
         }
       },
       updateProgressLevelUp: function () {
