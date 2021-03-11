@@ -13,12 +13,10 @@ class ActionRecord < ApplicationRecord
     ActionRecord.find_by(action_day: action_day, task_id: task_id, user_id: user_id).action
   end
 
-  # 実績の経験値を取得
   def self.getActionExperiencePoint(action_day, task_id, user_id)
     ActionRecord.find_by(action_day: action_day, task_id: task_id, user_id: user_id).action_experience_point
   end
 
-  # 実績の経験値を登録
   def self.uploadActionExperiencePoint(action_day, task_id, user_id, action_experience_point)
     action_record = ActionRecord.find_by(action_day: action_day, task_id: task_id, user_id: user_id)
     action_record.update_attribute("action_experience_point", action_experience_point)

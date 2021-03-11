@@ -21,7 +21,7 @@ class Api::ActionRecordsController < ApplicationController
 
   def update
     action_record = ActionRecord.find(action_record_params[:id])
-    # 修正前のDBに登録されているActionRecordのactionを取得
+    # 修正前のDBに登録されているactionを取得
     before_action = ActionRecord.getAction(action_record_params[:action_day], action_record_params[:user_id], action_record_params[:task_id])
 
     if action_record.update(action_record_params)
