@@ -9,7 +9,7 @@ module LevelUpDown
   UNTILNEXTLEVEL = 1
 
   # ユーザのレベルアップとレベルダウン処理を行う
-  def levelUpAndDown(task_id, action_day, action)
+  def levelUpAndDown(task_id, action_day, action, create_flg, before_action)
 
     # task_idから目標を取得
     goal = Task.getTaskGoal(task_id)
@@ -43,19 +43,17 @@ module LevelUpDown
     # レベル処理前のレベルの経験値テーブルにおける%を計算する
     before_experience_point_percent = ((before_total_experience_point - before_level_required_experience_point).to_f / (next_level_required_experience_point - before_level_required_experience_point).to_f * Common::PERCENT).floor
 
-    action_record = ActionRecord.getActionRecord(action_day, task_id, current_user.id)
-
-    # 既にデータが存在しているかチェック
-    if action_record.nil?
-      # データが存在しない場合
+    # 新規登録か修正かチェック
+    if create_flg
+      # 新規登録の場合
 
       # 獲得経験値を計算
       point = culcurateExperiencePoint(action, goal)
 
       # 今回の追加分の前に目標を達成しているかチェック
-      if (week_of_action < goal)
+      if ((week_of_action - action) < goal)
         #今回の追加分を含めた場合に目標を達成しているかチェック
-        if ((week_of_action + action) >= goal)
+        if (week_of_action >= goal)
           # 目標達成で経験値を追加
           point += ACHIEVEMENTEXPERIENCEPOINT
         end
@@ -76,10 +74,10 @@ module LevelUpDown
         end
       end
     else
-      # 一致するデータがある場合
+      # 修正の場合
 
       # 今回修正された実績と登録されている実績との差分を出す
-      difference = action.to_f - action_record.action.to_f
+      difference = action.to_f - before_action.to_f
 
       # 修正により実績が増加した場合
       if (difference > 0)
@@ -87,9 +85,9 @@ module LevelUpDown
         point = culcurateExperiencePoint(difference, goal)
 
         # 今回の差分の前に目標に達しているかチェック
-        if (week_of_action <= goal)
+        if ((week_of_action - difference) < goal)
           # 目標に達していない場合、今回の追加分で目標に達したかチェック
-          if ((week_of_action + difference) >= goal)
+          if (week_of_action >= goal)
             # 今回の追加分で目標に達した場合は経験値を増加
             point += ACHIEVEMENTEXPERIENCEPOINT
           end
@@ -115,9 +113,9 @@ module LevelUpDown
         point = culcurateExperiencePoint(difference, goal)
 
         # 今回の減少分で減少する前に目標を達しているかチェック
-        if (week_of_action >= goal)
+        if ((week_of_action - difference) >= goal)
           # 目標を達してい場合、今回の減少分で割ったかチェック
-          if ((week_of_action + difference) < goal)
+          if (week_of_action < goal)
             # 今回の減少分で割っている場合は経験値を減少
             point -= ACHIEVEMENTEXPERIENCEPOINT
           end
